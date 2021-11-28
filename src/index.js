@@ -9,8 +9,8 @@ import './stylesheets/main.css';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./stylesheets/main.css"
-import NavBar from "./Components//Navbar";
-import { Router } from "./Components/Router";
+import NavBar from "./Components/NavBar/NavBar";
+import { Router } from "./Components/Router/Router";
 
 
 NavBar();
