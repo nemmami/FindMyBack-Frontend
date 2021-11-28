@@ -1,4 +1,4 @@
-import logoNavbar from "../img/FindMyDraw.png";
+import logoNavbar from "../../img/FindMyDraw.png";
 
 const homePage = `
 <div class="row" id="homePage">
