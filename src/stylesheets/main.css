@@ -1,0 +1,77 @@
+/*********************************General*********************************/
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{ 
+  overflow: hidden;
+  height: 100vh;
+  background: white;
+}
+
+
+
+/** navbar**/
+
+li button{
+  margin-left: 1em;
+  margin-right: 1em;
+  height: 3em;
+}
+
+.navbar{
+  background-color: red!important;
+  height: 70px;
+}
+
+
+/** homepage **/
+
+#page{
+  position: relative;  
+}
+
+#homePage{
+  position: relative; 
+  top: 70px;
+}
+
+
+#homePage button{
+  height: 3em;
+}
+
+
+
+#page span{
+ z-index: -1;
+  position: absolute;
+  
+  pointer-events: none;
+  background: #ffff;
+  animation: animate 5s linear infinite;
+}
+
+@keyframes animate {
+  0%{
+    transform: scale(0) translateY(0) rotate(0deg);
+    opacity: 0;
+  }
+
+  10%{
+    opacity: 1;
+  }
+  90%{
+    opacity: 1;
+  }
+  100%{
+    transform: scale(1) translateY(500%) rotate(360deg);
+    opacity: 0;
+  }
+  
+}
+
+
+
