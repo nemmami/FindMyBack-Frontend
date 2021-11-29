@@ -21,8 +21,18 @@ li button{
   height: 3em;
 }
 
+.navbar li{
+  margin-left: 1em;
+  margin-right: 1em;
+}
+
 .navbar{
   background-color: red!important;
+}
+
+#homeLogo{
+  width: 3em;
+  cursor: pointer;
 }
 
 

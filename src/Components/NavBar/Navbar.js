@@ -1,5 +1,5 @@
 import { Navbar as BootstrapNavbar } from "bootstrap";
-
+import homeNavBar from "../../img/homeNavBar.png"
 
 const Navbar = () => {
   const navbarWrapper = document.querySelector("#navbarWrapper");
@@ -7,9 +7,9 @@ const Navbar = () => {
   // Get the user object from the localStorage
 
     navbar = `
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark" id="navbar">
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container-fluid">
-    <a class="navbar-brand" href="#" data-uri="/">Home</a>
+    <img id="homeLogo" src="${homeNavBar}" alt="whiteLogo" href="#" data-uri="/">
     <button
       class="navbar-toggler"
       type="button"
@@ -19,8 +19,9 @@ const Navbar = () => {
       aria-expanded="false"
       aria-label="Toggle navigation"
     >
-      <span class="navbar-toggler-icon"></span>
+    <span class="navbar-toggler-icon"></span>
     </button>
+    
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
