@@ -2,13 +2,13 @@ import logoNavbar from "../../img/FindMyDraw.png";
 
 const homePage = `
 <div class="row" id="homePage">
-<div class="col-6 col-md-4"></div>
-<div class="col-6 col-md-4 text-center">
-    <img id="logo" class="mt-2 mb-3" src="${logoNavbar}" alt="logo">
+<div class="col"></div>
+<div class="col text-center">
+    <img id="logo" class="rounded mx-auto d-block" src="${logoNavbar}" alt="logo">
     <h1 id="titleHomePage" class="display-2 mb-2 mb-md-5 text-center">Let's Find The Drawings</h1>
     <button type="button" class="btn btn-primary homepage_play_button mt-5" href="#" data-uri="/">Jouer</button>
 </div>
-<div class="col-6 col-md-4"></div>
+<div class="col"></div>
 </div>
  `;
 
