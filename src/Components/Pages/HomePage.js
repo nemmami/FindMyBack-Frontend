@@ -1,3 +1,4 @@
+import { Navbar as BootstrapNavbar } from "bootstrap";
 import logoNavbar from "../../img/FindMyDraw.png";
 
 const homePage = `
