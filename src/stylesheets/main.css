@@ -8,26 +8,24 @@
 body{ 
   overflow: hidden;
   height: 100vh;
-  background: white;
+  background: #34495e;
 }
 
 
 
 /** navbar**/
 
-li button{
-  margin-left: 1em;
-  margin-right: 1em;
-  height: 3em;
-}
-
 .navbar li{
   margin-left: 1em;
   margin-right: 1em;
 }
 
+.navbar li a{
+  color: white !important;
+}
+
 .navbar{
-  background-color: red!important;
+  background: #2b3341 !important;
 }
 
 #homeLogo{
@@ -47,7 +45,6 @@ li button{
   top: 150px;
 }
 
-
 #homePage button{
   height: 3em;
 }
@@ -55,6 +52,10 @@ li button{
 #logo{
   margin-left: auto;
   margin-right: auto;
+}
+
+#titleHomePage{
+  color : white !important;
 }
 
 
