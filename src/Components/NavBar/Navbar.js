@@ -30,7 +30,7 @@ const Navbar = () => {
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" href="#" data-uri="/">Jouer</a>
+          <a class="nav-link" href="#" data-uri="/login">Jouer</a>
         </li>           
       </ul>
     </div>
@@ -70,7 +70,7 @@ const Navbar = () => {
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
-          <a class="nav-link" href="#" data-uri="/">Jouer</a>
+          <a class="nav-link" href="#" data-uri="/game">Jouer</a>
         </li>           
       </ul>
     </div>
