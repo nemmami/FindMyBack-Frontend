@@ -1,38 +1,34 @@
 import { Redirect } from "../Router/Router";
 import { setSessionObject } from "../../utils/session";
+import Navbar from "../NavBar/Navbar";
 /**
  * View the Register form :
  * render a register page into the #page div (formerly render function)
  */
+ let registerPage;
+
+ registerPage = `
+ <div class="row" id="homePage">
+ <div class="col"></div>
+ <div class="col text-center">
+ <form class="box">
+   <h1> Register</h1>
+   <input type="text" id="username" placeholder="username" required = true>
+   <input type="password" id="password" placeholder="password">
+   <input type="submit" value="Login">
+ </form>
+ 
+ </div>
+ <div class="col"></div>
+ </div>
+ `;
+
 function RegisterPage() {
   // reset #page div
   const pageDiv = document.querySelector("#page");
-  pageDiv.innerHTML = "";
-  // create a login form
-  const form = document.createElement("form");
-  form.className = "p-5";
-  const username = document.createElement("input");
-  username.type = "text";
-  username.id = "username";
-  username.placeholder = "username";
-  username.required = true;
-  username.className = "form-control mb-3";
-  const password = document.createElement("input");
-  password.type = "password";
-  password.id = "password";
-  password.required = true;
-  password.placeholder = "password";
-  password.className = "form-control mb-3";
-  const submit = document.createElement("input");
-  submit.value = "Register";
-  submit.type = "submit";
-  submit.className = "btn btn-danger";
-  form.appendChild(username);
-  form.appendChild(password);
-  form.appendChild(submit);
-
+  pageDiv.innerHTML = registerPage;
+  let form = document.querySelector("form");
   form.addEventListener("submit", onSubmit);
-  pageDiv.appendChild(form);
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -69,6 +65,19 @@ function RegisterPage() {
       // call the HomePage via the Router
       Redirect("/");
     } catch (error) {
+
+      const errorAlert = document.createElement("div");
+      errorAlert.className = "alert alert-danger";
+      errorAlert.role = "alert";
+      const message = document.createElement("a");
+     
+       
+      if(error.status = 409){
+        message.innerHTML = "username already used";
+      }
+      
+      errorAlert.appendChild(message);
+      form.appendChild(errorAlert);
       console.error("RegisterPage::error: ", error);
     }
   }

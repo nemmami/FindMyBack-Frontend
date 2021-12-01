@@ -28,7 +28,6 @@ function LoginPage() {
   const pageDiv = document.querySelector("#page");
   pageDiv.innerHTML = loginPage;
   let form = document.querySelector("form");
-  const user = getSessionObject();
   form.addEventListener("submit", onSubmit);
   
  
@@ -75,7 +74,10 @@ function LoginPage() {
         errorAlert.role = "alert";
         const message = document.createElement("a");
          
-        message.innerHTML = "username or password is incorect";
+        if(error.status = 401){
+          message.innerHTML = "username or password is incorect";
+        }
+        
         errorAlert.appendChild(message);
         form.appendChild(errorAlert);
       console.error("LoginPage::error: ", error);
