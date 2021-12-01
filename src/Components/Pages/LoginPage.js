@@ -1,39 +1,39 @@
 import { Redirect } from "../Router/Router";
 import Navbar from "../NavBar/Navbar";
-import { setSessionObject } from "../../utils/session";
+import { getSessionObject, setSessionObject } from "../../utils/session";
 /**
  * View the Login form :
  * render a login page into the #page div (formerly login function)
  */
+let loginPage;
+
+loginPage = `
+<div class="row" id="homePage">
+<div class="col"></div>
+<div class="col text-center">
+<form class="box">
+  <h1> Login</h1>
+  <input type="text" id="username" placeholder="username" required = true>
+  <input type="password" id="password" placeholder="password">
+  <input type="submit" value="Login">
+</form>
+
+</div>
+<div class="col"></div>
+</div>
+`;
+
 function LoginPage() {
   // reset #page div
   const pageDiv = document.querySelector("#page");
-  pageDiv.innerHTML = "";
-  // create a login form
-  const form = document.createElement("form");
-  form.className = "p-5";
-  const username = document.createElement("input");
-  username.type = "text";
-  username.id = "username";
-  username.placeholder = "username";
-  username.required = true;
-  username.className = "form-control mb-3";
-  const password = document.createElement("input");
-  password.type = "password";
-  password.id = "password";
-  password.required = true;
-  password.placeholder = "password";
-  password.className = "form-control mb-3";
-  const submit = document.createElement("input");
-  submit.value = "Login";
-  submit.type = "submit";
-  submit.className = "btn btn-danger";
-  form.appendChild(username);
-  form.appendChild(password);
-  form.appendChild(submit);
-
+  pageDiv.innerHTML = loginPage;
+  let form = document.querySelector("form");
+  const user = getSessionObject();
   form.addEventListener("submit", onSubmit);
-  pageDiv.appendChild(form);
+  
+ 
+  
+  
 
   async function onSubmit(e) {
     e.preventDefault();
@@ -70,7 +70,16 @@ function LoginPage() {
       // call the HomePage via the Router
       Redirect("/");
     } catch (error) {
+        const errorAlert = document.createElement("div");
+        errorAlert.className = "alert alert-danger";
+        errorAlert.role = "alert";
+        const message = document.createElement("a");
+         
+        message.innerHTML = "username or password is incorect";
+        errorAlert.appendChild(message);
+        form.appendChild(errorAlert);
       console.error("LoginPage::error: ", error);
+      
     }
   }
 }
