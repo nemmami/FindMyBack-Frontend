@@ -70,7 +70,11 @@ const Navbar = () => {
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
+<<<<<<< HEAD
+          <a class="nav-link" href="#" data-uri="/">LELEL</a>
+=======
           <a class="nav-link" href="#" data-uri="/game">Jouer</a>
+>>>>>>> 8d11680ad1df580ff20d96f451874a618c8a63ee
         </li>           
       </ul>
     </div>
