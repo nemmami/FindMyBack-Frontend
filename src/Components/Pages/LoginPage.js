@@ -29,10 +29,6 @@ function LoginPage() {
   pageDiv.innerHTML = loginPage;
   let form = document.querySelector("form");
   form.addEventListener("submit", onSubmit);
-  
- 
-  
-  
 
   async function onSubmit(e) {
     e.preventDefault();

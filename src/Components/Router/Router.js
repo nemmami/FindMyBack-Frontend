@@ -3,7 +3,8 @@ import LoginPage from "../Pages/LoginPage";
 import RegisterPage from "../Pages/RegisterPage";
 import Logout from "../Logout/Logout";
 import Game from "../Pages/GamePage";
-
+import RoomPage from "../Pages/RoomPage";
+import WaitingGamePage from "../Pages/WaitingGamePage"
 
  
 
@@ -14,6 +15,8 @@ const routes = {
   "/register": RegisterPage,
   "/logout": Logout,
   "/game": Game,
+  "/room": RoomPage,
+  "/waiting": WaitingGamePage
 };
 
 /**
