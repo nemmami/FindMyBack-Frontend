@@ -10,10 +10,10 @@ import { getSessionObject, setSessionObject } from "../../utils/session";
 
 let waitingPage;
 
-const socket = io("http://localhost:3000");
+const socket = io('http://localhost:5000');
 
 // user se connecte
-socket.emit('joinRoom', { id: getSessionObject("room").id, username: getSessionObject("user").username });
+//socket.emit('joinRoom', { id: getSessionObject("room").id, username: getSessionObject("user").username });
 
 socket.on('connect', () => { // Quand la connexion est établie
   console.log('Socket Client ID:' + socket.id); // 'G5p5...'

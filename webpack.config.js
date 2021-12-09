@@ -14,7 +14,7 @@ module.exports = {
     contentBase: path.join(__dirname, "dist"),
     port: 80,
     host: '0.0.0.0', // server to be accessible externally
-    public: "localhost:80", // force to open localhost instead of 0.0.0.0
+    public: "localhost", // force to open localhost instead of 0.0.0.0
     open: true, // open the default browser
     historyApiFallback: true, // serve index.html instead of routes leading to no specific ressource
     proxy: {
