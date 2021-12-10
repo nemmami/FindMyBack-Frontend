@@ -12,6 +12,13 @@ let waitingPage;
 
 const socket = io('http://localhost:5000');
 
+function join() {
+  // user se connecte
+  if(getSessionObject("room") !== undefined)
+    socket.emit('joinRoom', { id: getSessionObject("room").id, username: getSessionObject("user").username });
+    console.log(getSessionObject("room"));
+}
+join();
 // user se connecte
 //socket.emit('joinRoom', { id: getSessionObject("room").id, username: getSessionObject("user").username });
 
