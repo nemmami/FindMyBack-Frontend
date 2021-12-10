@@ -150,6 +150,70 @@ transition: 0.15s;
     background:#2ecc71;
   }
 
+  
+  /***** ScreenGame *****/
+
+  #screenGame{
+    margin-top: 5%;
+	margin-left: 2%;
+  margin-right: 2%;
+  background-color: #2ecc71;
+	position: relative;
+  }
+
+  #headerGame{
+ margin: 10px;
+  }
+
+  #timer, #currentWord{
+    border-radius: 25px;
+    background: #73AD21;
+    padding: 10px;
+    height: 100px;
+  }
+
+  
+  #midGame{
+    margin:10px;
+  }
+  
+  #usersGame{
+    border-radius: 25px;
+    background: #73AD21;
+    padding: 10px;
+    height: 100px;  
+
+  }
+  
+#bottomGame{
+    height: 500px ;
+    margin-left: 10px;
+    margin-right: 10px;
+    
+  }
+
+  #settingGame, #drawGame, #chatGame{
+    
+    border-radius: 25px;
+    background: #73AD21;
+    padding: 10px;
+    text-align: center;
+
+  }
+
+  /** chat **/
+  .wrapper{
+    text-align: center;
+	  position: relative;
+    margin-top: 400px;
+  }
+
+  .message-container{
+    padding: 10px;
+	  max-height: 100px;
+	  overflow-y: scroll;
+  }
+
 
 
 
