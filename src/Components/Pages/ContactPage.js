@@ -1,7 +1,4 @@
 
-
-
-
 let contactPage;
 
 contactPage = `
@@ -22,7 +19,7 @@ contactPage = `
 <h6>Voici les developpeurs de ce jeu ainsi que leur email et leur profil sur github </h6>
 
 <div id="firstName">
-<p>Bostaji Thomas : <br>
+<p>Bostajii Thomas : <br>
  thomas.bostaji@student.vinci.be <br>
 <a id="linkContact" href="https://github.com/bostattitude"> github</a></p>
 </div>
@@ -52,7 +49,6 @@ contactPage = `
 <div class="col"></div>
 </div>
 `;
-
 
 const ContactPage = () => {
     const page = document.querySelector("#page");
