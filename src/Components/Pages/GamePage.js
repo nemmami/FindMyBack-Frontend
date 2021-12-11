@@ -3,69 +3,13 @@ import { getSessionObject } from "../../utils/session";
 
 let gamePage;
 
- /*gamePage = ` 
-<div id="screenGame">
-
-    
-        <div class="row" id="headerGame">
-            <div class="col-lg-3" id ="timer">50 sec</div>
-            <div class="col-lg-5 text-center" id="currentWord">lee hwek</div>
-            <div class="col-lg-3 " id="usersGame"> settings drawing</div>
-        </div>
-
-        <div class="row" id="bottomGame">
-
-            <div class="col-lg-2" id="settingGame">
-
-                <div id="sidebar">
-                    <div class="colorButtons">
-                        <h3>Color</h3>
-                        <input type="color" id="colorpicker" value="#c81464" class="colorpicker">
-                    </div>
-
-                    <div class="colorButtons">
-                        <h3>Background color</h3>
-                        <input type="color" value="#ffffff" id="bgcolorpicker" class="colorpicker">
-                    </div>
-            
-                    <div class="toolsButtons">
-                        <h3>Tools(outils)</h3>
-                        <button id="eraser" class="btn btn-default">Gomme<span class="glyphicon glyphicon-erase" aria-hidden="true"></span></button>
-                        <button id="clear" class="btn btn-danger">All clear <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button>
-                    </div>
-            
-                    <div class="buttonSize">
-                        <h3>Size <span id="showSize">5</span></h3>
-                        <input type="range" min="1" max="50" value="5" step="1" id="controlSize">
-                    </div>
-                
-                </div>
-            </div>
-
-            <div class="col-lg-8" id="drawGame">
-                <canvas id="Canva2D" class="border border border-dark"></canvas>
-            </div>
-
-            <div class="col-lg-2" id="chatGame">
-                <div class="message-container"></div> 
-                   <div class="wrapper"> 
-                   <form id="send-container">
-                        <input type="text" id="message-input">
-                        <input type="submit" value="Envoyer">
-                    </form>
-                  </div>
-                </div>
-            </div>
-</div>
- `;*/
-
  gamePage = ` 
  <div id="screenGame">
  
      
          <div class="row" id="headerGame">
              <div class="col-lg-3" id ="timer">50 sec</div>
-             <div class="col-lg-5 text-center" id="currentWord">lee hwek</div>
+             <div class="col-lg-5 text-center" id="currentWord"></div>
          </div>
  
          <div class="row" id="bottomGame">
@@ -123,7 +67,17 @@ const GamePage = () => {
   const page = document.querySelector("#page");
   page.innerHTML = gamePage;
 
-  //chat
+  //recup mot
+  getWord();
+
+  chat();
+  canvas();
+
+
+};
+
+const chat = () =>{
+    //chat
   //const socket = io('http://localhost:8080');
 const messageContainer = document.getElementById('message-container');
 const messageForm = document.getElementById('send-container');
@@ -149,8 +103,32 @@ function appendMessage(message) {
 
   document.querySelector('.message-container').appendChild(messageElement);
 }
+}
 
-//canvas
+const getWord =  async () => {
+    //insertion mot random
+  const currentWord = document.querySelector("#currentWord");
+
+  try {// hide data to inform if the pizza menu is already printed
+    const response = await fetch("/api/words"); // fetch return a promise => we wait for the response
+
+    if (!response.ok) {
+      // status code was not 200, error status code
+      throw new Error(
+        "fetch error : " + response.status + " : " + response.statusText
+      );
+    }
+    const word = await response.json(); // json() returns a promise => we wait for the data
+    
+      console.log(word);
+    currentWord.innerHTML = word.word;
+  } catch (error) {
+    console.error("pizzaView::error: ", error);
+  }
+}
+
+const canvas = () =>{
+    //canvas
 let canvas = document.getElementById("Canva2D");
 let drawGame = document.getElementById("drawGame");
 console.log("bababababab" + drawGame.width + drawGame.height);
@@ -292,8 +270,7 @@ function mouseup() {
     isMouseDown=false
     store()
 }
-};
-
+}
 
 
 

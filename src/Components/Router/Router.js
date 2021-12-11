@@ -4,7 +4,8 @@ import RegisterPage from "../Pages/RegisterPage";
 import Logout from "../Logout/Logout";
 import Game from "../Pages/GamePage";
 import RoomPage from "../Pages/RoomPage";
-import WaitingGamePage from "../Pages/WaitingGamePage"
+import WaitingGamePage from "../Pages/WaitingGamePage";
+import ContactPage from "../Pages/ContactPage";
 
  
 
@@ -16,7 +17,8 @@ const routes = {
   "/logout": Logout,
   "/game": Game,
   "/room": RoomPage,
-  "/waiting": WaitingGamePage
+  "/waiting": WaitingGamePage,
+  "/contact": ContactPage,
 };
 
 /**

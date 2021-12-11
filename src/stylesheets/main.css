@@ -33,6 +33,43 @@ body{
   cursor: pointer;
 }
 
+/**ContactPage**/
+
+h1{
+  color :white;
+}
+
+ h5{
+  color: white;
+ }
+ h6{
+  color :white;
+
+ }
+ p{
+   color :white;
+ }
+
+
+.boxContactPage{
+  width: 950px;
+  padding: 70px;
+  position: absolute;
+  top: 260px;
+  left: 50%;
+  transform: translate(-50%,-50%);
+  background: #191919;
+  text-align: center;
+  box-shadow: 6px 6px 0px black;
+  border-radius: 20px / 10px;
+
+  
+}
+#linkContact{
+
+  color:white;
+}
+
 
 /** homepage **/
 
@@ -61,7 +98,7 @@ body{
 
 
 
-#page span{
+.animation-background{
  z-index: -1;
   position: absolute;
   
