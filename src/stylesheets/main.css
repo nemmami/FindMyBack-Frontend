@@ -97,7 +97,7 @@ h1{
 
 
 
-#page span{
+#page span #animation-background{
  z-index: -1;
   position: absolute;
   

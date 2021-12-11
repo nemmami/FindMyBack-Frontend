@@ -47,6 +47,7 @@ const colors = [
 function createSquare(){
  const page = document.querySelector('#page');
  const square = document.createElement('span');
+ square.className = "animation-background";
 
  let pageWidth = page.clientWidth;
  let pageHeight = page.clientWidth;
