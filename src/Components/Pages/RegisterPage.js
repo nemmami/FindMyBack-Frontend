@@ -13,8 +13,8 @@ import Navbar from "../NavBar/Navbar";
  <div class="col text-center">
  <form class="box">
    <h1> Register</h1>
-   <input type="text" id="username" placeholder="username" required = true>
-   <input type="password" id="password" placeholder="password">
+   <input type="text" id="username" placeholder="Username" required = true>
+   <input type="password" id="password" placeholder="Password">
    <input type="submit" value="Login">
  </form>
  

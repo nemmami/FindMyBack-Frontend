@@ -110,7 +110,7 @@ body{
   font-weight: 500; 
 }
   
-.box input[type = "text"], .box input[type = "password"] { border:0; 
+.box input[type = "text"], .box input[type = "password"], .box input[type = "number"] { border:0; 
 background: none; 
 display: block; 
 margin: 20px auto;
