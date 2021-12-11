@@ -1,22 +1,16 @@
 import { Navbar as BootstrapNavbar } from "bootstrap";
+import { getSessionObject } from "../../utils/session";
 
 let gamePage;
 
- gamePage = ` 
+ /*gamePage = ` 
 <div id="screenGame">
 
     
         <div class="row" id="headerGame">
-            <div class="col-lg-1"></div>
-            <div class="col-lg-1" id ="timer">50 sec</div>
-            <div class="col-lg-9 text-center" id="currentWord">lee hwek</div>
-            <div class="col-lg-1"></div>
-        </div>
-
-        <div class="row" id="midGame" >
-        <div class="col-lg-1"></div>
-            <div class="col-lg-10 " id="usersGame"> settings drawing</div>
-            <div class="col-lg-1"></div>
+            <div class="col-lg-3" id ="timer">50 sec</div>
+            <div class="col-lg-5 text-center" id="currentWord">lee hwek</div>
+            <div class="col-lg-3 " id="usersGame"> settings drawing</div>
         </div>
 
         <div class="row" id="bottomGame">
@@ -37,7 +31,7 @@ let gamePage;
                     <div class="toolsButtons">
                         <h3>Tools(outils)</h3>
                         <button id="eraser" class="btn btn-default">Gomme<span class="glyphicon glyphicon-erase" aria-hidden="true"></span></button>
-                        <button id="clear" class="btn btn-danger">all clear <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button>
+                        <button id="clear" class="btn btn-danger">All clear <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button>
                     </div>
             
                     <div class="buttonSize">
@@ -48,22 +42,82 @@ let gamePage;
                 </div>
             </div>
 
-            <div class="col" id="drawGame">
+            <div class="col-lg-8" id="drawGame">
                 <canvas id="Canva2D" class="border border border-dark"></canvas>
             </div>
 
-            <div class="col-lg-3" id="chatGame">
+            <div class="col-lg-2" id="chatGame">
                 <div class="message-container"></div> 
                    <div class="wrapper"> 
                    <form id="send-container">
                         <input type="text" id="message-input">
-                        <button type="submit" id="send-button">Send</button>
+                        <input type="submit" value="Envoyer">
                     </form>
+                  </div>
                 </div>
-                </div>
-        </div>
+            </div>
 </div>
- `;
+ `;*/
+
+ gamePage = ` 
+ <div id="screenGame">
+ 
+     
+         <div class="row" id="headerGame">
+             <div class="col-lg-3" id ="timer">50 sec</div>
+             <div class="col-lg-5 text-center" id="currentWord">lee hwek</div>
+         </div>
+ 
+         <div class="row" id="bottomGame">
+ 
+             <div class="col-lg-2" id="settingGame">
+                <div class="col-lg-2" id="usersGame"> settings drawing</div>
+             </div>
+ 
+             <div class="col-lg-8" id="drawGame">
+                 <canvas id="Canva2D" class="border border border-dark"></canvas>
+             </div>
+ 
+             <div class="col-lg-2" id="chatGame">
+                 <div class="message-container"></div> 
+                    <div class="wrapper"> 
+                    <form id="send-container">
+                         <input type="text" id="message-input">
+                         <input type="submit" value="Envoyer">
+                     </form>
+                   </div>
+                 </div>
+             </div>
+
+            <div class="row" id="spec">
+                 <div class="col-lg-2">
+                 </div>     
+                 <div class="col-lg-2">
+                     <h3>Color</h3>
+                     <input type="color" id="colorpicker" value="#c81464" class="colorpicker">
+                 </div>
+
+                 <div class="col-lg-2">
+                     <h3>Background color</h3>
+                     <input type="color" value="#ffffff" id="bgcolorpicker" class="colorpicker">
+                 </div>
+         
+                 <div class="col-lg-2">
+                     <h3>Tools(outils)</h3>
+                     <button id="eraser" class="btn btn-default">Gomme<span class="glyphicon glyphicon-erase" aria-hidden="true"></span></button>
+                     <button id="clear" class="btn btn-danger">All clear <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button>
+                 </div>
+         
+                 <div class="col-lg-2">
+                     <h3>Size <span id="showSize">5</span></h3>
+                     <input type="range" min="1" max="50" value="5" step="1" id="controlSize">
+                 </div>
+                 <div class="col-lg-2">
+                 </div>
+          
+            </div>
+ </div>
+  `;
 
 const GamePage = () => {
   const page = document.querySelector("#page");
@@ -77,12 +131,13 @@ const messageInput = document.getElementById('message-input');
 
 
 messageForm.addEventListener('submit', e => {
+  let user = getSessionObject("user");
   e.preventDefault();
   const message = messageInput.value;
   
-  appendMessage(` ${message}`);
+  appendMessage(`${user.username} : ${message}`);
   //socket.emit('send-chat-message', message)
- // messageInput.value = ''
+  messageInput.value = ''
 })
 
 
@@ -169,8 +224,8 @@ canvas.addEventListener('mouseup',mouseup);
 
 function createCanvas() {
  
-    canvas.width = 650  ;
-    canvas.height = 500;
+    canvas.width = 1100;
+    canvas.height = 400;
     canvas.style.zIndex = 8;
 
    // canvas.style.position = "absolute";
