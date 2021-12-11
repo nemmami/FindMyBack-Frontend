@@ -15,7 +15,7 @@ let gamePage;
          <div class="row" id="bottomGame">
  
              <div class="col-lg-2" id="settingGame">
-                <div class="col-lg-2" id="usersGame"> settings drawing</div>
+                <div class="col-lg-2" id="usersGame"> Users</div>
              </div>
  
              <div class="col-lg-8" id="drawGame">
@@ -63,6 +63,11 @@ let gamePage;
  </div>
   `;
 
+  let user = getSessionObject("user");
+  let wordToFind;
+
+  
+
 const GamePage = () => {
   const page = document.querySelector("#page");
   page.innerHTML = gamePage;
@@ -79,31 +84,41 @@ const GamePage = () => {
 const chat = () =>{
     //chat
   //const socket = io('http://localhost:8080');
-const messageContainer = document.getElementById('message-container');
 const messageForm = document.getElementById('send-container');
 const messageInput = document.getElementById('message-input');
 
 
 messageForm.addEventListener('submit', e => {
-  let user = getSessionObject("user");
+  
   e.preventDefault();
   const message = messageInput.value;
   
-  appendMessage(`${user.username} : ${message}`);
+  appendMessage(message);
   //socket.emit('send-chat-message', message)
   messageInput.value = ''
 })
 
 
 function appendMessage(message) {
-  const messageElement = document.createElement('div');
-  messageElement.classList.add('message');
-  messageElement.innerText = message;
+  let messageElement = document.createElement('div');
+  messageElement.className = "message";
+ 
+
+  //good answer
+  if(message === wordToFind.word){
+    messageElement.innerHTML = `<p class="message-text" style="color:green">  ${user.username} : ${message} </p>`;
+    getWord();
+    canvas();
+  }else{
+    messageElement.innerHTML = `<p class="message-text" style="color:red">  ${user.username} : ${message} </p>`;
+  };
+
   console.log(messageElement);
 
   document.querySelector('.message-container').appendChild(messageElement);
 }
 }
+
 
 const getWord =  async () => {
     //insertion mot random
@@ -118,10 +133,10 @@ const getWord =  async () => {
         "fetch error : " + response.status + " : " + response.statusText
       );
     }
-    const word = await response.json(); // json() returns a promise => we wait for the data
+    wordToFind = await response.json(); // json() returns a promise => we wait for the data
     
-      console.log(word);
-    currentWord.innerHTML = word.word;
+      console.log(wordToFind);
+    currentWord.innerHTML = wordToFind.word;
   } catch (error) {
     console.error("pizzaView::error: ", error);
   }
@@ -130,8 +145,7 @@ const getWord =  async () => {
 const canvas = () =>{
     //canvas
 let canvas = document.getElementById("Canva2D");
-let drawGame = document.getElementById("drawGame");
-console.log("bababababab" + drawGame.width + drawGame.height);
+
 
 var isMouseDown=false;
 //var body = document.getElementsByTagName("body")[0];

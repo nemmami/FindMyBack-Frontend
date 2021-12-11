@@ -280,6 +280,10 @@ transition: 0.15s;
     position: absolute;
   }
 
+  .message-text{
+    color: black;
+  }
+
 
 
 
