@@ -50,6 +50,7 @@ body{
 }
 
 #logo{
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -149,6 +150,99 @@ transition: 0.15s;
   .box input[type = "submit"]:hover{
     background:#2ecc71;
   }
+
+  
+  /***** ScreenGame *****/
+
+  #screenGame{
+    border-radius: 25px;
+  margin-top: 3%;
+	margin-left: 2%;
+  margin-right: 2%;
+  margin-bottom: 3%;
+	position: relative;
+  background-color: white;
+  padding-top: 10px;
+  padding-bottom: 50px;
+  }
+
+  #headerGame{
+    margin-left: 100px;
+    margin-bottom: 100px;
+  }
+
+  #timer{
+    border-radius: 25px;
+    padding: 10px;
+    height: 100px;
+    text-align: left;
+  }
+
+  #currentWord{
+    margin-right: 15px;
+    border-radius: 25px;
+    background: cornflowerblue;
+    padding: 10px;
+    height: 100px;
+    text-align: center;
+  }
+  
+  #usersGame{
+    border-radius: 25px;
+    background: rgb(76, 98, 138);
+    text-align: center;
+    height: 380px;
+    width: 300px;
+  }
+  
+#bottomGame{
+    margin-left: 10px;
+    margin-right: 10px;
+    
+  }
+
+  #settingGame{
+    border-radius: 25px;
+    padding: 10px;
+    text-align: center;
+    background-color: white;
+  }
+
+  #drawGame{
+    text-align: center;
+  }
+
+  #chatGame{
+    border-radius: 25px;
+    text-align: left;
+    background-color: rgb(231, 231, 231);
+  }
+
+  #Canva2D{
+    margin-bottom: 10px;
+    border-radius: 25px;
+  }
+
+  #spec{
+    text-align: center;
+    width: auto;
+  }
+
+  /** chat **/
+
+  .wrapper{
+    text-align: center;
+    margin-top: 370px;
+  }
+
+  .message-container{
+    max-width: 270px;
+	  max-height: 360px;
+	  overflow-y: scroll;
+    display: block;
+    position: absolute;
+  }
+
 
 
 

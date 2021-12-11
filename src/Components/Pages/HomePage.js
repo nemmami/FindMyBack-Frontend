@@ -1,23 +1,41 @@
 import { Navbar as BootstrapNavbar } from "bootstrap";
 import logoNavbar from "../../img/FindMyDraw.png";
+import { getSessionObject } from "../../utils/session";
 
-const homePage = `
+
+const HomePage = () => {
+  const page = document.querySelector("#page");
+  let homePage;
+  // Get the user object from the localStorage
+  let user = getSessionObject("user");
+  if (!user) {
+    homePage = `
 <div class="row" id="homePage">
 <div class="col"></div>
 <div class="col text-center">
     <img id="logo" class="rounded mx-auto d-block" src="${logoNavbar}" alt="logo">
     <h1 id="titleHomePage" class="display-2 mb-2 mb-md-5 text-center">Let's Find The Drawings</h1>
-    <button type="button" class="btn btn-primary homepage_play_button mt-5" href="#" data-uri="/">Jouer</button>
+    <button type="button" id="playButton" class="btn btn-primary homepage_play_button mt-5" href="#" data-uri="/" onclick="document.location.href='/login'">Jouer</button>
 </div>
 <div class="col"></div>
 </div>
  `;
-
-const HomePage = () => {
-  const page = document.querySelector("#page");
-  page.innerHTML = homePage;
-};
-
+  }
+  else {
+    homePage = `
+<div class="row" id="homePage">
+<div class="col"></div>
+<div class="col text-center">
+    <img id="logo" class="rounded mx-auto d-block" src="${logoNavbar}" alt="logo">
+    <h1 id="titleHomePage" class="display-2 mb-2 mb-md-5 text-center">Let's Find The Drawings</h1>
+    <button type="button" class="btn btn-primary homepage_play_button mt-5" href="#" data-uri="/room" onclick="document.location.href='/room'">Jouer</button>
+</div>
+<div class="col"></div>
+</div>
+ `;
+  }
+  page.innerHTML=homePage;
+}
 
 const colors = [
   '#2196f3',
