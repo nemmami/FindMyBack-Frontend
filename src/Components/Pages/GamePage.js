@@ -8,7 +8,7 @@ let gamePage;
 <div class="col"></div>
 <div class="col text-center">
 
-<h1 id="titleHomePage" class="display-2 mb-2 mb-md-5 text-center">On commence le jeux</h1>
+<h1 id="titleHomePage" class="display-2 mb-2 mb-md-5 text-center">Commençons le jeu</h1>
     
 </div>
 <div class="col"></div>

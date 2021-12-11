@@ -27,8 +27,8 @@ waitingPage = `
 <div class="col text-center">
 <form class="box">
   <h1></h1>
-  <input type="number" id="nbrRound" placeholder="nombre de round" required = true>
-  <input type="submit" value="Ajouter">
+  <input type="number" id="nbrRound" placeholder="Nombre de round" required = true>
+  <input type="submit" value="Valider">
 </form>
 </div>
 <div class="col"></div>
