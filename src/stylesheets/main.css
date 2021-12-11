@@ -32,6 +32,7 @@ body{
   width: 3em;
   cursor: pointer;
 }
+
 /**ContactPage**/
 
 h1{
@@ -97,7 +98,7 @@ h1{
 
 
 
-#page span #animation-background{
+.animation-background{
  z-index: -1;
   position: absolute;
   
