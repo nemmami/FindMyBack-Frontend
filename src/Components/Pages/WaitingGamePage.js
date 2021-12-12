@@ -11,8 +11,6 @@ let waitingPage;
 
 const socket = io("http://localhost:5000");
 
-
-
 waitingPage = `
 <div class="row" id="homePage">
 <div class="col"></div>
@@ -25,9 +23,23 @@ waitingPage = `
 </div>
 `;
 
+function getPlayers() {
+  socket.emit("playerList", getSessionObject("room").id);
+  socket.on("list players", (players) => {
+    players.forEach((e) => {
+      console.log(e);
+      waitingPage += `<p>Joueur - ${e}</p>`;
+    });
+    if (players.length > 1) {
+      waitingPage += `<input type="submit" class="btn btn-sm btn-success join-room" id="inputJoin" value="Lancer">`;
+    }
+  });
+}
+
 function WaitingGamePage() {
   // reset #page div
   //addPlayer();
+  getPlayers();
   const pageDiv = document.querySelector("#page");
   pageDiv.innerHTML = waitingPage;
 }
