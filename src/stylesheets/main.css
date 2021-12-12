@@ -211,6 +211,8 @@ transition: 0.15s;
   #headerGame{
     margin-left: 100px;
     margin-bottom: 100px;
+    font-size: 25px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
   }
 
   #timer{
@@ -228,6 +230,13 @@ transition: 0.15s;
     height: 100px;
     text-align: center;
   }
+
+  #round{
+    border-radius: 25px;
+    padding: 10px;
+    height: 100px;
+    text-align: right;
+  }
   
   #usersGame{
     padding-top: 15px;
@@ -236,6 +245,8 @@ transition: 0.15s;
     text-align: center;
     height: 380px;
     width: 300px;
+    font-size: 25px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
   }
   
   #bottomGame{
