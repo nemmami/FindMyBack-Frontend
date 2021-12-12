@@ -83,8 +83,11 @@ const Navbar = () => {
               <a class="nav-item nav-link disabled" href="#">${user.username}</a>
               </li>
       <li class="nav-item">
-                <a class="nav-link" href="#" data-uri="/logout">Logout</a>
-              </li>
+          <a class="nav-link" href="#" data-uri="/logout">Logout</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="#" data-uri="/contact">Contact</a>
+      </li>	        
 		  </ul>		  
 		</div>
   </div>
