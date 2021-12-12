@@ -230,7 +230,7 @@ transition: 0.15s;
     text-align: center;
   }
 
-  #round{
+  #headerGame #round{
     border-radius: 25px;
     padding: 10px;
     height: 100px;
