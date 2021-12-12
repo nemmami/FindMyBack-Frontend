@@ -232,7 +232,7 @@ transition: 0.15s;
     width: 300px;
   }
   
-#bottomGame{
+  #bottomGame{
     margin-left: 10px;
     margin-right: 10px;
     
@@ -273,11 +273,19 @@ transition: 0.15s;
   }
 
   .message-container{
-    max-width: 270px;
-	  max-height: 360px;
-	  overflow-y: scroll;
+    margin-top: 20px;
+    padding-left: 10px;
+    width: 275px;
+	  height: 355px;
+    max-width: 275px;
+    max-height: 355px;
+	  overflow-y: auto;
     display: block;
     position: absolute;
+  }
+
+  .message-text{
+    color: black;
   }
 
 
