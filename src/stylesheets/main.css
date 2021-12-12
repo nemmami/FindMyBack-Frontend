@@ -224,12 +224,13 @@ transition: 0.15s;
     margin-right: 15px;
     border-radius: 25px;
     background: cornflowerblue;
-    padding: 10px;
+    padding-top: 30px;
     height: 100px;
     text-align: center;
   }
   
   #usersGame{
+    padding-top: 15px;
     border-radius: 25px;
     background: rgb(76, 98, 138);
     text-align: center;

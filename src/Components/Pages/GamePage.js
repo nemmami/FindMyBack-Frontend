@@ -8,14 +8,14 @@ gamePage = `
  
      
          <div class="row" id="headerGame">
-             <div class="col-lg-3" id ="timer">50 sec</div>
+             <div class="col-lg-3" id ="timer"><h2>50 sec</h2></div>
              <div class="col-lg-5 text-center" id="currentWord"></div>
          </div>
  
          <div class="row" id="bottomGame">
  
              <div class="col-lg-2" id="settingGame">
-                <div class="col-lg-2" id="usersGame"> Users</div>
+                <div class="col-lg-2" id="usersGame"><h3>Players</h3></div>
              </div>
  
              <div class="col-lg-8" id="drawGame">
@@ -137,7 +137,7 @@ const getWord = async () => {
         wordToFind = await response.json(); // json() returns a promise => we wait for the data
 
         console.log(wordToFind);
-        currentWord.innerHTML = wordToFind.word;
+        currentWord.innerHTML = "<h2>"+wordToFind.word+"</h2>";
     } catch (error) {
         console.error("pizzaView::error: ", error);
     }
