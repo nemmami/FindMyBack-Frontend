@@ -10,6 +10,7 @@ gamePage = `
          <div class="row" id="headerGame">
              <div class="col-lg-3" id ="timer">50 sec</div>
              <div class="col-lg-5 text-center" id="currentWord"></div>
+             <div class="col-lg-3" id ="round">Round 1 of 3</div>
          </div>
  
          <div class="row" id="bottomGame">
@@ -106,6 +107,8 @@ const chat = () => {
         //good answer
         if (message === wordToFind.word) {
             messageElement.innerHTML = `<p class="message-text" style="color:green">  ${user.username} : ${message} </p>`;
+
+
             getWord();
             canvas();
         } else {
