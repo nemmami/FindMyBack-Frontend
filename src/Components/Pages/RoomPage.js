@@ -28,10 +28,10 @@ socket.on("list rooms", (rooms) => {
       if (room.host !== getSessionObject("user").username) {
         roomPage += `<form id="join">
                             <li class="list-group-item d-flex justify-content-between">
-                              <p class="p-0 m-0 flex-grow-1 fw-bold">Salon de ${room.host} -> Nom de la room : ${room.id}</p>
-                              <input type="submit" class="btn btn-sm btn-success join-room" data-room="${room.id}" value="Rejoindre">
+                              <p class="p-0 m-0 flex-grow-1 fw-bold" id="room-dispo">Salon crée par ${room.host} - ${room.id}</p>
+                              <input type="submit" class="btn btn-sm btn-success join-room" id="inputJoin" data="${room.id}" value="${room.id}">
                             </li>
-                          </form>`;
+                      </form>`;
       }
     });
   }
@@ -43,9 +43,7 @@ function RoomPage() {
   const pageDiv = document.querySelector("#page");
   pageDiv.innerHTML = roomPage;
   let formCreate = document.getElementById("create");
-  //let formJoin = document.getElementById("join");
   formCreate.addEventListener("submit", onSubmitFormCreate);
-  //formJoin.addEventListener("submit", onSubmitFormJoin);
 
   // si on crée une room
   async function onSubmitFormCreate(e) {
@@ -99,24 +97,23 @@ function RoomPage() {
       formCreate.appendChild(errorAlert);
       console.error("RoomPage::error: ", error);
     }
+  }
+  let formJoin = document.getElementById("join");
+  formJoin.addEventListener("submit", onSubmitFormJoin);
 
-    let formJoin = document.getElementById("join");
-    formJoin.addEventListener("submit", onSubmitFormJoin);
-
-    // si on rejoins une room
-    async function onSubmitFormJoin(e) {
-      e.preventDefault();
-      let user = getSessionObject("user");
-      const username = user.username;
-      let idFormJoin = document.getElementById("join").data - room;
-      console.log(idFormJoin);
-      socket.emit("joinRoom", {
-        id: idFormJoin,
-        username: username,
-      });
-      //Redirect("/waiting");
-      pageDiv.innerHTML = waitingPage;
-    }
+  // si on rejoins une room
+  async function onSubmitFormJoin(e) {
+    e.preventDefault();
+    let user = getSessionObject("user");
+    const username = user.username;
+    let idFormJoin = document.getElementById("inputJoin").value;
+    console.log(idFormJoin);
+    socket.emit("joinRoom", {
+      id: idFormJoin,
+      username: username,
+    });
+    //Redirect("/waiting");
+    pageDiv.innerHTML = waitingPage;
   }
 }
 
