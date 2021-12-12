@@ -3,7 +3,7 @@ import { getSessionObject } from "../../utils/session";
 
 let gamePage;
 
- gamePage = ` 
+gamePage = ` 
  <div id="screenGame">
  
      
@@ -63,227 +63,228 @@ let gamePage;
  </div>
   `;
 
-  let user = getSessionObject("user");
-  let wordToFind;
+let user = getSessionObject("user");
+let wordToFind;
 
-  
+
 
 const GamePage = () => {
-  const page = document.querySelector("#page");
-  page.innerHTML = gamePage;
+    const page = document.querySelector("#page");
+    page.innerHTML = gamePage;
 
-  //recup mot
-  getWord();
+    //recup mot
+    getWord();
 
-  chat();
-  canvas();
+    chat();
+    canvas();
 
 
 };
 
-const chat = () =>{
+const chat = () => {
     //chat
-  //const socket = io('http://localhost:8080');
-const messageForm = document.getElementById('send-container');
-const messageInput = document.getElementById('message-input');
+    //const socket = io('http://localhost:8080');
+    const messageForm = document.getElementById('send-container');
+    const messageInput = document.getElementById('message-input');
+
+    messageForm.addEventListener('submit', e => {
+        e.preventDefault();
+        const message = messageInput.value;
+
+        appendMessage(message);
+        //socket.emit('send-chat-message', message)
+        messageInput.value = ''
+    })
 
 
-messageForm.addEventListener('submit', e => {
-  
-  e.preventDefault();
-  const message = messageInput.value;
-  
-  appendMessage(message);
-  //socket.emit('send-chat-message', message)
-  messageInput.value = ''
-})
+    function appendMessage(message) {
+        let messageElement = document.createElement('div');
+        messageElement.className = "message";
+        let chatWrapper = document.querySelector('.message-container');
 
 
-function appendMessage(message) {
-  let messageElement = document.createElement('div');
-  messageElement.className = "message";
- 
+        //good answer
+        if (message === wordToFind.word) {
+            messageElement.innerHTML = `<p class="message-text" style="color:green">  ${user.username} : ${message} </p>`;
+            getWord();
+            canvas();
+        } else {
+            messageElement.innerHTML = `<p class="message-text" style="color:red">  ${user.username} : ${message} </p>`;
+        };
 
-  //good answer
-  if(message === wordToFind.word){
-    messageElement.innerHTML = `<p class="message-text" style="color:green">  ${user.username} : ${message} </p>`;
-    getWord();
-    canvas();
-  }else{
-    messageElement.innerHTML = `<p class="message-text" style="color:red">  ${user.username} : ${message} </p>`;
-  };
+        console.log(messageElement);
 
-  console.log(messageElement);
-
-  document.querySelector('.message-container').appendChild(messageElement);
-}
-}
-
-
-const getWord =  async () => {
-    //insertion mot random
-  const currentWord = document.querySelector("#currentWord");
-
-  try {// hide data to inform if the pizza menu is already printed
-    const response = await fetch("/api/words"); // fetch return a promise => we wait for the response
-
-    if (!response.ok) {
-      // status code was not 200, error status code
-      throw new Error(
-        "fetch error : " + response.status + " : " + response.statusText
-      );
+        document.querySelector('.message-container').appendChild(messageElement);
+        chatWrapper.scrollTo(0, 1000000);
     }
-    wordToFind = await response.json(); // json() returns a promise => we wait for the data
-    
-      console.log(wordToFind);
-    currentWord.innerHTML = wordToFind.word;
-  } catch (error) {
-    console.error("pizzaView::error: ", error);
-  }
+
 }
 
-const canvas = () =>{
+
+const getWord = async () => {
+    //insertion mot random
+    const currentWord = document.querySelector("#currentWord");
+
+    try {// hide data to inform if the pizza menu is already printed
+        const response = await fetch("/api/words"); // fetch return a promise => we wait for the response
+
+        if (!response.ok) {
+            // status code was not 200, error status code
+            throw new Error(
+                "fetch error : " + response.status + " : " + response.statusText
+            );
+        }
+        wordToFind = await response.json(); // json() returns a promise => we wait for the data
+
+        console.log(wordToFind);
+        currentWord.innerHTML = wordToFind.word;
+    } catch (error) {
+        console.error("pizzaView::error: ", error);
+    }
+}
+
+const canvas = () => {
     //canvas
-let canvas = document.getElementById("Canva2D");
+    let canvas = document.getElementById("Canva2D");
 
 
-var isMouseDown=false;
-//var body = document.getElementsByTagName("body")[0];
-var ctx = canvas.getContext('2d');
-var linesArray = [];
-var currentSize = 5;
-var currentColor = "rgb(200,20,100)";
-var currentBg = "white";
+    var isMouseDown = false;
+    //var body = document.getElementsByTagName("body")[0];
+    var ctx = canvas.getContext('2d');
+    var linesArray = [];
+    var currentSize = 5;
+    var currentColor = "rgb(200,20,100)";
+    var currentBg = "white";
 
-createCanvas();
-
-
-/* document.getElementById('canvasUpdate').addEventListener('click', function() {
     createCanvas();
-    redraw();
-}); */
-
-document.getElementById('colorpicker').addEventListener('change', function() {
-    currentColor = this.value;
-});
-
-document.getElementById('bgcolorpicker').addEventListener('change', function() {
-    ctx.fillStyle = this.value;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    redraw();
-    currentBg = ctx.fillStyle;
-});
-document.getElementById('controlSize').addEventListener('change', function() {
-    currentSize = this.value;
-    document.getElementById("showSize").innerHTML = this.value;
-});
-
-/*document.getElementById('saveToImage').addEventListener('click', function() {
-    downloadCanvas(this, 'canvas', 'masterpiece.png');
-}, false);
-*/
-document.getElementById('eraser').addEventListener('click', eraser);
-document.getElementById('clear').addEventListener('click', createCanvas);
-//document.getElementById('save').addEventListener('click', save);
-//document.getElementById('load').addEventListener('click', load);
-/*document.getElementById('clearCache').addEventListener('click', function() {
-    //localStorage.removeItem("savedCanvas");
-    linesArray = [];
-    console.log("Cache cleared!");
-});
-*/
 
 
-function redraw() {
+    /* document.getElementById('canvasUpdate').addEventListener('click', function() {
+        createCanvas();
+        redraw();
+    }); */
+
+    document.getElementById('colorpicker').addEventListener('change', function () {
+        currentColor = this.value;
+    });
+
+    document.getElementById('bgcolorpicker').addEventListener('change', function () {
+        ctx.fillStyle = this.value;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        redraw();
+        currentBg = ctx.fillStyle;
+    });
+    document.getElementById('controlSize').addEventListener('change', function () {
+        currentSize = this.value;
+        document.getElementById("showSize").innerHTML = this.value;
+    });
+
+    /*document.getElementById('saveToImage').addEventListener('click', function() {
+        downloadCanvas(this, 'canvas', 'masterpiece.png');
+    }, false);
+    */
+    document.getElementById('eraser').addEventListener('click', eraser);
+    document.getElementById('clear').addEventListener('click', createCanvas);
+    //document.getElementById('save').addEventListener('click', save);
+    //document.getElementById('load').addEventListener('click', load);
+    /*document.getElementById('clearCache').addEventListener('click', function() {
+        //localStorage.removeItem("savedCanvas");
+        linesArray = [];
+        console.log("Cache cleared!");
+    });
+    */
+
+
+    function redraw() {
         for (var i = 1; i < linesArray.length; i++) {
             ctx.beginPath();
-            ctx.moveTo(linesArray[i-1].x, linesArray[i-1].y);
-            ctx.lineWidth  = linesArray[i].size;
+            ctx.moveTo(linesArray[i - 1].x, linesArray[i - 1].y);
+            ctx.lineWidth = linesArray[i].size;
             ctx.lineCap = "round";
             ctx.strokeStyle = linesArray[i].color;
             ctx.lineTo(linesArray[i].x, linesArray[i].y);
             ctx.stroke();
         }
-}
+    }
 
-// DRAWING EVENT HANDLERS
+    // DRAWING EVENT HANDLERS
 
-canvas.addEventListener('mousedown', function() {mousedown(canvas, event);});
-canvas.addEventListener('mousemove',function() {mousemove(canvas, event);});
-canvas.addEventListener('mouseup',mouseup);
+    canvas.addEventListener('mousedown', function () { mousedown(canvas, event); });
+    canvas.addEventListener('mousemove', function () { mousemove(canvas, event); });
+    canvas.addEventListener('mouseup', mouseup);
 
-// CREATE CANVAS
+    // CREATE CANVAS
 
-function createCanvas() {
- 
-    canvas.width = 1100;
-    canvas.height = 400;
-    canvas.style.zIndex = 8;
+    function createCanvas() {
 
-   // canvas.style.position = "absolute";
-    canvas.style.border = "1px solid";
-    ctx.fillStyle = currentBg;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-}
+        canvas.width = 1100;
+        canvas.height = 400;
+        canvas.style.zIndex = 8;
 
-// fonction gomme (eraser=gomme)
-function eraser() {
-    currentSize = 50;
-    currentColor = ctx.fillStyle
-}
+        // canvas.style.position = "absolute";
+        canvas.style.border = "1px solid";
+        ctx.fillStyle = currentBg;
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+    }
 
-
-
-function getMousePos(canvas, evt) {
-    var rect = canvas.getBoundingClientRect();
-    return {
-        x: evt.clientX - rect.left,
-        y: evt.clientY - rect.top
-    };
-}
+    // fonction gomme (eraser=gomme)
+    function eraser() {
+        currentSize = 50;
+        currentColor = ctx.fillStyle
+    }
 
 
-function mousedown(canvas, evt) {
-    var mousePos = getMousePos(canvas, evt);
-    isMouseDown=true
-    var currentPosition = getMousePos(canvas, evt);
-    ctx.moveTo(currentPosition.x, currentPosition.y)
-    ctx.beginPath();
-    ctx.lineWidth  = currentSize;
-    ctx.lineCap = "round";
-    ctx.strokeStyle = currentColor;
 
-}
+    function getMousePos(canvas, evt) {
+        var rect = canvas.getBoundingClientRect();
+        return {
+            x: evt.clientX - rect.left,
+            y: evt.clientY - rect.top
+        };
+    }
 
 
-function mousemove(canvas, evt) {
-
-    if(isMouseDown){
+    function mousedown(canvas, evt) {
+        var mousePos = getMousePos(canvas, evt);
+        isMouseDown = true
         var currentPosition = getMousePos(canvas, evt);
-        ctx.lineTo(currentPosition.x, currentPosition.y)
-        ctx.stroke();
-        store(currentPosition.x, currentPosition.y, currentSize, currentColor);
+        ctx.moveTo(currentPosition.x, currentPosition.y)
+        ctx.beginPath();
+        ctx.lineWidth = currentSize;
+        ctx.lineCap = "round";
+        ctx.strokeStyle = currentColor;
+
     }
-}
 
-// STORE DATA
 
-function store(x, y, s, c) {
-    var line = {
-        "x": x,
-        "y": y,
-        "size": s,
-        "color": c
+    function mousemove(canvas, evt) {
+
+        if (isMouseDown) {
+            var currentPosition = getMousePos(canvas, evt);
+            ctx.lineTo(currentPosition.x, currentPosition.y)
+            ctx.stroke();
+            store(currentPosition.x, currentPosition.y, currentSize, currentColor);
+        }
     }
-    linesArray.push(line);
-}
 
-// ON MOUSE UP
+    // STORE DATA
 
-function mouseup() {
-    isMouseDown=false
-    store()
-}
+    function store(x, y, s, c) {
+        var line = {
+            "x": x,
+            "y": y,
+            "size": s,
+            "color": c
+        }
+        linesArray.push(line);
+    }
+
+    // ON MOUSE UP
+
+    function mouseup() {
+        isMouseDown = false
+        store()
+    }
 }
 
 
