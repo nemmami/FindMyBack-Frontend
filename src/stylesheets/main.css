@@ -53,15 +53,14 @@ h1{
 
 .boxContactPage{
   width: 950px;
-  padding: 70px;
+  padding-top: 70px;
   position: absolute;
   top: 260px;
   left: 50%;
   transform: translate(-50%,-50%);
   background: #191919;
   text-align: center;
-  box-shadow: 6px 6px 0px black;
-  border-radius: 20px / 10px;
+  border-radius: 25px;
 
   
 }
@@ -211,6 +210,8 @@ transition: 0.15s;
   #headerGame{
     margin-left: 100px;
     margin-bottom: 100px;
+    font-size: 25px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
   }
 
   #timer{
@@ -224,17 +225,27 @@ transition: 0.15s;
     margin-right: 15px;
     border-radius: 25px;
     background: cornflowerblue;
-    padding: 10px;
+    padding-top: 30px;
     height: 100px;
     text-align: center;
   }
+
+  #round{
+    border-radius: 25px;
+    padding: 10px;
+    height: 100px;
+    text-align: right;
+  }
   
   #usersGame{
+    padding-top: 15px;
     border-radius: 25px;
     background: rgb(76, 98, 138);
     text-align: center;
     height: 380px;
     width: 300px;
+    font-size: 25px;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
   }
   
   #bottomGame{

@@ -8,14 +8,15 @@ gamePage = `
  
      
          <div class="row" id="headerGame">
-             <div class="col-lg-3" id ="timer">50 sec</div>
+             <div class="col-lg-3" id ="timer"></div>
              <div class="col-lg-5 text-center" id="currentWord"></div>
+             <div class="col-lg-3" id ="round">Round 1 of 3</div>
          </div>
  
          <div class="row" id="bottomGame">
  
              <div class="col-lg-2" id="settingGame">
-                <div class="col-lg-2" id="usersGame"> Users</div>
+                <div class="col-lg-2" id="usersGame"><h3>Players</h3></div>
              </div>
  
              <div class="col-lg-8" id="drawGame">
@@ -38,7 +39,7 @@ gamePage = `
                  </div>     
                  <div class="col-lg-2">
                      <h3>Color</h3>
-                     <input type="color" id="colorpicker" value="#c81464" class="colorpicker">
+                     <input type="color" id="colorpicker" value="#000000" class="colorpicker">
                  </div>
 
                  <div class="col-lg-2">
@@ -65,6 +66,7 @@ gamePage = `
 
 let user = getSessionObject("user");
 let wordToFind;
+let intervalForTimer;
 
 
 
@@ -72,11 +74,8 @@ const GamePage = () => {
     const page = document.querySelector("#page");
     page.innerHTML = gamePage;
 
-    //recup mot
-    getWord();
-
     chat();
-    canvas();
+    startGame(0);
 
 
 };
@@ -106,17 +105,23 @@ const chat = () => {
         //good answer
         if (message === wordToFind.word) {
             messageElement.innerHTML = `<p class="message-text" style="color:green">  ${user.username} : ${message} </p>`;
-            getWord();
-            canvas();
+            foundRightAnswer();
+            //attendre 3sec avant prochain mot
+            
+            startGame(3000);
+
+
         } else {
             messageElement.innerHTML = `<p class="message-text" style="color:red">  ${user.username} : ${message} </p>`;
         };
 
         console.log(messageElement);
 
-        document.querySelector('.message-container').appendChild(messageElement);
+        chatWrapper.appendChild(messageElement);
         chatWrapper.scrollTo(0, 1000000);
     }
+
+   
 
 }
 
@@ -137,9 +142,9 @@ const getWord = async () => {
         wordToFind = await response.json(); // json() returns a promise => we wait for the data
 
         console.log(wordToFind);
-        currentWord.innerHTML = wordToFind.word;
+        currentWord.innerHTML = `<h2> ${wordToFind.word} </h2>`;
     } catch (error) {
-        console.error("pizzaView::error: ", error);
+        console.error("word::error: ", error);
     }
 }
 
@@ -153,7 +158,7 @@ const canvas = () => {
     var ctx = canvas.getContext('2d');
     var linesArray = [];
     var currentSize = 5;
-    var currentColor = "rgb(200,20,100)";
+    var currentColor = "black";
     var currentBg = "white";
 
     createCanvas();
@@ -285,6 +290,55 @@ const canvas = () => {
         isMouseDown = false
         store()
     }
+}
+
+const foundRightAnswer =  () => {
+    //insertion mot random
+    const currentWord = document.querySelector("#currentWord");
+        currentWord.innerHTML = " ";
+        currentWord.innerHTML = `<h2> ${user.username} a trouvé le mot qui était ${wordToFind.word} </h2>`;    
+}
+
+const timerFinish =  () => {
+    //insertion mot random
+    const currentWord = document.querySelector("#currentWord");
+        currentWord.innerHTML = " ";
+        currentWord.innerHTML = `<h2> Le temps est écoules, le mot a trouver était ${wordToFind.word} </h2>`;    
+}
+
+const timer = () =>{
+    let time = 120;
+    const timer = document.querySelector('#timer');
+    timer.innerHTML = `<h2> ${time} secondes</h2>`;
+
+    function diminuerTime(){
+        timer.innerHTML = `<h2> ${time} secondes</h2>`;
+        time--;
+
+        if(time < 0){
+        clearInterval(intervalForTimer);
+        timerFinish();
+        startGame(3000);
+    }
+    }
+
+    clearInterval(intervalForTimer);
+    intervalForTimer =  setInterval(diminuerTime, 1000);
+
+    
+
+}
+
+function startGame(timeWait){
+    setTimeout(clearChat, timeWait);
+    setTimeout(getWord,timeWait);
+    setTimeout(timer,timeWait);
+    setTimeout(canvas,timeWait);
+}
+
+function clearChat(){
+    let chatWrapper = document.querySelector('.message-container');
+    chatWrapper.innerHTML = " ";
 }
 
 
