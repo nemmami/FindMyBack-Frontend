@@ -20,9 +20,6 @@ waitingPage = `
   <div class="col text-center">
   <div id="waiting">
     <div id="players"></div>
-    <div id="bouton"></div> 
-  </div>
-  <div id="game">
   </div>
 </div>
 <div class="col"></div>
@@ -31,8 +28,6 @@ waitingPage = `
 
 gamePage = ` 
 <div id="screenGame">
-
-    
         <div class="row" id="headerGame">
             <div class="col-lg-3" id ="timer"></div>
             <div class="col-lg-5 text-center" id="currentWord"></div>
@@ -40,63 +35,54 @@ gamePage = `
         </div>
 
         <div class="row" id="bottomGame">
-
             <div class="col-lg-2" id="settingGame">
                <div class="col-lg-2" id="usersGame"><h3>Players</h3></div>
             </div>
-
             <div class="col-lg-8" id="drawGame">
                 <canvas id="Canva2D" class="border border border-dark"></canvas>
             </div>
-
             <div class="col-lg-2" id="chatGame">
                 <div class="message-container"></div> 
                    <div class="wrapper"> 
-                   <form id="send-container">
-                        <input type="text" id="message-input">
+                   <form id="formMsg">
+                        <input type="text" id="msg">
                         <input type="submit" value="Envoyer">
                     </form>
                   </div>
                 </div>
             </div>
-
-           <div class="row" id="spec">
+            <div class="row" id="spec">
                 <div class="col-lg-2">
                 </div>     
                 <div class="col-lg-2">
                     <h3>Color</h3>
                     <input type="color" id="colorpicker" value="#000000" class="colorpicker">
                 </div>
-
                 <div class="col-lg-2">
                     <h3>Background color</h3>
                     <input type="color" value="#ffffff" id="bgcolorpicker" class="colorpicker">
                 </div>
-        
                 <div class="col-lg-2">
                     <h3>Tools(outils)</h3>
                     <button id="eraser" class="btn btn-default">Gomme<span class="glyphicon glyphicon-erase" aria-hidden="true"></span></button>
                     <button id="clear" class="btn btn-danger">All clear <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button>
                 </div>
-        
                 <div class="col-lg-2">
                     <h3>Size <span id="showSize">5</span></h3>
                     <input type="range" min="1" max="50" value="5" step="1" id="controlSize">
                 </div>
                 <div class="col-lg-2">
                 </div>
-         
            </div>
-</div>
-`;
-
+</div>`;
 
 
 function WaitingGamePage() {
   // reset #page div
   const pageDiv = document.querySelector("#page");
   pageDiv.innerHTML = waitingPage;
-  getPlayer();
+  getPlayer(); // waiting room
+  inGame(); //game page
 }
 
 function getPlayer() {
@@ -158,5 +144,22 @@ async function setDataRoom(id) {
     console.error("RoomPage::error: ", error);
   }
 }
+
+function inGame() {
+  let chatForm = document.getElementById('formMsg');
+  if(chatForm)
+    chatForm.addEventListener('submit', submitMess);
+}
+
+const submitMess = (e) => {
+  e.preventDefault();
+
+  const message = e.target.elements.msg.value;
+
+  socket.emit('chat', message);
+
+  e.target.elements.msg.value = '';
+}
+
 
 export default WaitingGamePage;
