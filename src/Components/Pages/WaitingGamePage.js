@@ -44,6 +44,9 @@ function getPlayer() {
     //socket.emit("playerList", getSessionObject("room").id);
     socket.on("playersList", ({ rooms }) => {
       console.log(rooms);
+      document.getElementById(
+        "players"
+      ).innerHTML = ``;
       rooms.forEach((e) => {
         console.log(e);
         document.getElementById(

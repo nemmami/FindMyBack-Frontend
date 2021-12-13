@@ -8,26 +8,25 @@ import { removeSessionObject } from "../../utils/session";
 let joinRoomPage;
 // quand on crée/rejoins une room
 
-if (getSessionObject("allRoom") !== undefined && getSessionObject("user") !== undefined) {
-  const rooms = getSessionObject("allRoom");
-  if (rooms.length > 0) {
-    rooms.forEach((room) => {
-      if (room.host !== getSessionObject("user").username) {
-        joinRoomPage += `<form id="join">
-                          <li class="list-group-item d-flex justify-content-between">
-                            <p class="p-0 m-0 flex-grow-1 fw-bold" id="room-dispo">Salon crée par ${room.host} - ${room.id}</p>
-                            <input type="submit" class="btn btn-sm btn-success join-room" id="inputJoin" data="${room.id}" value="${room.id}">
-                          </li>
-                    </form>`;
-      }
-    });
-  }
-}
-
 function JoinRoomPage() {
   // reset #page div
   //removeSessionObject("allRoom");
   getAllRooms();
+  if (getSessionObject("allRoom") !== undefined && getSessionObject("user") !== undefined) {
+    const rooms = getSessionObject("allRoom");
+    if (rooms.length > 0) {
+      rooms.forEach((room) => {
+        if (room.host !== getSessionObject("user").username) {
+          joinRoomPage += `<form id="join">
+                            <li class="list-group-item d-flex justify-content-between">
+                              <p class="p-0 m-0 flex-grow-1 fw-bold" id="room-dispo">Salon crée par ${room.host} - ${room.id}</p>
+                              <input type="submit" class="btn btn-sm btn-success join-room" id="inputJoin" data="${room.id}" value="${room.id}">
+                            </li>
+                      </form>`;
+        }
+      });
+    }
+  }
   const pageDiv = document.querySelector("#page");
   pageDiv.innerHTML = joinRoomPage;
 
