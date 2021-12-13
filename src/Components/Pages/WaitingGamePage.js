@@ -13,35 +13,46 @@ const socket = io("http://localhost:5000");
 
 waitingPage = `
 <div class="row" id="homePage">
-<div class="col"></div>
-<div class="col text-center">
-<form class="box">
-  <h1>Salle d'attente</h1>
-</form>
+  <div class="col"></div>
+  <div class="col text-center">
+  <div id="waiting"></div>
 </div>
 <div class="col"></div>
 </div>
 `;
 
-function getPlayers() {
+function WaitingGamePage() {
+  // reset #page div
+  //addPlayer();
+
+  const pageDiv = document.querySelector("#page");
+
+  pageDiv.innerHTML = waitingPage;
+}
+
+if (getSessionObject("room") !== undefined) {
+  socket.emit("joinRoom", {
+    id: getSessionObject("room").id,
+    username: getSessionObject("user").username,
+  });
+
   socket.emit("playerList", getSessionObject("room").id);
   socket.on("list players", (players) => {
     players.forEach((e) => {
       console.log(e);
-      waitingPage += `<p>Joueur - ${e}</p>`;
+      document.getElementById(
+        "waiting"
+      ).innerHTML += `<li class="list-group-item d-flex justify-content-between">
+                      <p class="p-0 m-0 flex-grow-1 fw-bold" id="room-dispo">Joueur - ${e}</p>
+                    </li>`;
     });
     if (players.length > 1) {
-      waitingPage += `<input type="submit" class="btn btn-sm btn-success join-room" id="inputJoin" value="Lancer">`;
+      document.getElementById(
+        "waiting"
+      ).innerHTML += `<p></p>
+                      <input type="submit" class="btn btn-sm btn-success join-room" id="inputJoin" value="Lancer">`;
     }
   });
-}
-
-function WaitingGamePage() {
-  // reset #page div
-  //addPlayer();
-  getPlayers();
-  const pageDiv = document.querySelector("#page");
-  pageDiv.innerHTML = waitingPage;
 }
 
 export default WaitingGamePage;

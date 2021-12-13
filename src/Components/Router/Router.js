@@ -6,8 +6,7 @@ import Game from "../Pages/GamePage";
 import RoomPage from "../Pages/RoomPage";
 import WaitingGamePage from "../Pages/WaitingGamePage";
 import ContactPage from "../Pages/ContactPage";
-
- 
+import JoinRoomPage from "../Pages/JoinRoomPage";
 
 // Configure your routes here
 const routes = {
@@ -17,6 +16,7 @@ const routes = {
   "/logout": Logout,
   "/game": Game,
   "/room": RoomPage,
+  "/joinRoom": JoinRoomPage,
   "/waiting": WaitingGamePage,
   "/contact": ContactPage,
 };
