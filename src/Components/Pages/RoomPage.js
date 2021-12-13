@@ -11,10 +11,12 @@ let roomPage;
 roomPage = `
 <div class="row" id="homePage">
 <div class="col"></div>
+<div></div>
 <div class="col text-center">
     <form class="box" id="create">
         <h1>Creer une partie</h1>
         <input type="number" id="round" placeholder="Round : 2-10" required = true min="2" max="10">
+        <input type="number" id="players" placeholder="Players : 2-5" required = true min="2" max="5">
         <input type="submit" value="Créer">
     </form>
  </div>
@@ -35,7 +37,9 @@ function RoomPage() {
     e.preventDefault();
     // Get the user object from the localStorage
     const nbrRound = document.getElementById("round");
+    const nbPlayers = document.getElementById("players");
     const round = parseInt(nbrRound.value);
+    const player = parseInt(nbPlayers.value);
     let user = getSessionObject("user");
     const username = user.username;
     console.log(user);
@@ -51,7 +55,7 @@ function RoomPage() {
         },
       };
 
-      const response = await fetch(`/api/rooms/${round}`, options); // fetch return a promise => we wait for the response
+      const response = await fetch(`/api/rooms/${round}/${player}`, options); // fetch return a promise => we wait for the response
 
       if (!response.ok) {
         throw new Error(

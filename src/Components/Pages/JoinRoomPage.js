@@ -15,6 +15,7 @@ function JoinRoomPage() {
   if (getSessionObject("allRoom") !== undefined && getSessionObject("user") !== undefined) {
     const rooms = getSessionObject("allRoom");
     if (rooms.length > 0) {
+      joinRoomPage = ``;
       rooms.forEach((room) => {
         if (room.host !== getSessionObject("user").username) {
           joinRoomPage += `<form id="join">
