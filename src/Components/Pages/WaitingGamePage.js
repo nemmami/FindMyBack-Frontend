@@ -19,10 +19,14 @@ waitingPage = `
     <div id="players"></div>
     <div id="bouton"></div> 
   </div>
+  <div id="game">
+  </div>
 </div>
 <div class="col"></div>
 </div>
 `;
+
+
 
 function WaitingGamePage() {
   // reset #page div
@@ -32,6 +36,7 @@ function WaitingGamePage() {
   const pageDiv = document.querySelector("#page");
   pageDiv.innerHTML = waitingPage;
   getPlayer();
+  
 }
 
 function getPlayer() {
@@ -55,7 +60,7 @@ function getPlayer() {
                       <p class="p-0 m-0 flex-grow-1 fw-bold" id="room-dispo">Joueur - ${e}</p>
                     </li>`;
       });
-      if (rooms.length > 1) {
+      if (rooms.length > 1) { // && rooms.host === getSessionObject("user").username : Pour le bouton appuyer
         document.getElementById("bouton").innerHTML = `<p></p>
                       <input type="submit" class="btn btn-sm btn-success join-room" id="inputJoin" value="Lancer">`;
       }
