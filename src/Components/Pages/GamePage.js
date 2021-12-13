@@ -20,7 +20,7 @@ gamePage = `
              </div>
  
              <div class="col-lg-8" id="drawGame">
-                 <canvas id="Canva2D" class="border border border-dark"></canvas>
+                 
              </div>
  
              <div class="col-lg-2" id="chatGame">
@@ -35,31 +35,7 @@ gamePage = `
              </div>
 
             <div class="row" id="spec">
-                 <div class="col-lg-2">
-                 </div>     
-                 <div class="col-lg-2">
-                     <h3>Color</h3>
-                     <input type="color" id="colorpicker" value="#000000" class="colorpicker">
-                 </div>
-
-                 <div class="col-lg-2">
-                     <h3>Background color</h3>
-                     <input type="color" value="#ffffff" id="bgcolorpicker" class="colorpicker">
-                 </div>
-         
-                 <div class="col-lg-2">
-                     <h3>Tools(outils)</h3>
-                     <button id="eraser" class="btn btn-default">Gomme<span class="glyphicon glyphicon-erase" aria-hidden="true"></span></button>
-                     <button id="clear" class="btn btn-danger">All clear <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button>
-                 </div>
-         
-                 <div class="col-lg-2">
-                     <h3>Size <span id="showSize">5</span></h3>
-                     <input type="range" min="1" max="50" value="5" step="1" id="controlSize">
-                 </div>
-                 <div class="col-lg-2">
-                 </div>
-          
+                 
             </div>
  </div>
   `;
@@ -67,6 +43,8 @@ gamePage = `
 let user = getSessionObject("user");
 let wordToFind;
 let intervalForTimer;
+let maxRound = 5;
+
 
 
 
@@ -149,6 +127,8 @@ const getWord = async () => {
 }
 
 const canvas = () => {
+    document.getElementById("drawGame").innerHTML = `<canvas id="Canva2D" class="border border border-dark"></canvas>`;
+    
     //canvas
     let canvas = document.getElementById("Canva2D");
 
@@ -162,6 +142,31 @@ const canvas = () => {
     var currentBg = "white";
 
     createCanvas();
+
+    document.getElementById("spec").innerHTML = `<div class="col-lg-2">
+    </div>     
+    <div class="col-lg-2">
+        <h3>Color</h3>
+        <input type="color" id="colorpicker" value="#000000" class="colorpicker">
+    </div>
+
+    <div class="col-lg-2">
+        <h3>Background color</h3>
+        <input type="color" value="#ffffff" id="bgcolorpicker" class="colorpicker">
+    </div>
+
+    <div class="col-lg-2">
+        <h3>Tools(outils)</h3>
+        <button id="eraser" class="btn btn-default">Gomme<span class="glyphicon glyphicon-erase" aria-hidden="true"></span></button>
+        <button id="clear" class="btn btn-danger">All clear <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button>
+    </div>
+
+    <div class="col-lg-2">
+        <h3>Size <span id="showSize">5</span></h3>
+        <input type="range" min="1" max="50" value="5" step="1" id="controlSize">
+    </div>
+    <div class="col-lg-2">
+    </div>`;
 
 
     /* document.getElementById('canvasUpdate').addEventListener('click', function() {
