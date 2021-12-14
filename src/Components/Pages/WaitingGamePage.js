@@ -11,6 +11,10 @@ let waitingPage;
 let gamePage;
 let lancerGame = false;
 let dataRoom;
+let actualRound;
+let wordToFind;
+let messageUser;
+let intervalForTimer;
 
 const socket = io("http://localhost:5000");
 
@@ -19,7 +23,7 @@ waitingPage = `
         <div class="row" id="headerGame">
             <div class="col-lg-3" id ="timer">xx sec</div>
             <div class="col-lg-5 text-center" id="currentWord">mot a deviner</div>
-            <div class="col-lg-3" id ="round">Round 1 of 3</div>
+            <div class="col-lg-3" id ="round"></div>
         </div>
 
         <div class="row" id="bottomGame">
@@ -82,6 +86,9 @@ function getPlayer() {
       setDataRoom(getSessionObject("room").id);
 
       if (rooms.length == getSessionObject("room").nbPlayers) { // && rooms.host === getSessionObject("user").username : Pour le bouton appuyer
+
+        socket.emit('start-game');
+
         //ajout du canevas
         document.getElementById("drawGame").innerHTML = `<canvas id="Canva2D" class="border border border-dark"></canvas>`;
         document.getElementById("spec").innerHTML = 
@@ -107,8 +114,13 @@ function getPlayer() {
           <div class="col-lg-2">
           </div>`;
 
+
           //lancement du canavas
+          
           canvas();
+          //commencer au round 1
+          actualRound = 1 - rooms.length;
+          onGameStarted();
       }
       
     });
@@ -154,9 +166,9 @@ function inGame() {
 const submitMess = (e) => {
   e.preventDefault();
 
-  const message = e.target.elements.msg.value;
-  console.log(message);
-  socket.emit('chat', message);
+  messageUser = e.target.elements.msg.value;
+  console.log(messageUser);
+  socket.emit('chat', messageUser);
 
   e.target.elements.msg.value = '';
 }
@@ -164,20 +176,118 @@ const submitMess = (e) => {
 function outputMessage(msg) {
   let messageElement = document.createElement('div');
   let chatWrapper = document.querySelector('.message-container');
-  let user = getSessionObject("user");
         
   messageElement.className = "message";
-  messageElement.innerHTML = `<p class="message-text" style="color:green">  ${msg} </p>`;
+  messageElement.innerHTML = `<p class="message-text">  ${msg} </p>`;
 
   chatWrapper.appendChild(messageElement);
   chatWrapper.scrollTo(0, 1000000);
 }
 
+function outputRightMessage(msg) {
+  let messageElement = document.createElement('div');
+  let chatWrapper = document.querySelector('.message-container');
+        
+  messageElement.className = "message";
+  messageElement.innerHTML = `<p class="message-text" style="color:green">  ${msg} </p>`;
+  console.log(msg.user);
+
+
+
+  chatWrapper.appendChild(messageElement);
+  chatWrapper.scrollTo(0, 1000000);
+}
+
+const foundRightAnswer =  (msg) => {
+  //insertion mot random
+  const currentWord = document.querySelector("#currentWord");
+      currentWord.innerHTML = " ";
+      currentWord.innerHTML = `<h2> La reponse à été trouvé. ${msg} </h2>`;  
+       // userNameRightAnswer = 
+}
+
+
 socket.on("message", msg =>{
-  //let chatWrapper = document.querySelector('.message-container');
-  console.log("Message : ", msg);
-  outputMessage(msg);
+  console.log(messageUser + " " + wordToFind.word);
+  if(messageUser === wordToFind.word){
+
+    outputRightMessage(msg);
+    foundRightAnswer(msg);
+
+    //attendre 3 sec avant de lancer un nvx round
+setTimeout(onGameStarted, 3000);
+  }else{
+    outputMessage(msg);
+  }
+  
+  
+
 })
+
+//gerer la recup d'un mot
+socket.on("get-word", ({word}) =>{
+console.log("mots a trouver:", word.word);
+wordToFind = word;
+showWord(word);
+
+})
+
+const showWord = (data) => {
+  const currentWord = document.querySelector("#currentWord");
+
+  currentWord.innerHTML = `<h2> ${data.word} </h2>`;
+}
+
+
+
+
+//gerer les round
+socket.on("get-round", () =>{
+  const round = document.getElementById("round");
+  console.log("round actuel : ", actualRound);
+  actualRound++;
+  round.innerHTML = `<h2> Round ${actualRound} of ${getSessionObject("room").nbRound} </h2>`
+
+  if(actualRound>getSessionObject("room").nbRound){
+    console.log("jeu fini");
+  }
+})
+
+//gerer le timer
+socket.on('reset-timer', () => {
+  let time = 15;
+  const timer = document.querySelector('#timer');
+  timer.innerHTML = `<h2> ${time} secondes</h2>`;
+  console.log("timer" , time);
+
+  function diminuerTime(){
+      timer.innerHTML = `<h2> ${time} secondes</h2>`;
+      time--;
+
+      if(time < 0){
+      clearInterval(intervalForTimer);
+      onGameStarted();
+  }
+  }
+
+  clearInterval(intervalForTimer);
+  intervalForTimer =  setInterval(diminuerTime, 1000);
+
+})
+
+
+const onGameStarted = () => {
+ // document.getElementById("state").innerHTML = ``;//On remet l'état à "zéro"
+
+  socket.emit('start-timer');
+
+  socket.emit('start-round');
+
+  //recup un mot
+  socket.emit('find-word');
+
+}
+
 
 
 //gerer le canvas
@@ -185,7 +295,8 @@ const canvas = () => {
   
   //canvas
   let canvas = document.getElementById("Canva2D");
-
+ 
+      
 
   var isMouseDown = false;
   //var body = document.getElementsByTagName("body")[0];
@@ -237,7 +348,6 @@ const canvas = () => {
   document.getElementById('clear').addEventListener('click', createCanvas);
   
   // DRAWING EVENT HANDLERS
-
   canvas.addEventListener('mousedown', function () { mousedown(canvas, event); });
   canvas.addEventListener('mousemove', function () { mousemove(canvas, event); });
   canvas.addEventListener('mouseup', mouseup);
@@ -303,11 +413,14 @@ const canvas = () => {
       linesArray.push(line);
   }
 
+  
+
   // ON MOUSE UP
 
   function mouseup() {
       isMouseDown = false
       store()
+      
   }
 }
 
