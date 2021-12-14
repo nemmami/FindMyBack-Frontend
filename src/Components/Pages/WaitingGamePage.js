@@ -24,7 +24,11 @@ waitingPage = `
 
         <div class="row" id="bottomGame">
             <div class="col-lg-2" id="settingGame">
-               <div class="col-lg-2" id="usersGame"><h3>Players</h3></div>
+               <div class="col-lg-2" id="usersGame">
+               <h3>Players</h3>
+               <br>
+               <div id="usersGameList"></div>
+               </div>
             </div>
             <div class="col-lg-8" id="drawGame">
 
@@ -54,7 +58,6 @@ const WaitingGamePage = () => {
   pageDiv.innerHTML = waitingPage;
   getPlayer(); // waiting room
   inGame(); //game page
- 
 }
 
 function getPlayer() {
@@ -66,10 +69,10 @@ function getPlayer() {
 
     socket.on("playersList", ({ rooms }) => {
       console.log(rooms);
-      document.getElementById("usersGame").innerHTML = '';
+      document.getElementById("usersGameList").innerHTML = '';
       rooms.forEach((e) => {
         console.log(e);
-        document.getElementById("usersGame").innerHTML += 
+        document.getElementById("usersGameList").innerHTML +=
         `<li class="list-group-item d-flex justify-content-between">
           <p class="p-0 m-0 flex-grow-1 fw-bold" id="room-dispo">Joueur - ${e}</p>
         </li>`;
@@ -79,8 +82,37 @@ function getPlayer() {
       
       setDataRoom(getSessionObject("room").id);
       if (rooms.length == getSessionObject("room").nbPlayers) { // && rooms.host === getSessionObject("user").username : Pour le bouton appuyer
-        const pageDiv = document.querySelector("#page");
-        pageDiv.innerHTML = gamePage;
+        //ajout du canevas
+        document.getElementById("drawGame").innerHTML = `<canvas id="Canva2D" class="border border border-dark"></canvas>`;
+        
+
+        document.getElementById("spec").innerHTML = `<div class="col-lg-2">
+          </div>     
+          <div class="col-lg-2">
+              <h3>Color</h3>
+              <input type="color" id="colorpicker" value="#000000" class="colorpicker">
+          </div>
+
+          <div class="col-lg-2">
+              <h3>Background color</h3>
+              <input type="color" value="#ffffff" id="bgcolorpicker" class="colorpicker">
+          </div>
+
+          <div class="col-lg-2">
+              <h3>Tools(outils)</h3>
+              <button id="eraser" class="btn btn-default">Gomme<span class="glyphicon glyphicon-erase" aria-hidden="true"></span></button>
+              <button id="clear" class="btn btn-danger">All clear <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button>
+          </div>
+
+          <div class="col-lg-2">
+              <h3>Size <span id="showSize">5</span></h3>
+              <input type="range" min="1" max="50" value="5" step="1" id="controlSize">
+          </div>
+          <div class="col-lg-2">
+          </div>`;
+
+          //lancement du canavas
+          canvas();
       }
       
     });
@@ -119,9 +151,10 @@ async function setDataRoom(id) {
 function inGame() {
   let chatForm = document.getElementById('formMsg');
   chatForm.addEventListener('submit', submitMess);
+
 }
 
-
+//gerer le chat
 const submitMess = (e) => {
   e.preventDefault();
 
@@ -146,10 +179,167 @@ function outputMessage(msg) {
 }
 
 socket.on("message", msg =>{
-  let chatWrapper = document.querySelector('.message-container');
+  //let chatWrapper = document.querySelector('.message-container');
   console.log("Message : ", msg);
   outputMessage(msg);
 
 })
+
+//gerer le canvas
+const canvas = () => {
+  
+  //canvas
+  let canvas = document.getElementById("Canva2D");
+
+
+  var isMouseDown = false;
+  //var body = document.getElementsByTagName("body")[0];
+  var ctx = canvas.getContext('2d');
+  var linesArray = [];
+  var currentSize = 5;
+  var currentColor = "black";
+  var currentBg = "white";
+
+  createCanvas();
+
+
+  /* document.getElementById('canvasUpdate').addEventListener('click', function() {
+      createCanvas();
+      redraw();
+  }); */
+
+  document.getElementById('colorpicker').addEventListener('change', function () {
+      currentColor = this.value;
+  });
+
+  document.getElementById('bgcolorpicker').addEventListener('change', function () {
+      ctx.fillStyle = this.value;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      redraw();
+      currentBg = ctx.fillStyle;
+  });
+  document.getElementById('controlSize').addEventListener('change', function () {
+      currentSize = this.value;
+      document.getElementById("showSize").innerHTML = this.value;
+  });
+
+  /*document.getElementById('saveToImage').addEventListener('click', function() {
+      downloadCanvas(this, 'canvas', 'masterpiece.png');
+  }, false);
+  */
+  document.getElementById('eraser').addEventListener('click', eraser);
+  document.getElementById('clear').addEventListener('click', createCanvas);
+  //document.getElementById('save').addEventListener('click', save);
+  //document.getElementById('load').addEventListener('click', load);
+  /*document.getElementById('clearCache').addEventListener('click', function() {
+      //localStorage.removeItem("savedCanvas");
+      linesArray = [];
+      console.log("Cache cleared!");
+  });
+  */
+
+
+  function redraw() {
+      for (var i = 1; i < linesArray.length; i++) {
+          ctx.beginPath();
+          ctx.moveTo(linesArray[i - 1].x, linesArray[i - 1].y);
+          ctx.lineWidth = linesArray[i].size;
+          ctx.lineCap = "round";
+          ctx.strokeStyle = linesArray[i].color;
+          ctx.lineTo(linesArray[i].x, linesArray[i].y);
+          ctx.stroke();
+      }
+  }
+
+  // DRAWING EVENT HANDLERS
+
+  canvas.addEventListener('mousedown', function () { mousedown(canvas, event); });
+  canvas.addEventListener('mousemove', function () { mousemove(canvas, event); });
+  canvas.addEventListener('mouseup', mouseup);
+
+  // CREATE CANVAS
+
+  function createCanvas() {
+
+      canvas.width = 1100;
+      canvas.height = 400;
+      canvas.style.zIndex = 8;
+
+      // canvas.style.position = "absolute";
+      canvas.style.border = "1px solid";
+      ctx.fillStyle = currentBg;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+  }
+
+  // fonction gomme (eraser=gomme)
+  function eraser() {
+      currentSize = 50;
+      currentColor = ctx.fillStyle
+  }
+
+
+
+  function getMousePos(canvas, evt) {
+      var rect = canvas.getBoundingClientRect();
+      return {
+          x: evt.clientX - rect.left,
+          y: evt.clientY - rect.top
+      };
+  }
+
+
+  function mousedown(canvas, evt) {
+      var mousePos = getMousePos(canvas, evt);
+      isMouseDown = true
+      var currentPosition = getMousePos(canvas, evt);
+      ctx.moveTo(currentPosition.x, currentPosition.y)
+      ctx.beginPath();
+      ctx.lineWidth = currentSize;
+      ctx.lineCap = "round";
+      ctx.strokeStyle = currentColor;
+
+  }
+
+
+  function mousemove(canvas, evt) {
+
+      if (isMouseDown) {
+          var currentPosition = getMousePos(canvas, evt);
+          ctx.lineTo(currentPosition.x, currentPosition.y)
+          ctx.stroke();
+          store(currentPosition.x, currentPosition.y, currentSize, currentColor);
+      }
+  }
+
+  // STORE DATA
+
+  function store(x, y, s, c) {
+      var line = {
+          "x": x,
+          "y": y,
+          "size": s,
+          "color": c
+      }
+       linesArray.push(line);
+      
+
+      //tt le monde voit le dessin
+      socket.emit('canvas', line);
+      
+      socket.on('drawing', line =>{
+    console.log(line);
+    
+      })
+  }
+
+  // ON MOUSE UP
+
+  function mouseup() {
+      isMouseDown = false
+      store()
+  }
+}
+
+
 
 export default WaitingGamePage;
