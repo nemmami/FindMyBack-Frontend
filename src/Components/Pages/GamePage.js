@@ -44,16 +44,10 @@ gamePage = `
 let user = getSessionObject("user");
 let wordToFind;
 let intervalForTimer;
-<<<<<<< HEAD
-let joueurs = getSessionObject("room").players;
-let joueurDessinateur = 0;
-const page = document.querySelector("#page");
-=======
-let maxRound = 5;
+//let maxRound = 5;
 
 
 
->>>>>>> aa594514a73aa24c670ba28555a4c8fd837fb55c
 
 const GamePage = () => {
     page.innerHTML = gamePage;

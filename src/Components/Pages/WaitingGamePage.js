@@ -9,8 +9,11 @@ import { getSessionObject, setSessionObject } from "../../utils/session";
 
 let waitingPage;
 let gamePage;
-let lancerGame = false;
+let reponseTrouvee = false;
 let dataRoom;
+let drawer = 1;
+let players = getSessionObject("room").players;
+var motADeviner;
 
 const socket = io("http://localhost:5000");
 
@@ -18,8 +21,8 @@ waitingPage = `
 <div id="screenGame">
         <div class="row" id="headerGame">
             <div class="col-lg-3" id ="timer">xx sec</div>
-            <div class="col-lg-5 text-center" id="currentWord">mot a deviner</div>
-            <div class="col-lg-3" id ="round">Round 1 of 3</div>
+            <div class="col-lg-5 text-center" id="currentWord"></div>
+            <div class="col-lg-3" id ="round"></div>
         </div>
 
         <div class="row" id="bottomGame">
@@ -29,7 +32,7 @@ waitingPage = `
                <br>
                <div id="usersGameList"></div>
                </div>
-            </div>
+        </div>
             <div class="col-lg-8" id="drawGame">
 
             </div>
@@ -44,12 +47,33 @@ waitingPage = `
                 </div>
             </div>
             <div class="row" id="spec">
-           </div>
-</div>
-`;
-
-gamePage = ` 
-`;
+                    <div class="col-lg-2">
+                    </div>     
+                    <div class="col-lg-2">
+                        <h3>Color</h3>
+                        <input type="color" id="colorpicker" value="#000000" class="colorpicker">
+                    </div>
+   
+                    <div class="col-lg-2">
+                        <h3>Background color</h3>
+                        <input type="color" value="#ffffff" id="bgcolorpicker" class="colorpicker">
+                    </div>
+            
+                    <div class="col-lg-2">
+                        <h3>Tools(outils)</h3>
+                        <button id="eraser" class="btn btn-default">Gomme<span class="glyphicon glyphicon-erase" aria-hidden="true"></span></button>
+                        <button id="clear" class="btn btn-danger">All clear <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button>
+                    </div>
+            
+                    <div class="col-lg-2">
+                        <h3>Size <span id="showSize">5</span></h3>
+                        <input type="range" min="1" max="50" value="5" step="1" id="controlSize">
+                    </div>
+                    <div class="col-lg-2">
+                    </div>
+            </div>
+  </div>
+            `;
 
 
 const WaitingGamePage = () => {
@@ -73,51 +97,70 @@ function getPlayer() {
       rooms.forEach((e) => {
         console.log(e);
         document.getElementById("usersGameList").innerHTML +=
-        `<li class="list-group-item d-flex justify-content-between">
+          `<li class="list-group-item d-flex justify-content-between">
           <p class="p-0 m-0 flex-grow-1 fw-bold" id="room-dispo">Joueur - ${e}</p>
         </li>`;
       });
 
-      document.getElementById("drawGame").innerHTML = `<h2> Binvunue dans la liste d'attente mon gars sûre att qu'il y ai le nombre nsesaire pour pouvoir lancer la partie ${rooms.length}/${getSessionObject("room").nbPlayers}  </h2>`;
-      
+      document.getElementById("drawGame").innerHTML = `<h2> Bienvenue dans la liste d'attente attends qu'il y ait le nombre de joueurs nécessaires pour pouvoir lancer la partie ${rooms.length}/${getSessionObject("room").nbPlayers}  </h2>`;
+
       setDataRoom(getSessionObject("room").id);
       if (rooms.length == getSessionObject("room").nbPlayers) { // && rooms.host === getSessionObject("user").username : Pour le bouton appuyer
         //ajout du canevas
         document.getElementById("drawGame").innerHTML = `<canvas id="Canva2D" class="border border border-dark"></canvas>`;
-        
 
-        document.getElementById("spec").innerHTML = `<div class="col-lg-2">
-          </div>     
-          <div class="col-lg-2">
-              <h3>Color</h3>
-              <input type="color" id="colorpicker" value="#000000" class="colorpicker">
-          </div>
+        for (let i = 1; i <= getSessionObject("room").nbRound; i++) {
+          drawer = 0;
+          document.getElementById("round").innerHTML = `Round ${i} of ${getSessionObject("room").nbRound}`;
+          for (let j = 1; j < getSessionObject("room").nbPlayers + 1; j++) {
+            const currentWord = document.querySelector("#currentWord");
+            var mot;
+            var lgMot=0; 
+            players.forEach((e) => {
+              if (players[drawer] == e) {
+                const getWord = async () => {
+                  //insertion mot random
+                  try {// hide data to inform if the pizza menu is already printed
+                      const response = await fetch("/api/words"); // fetch return a promise => we wait for the response
+                
+                      if (!response.ok) {
+                          // status code was not 200, error status code
+                          throw new Error(
+                              "fetch error : " + response.status + " : " + response.statusText
+                          );
+                      }
+                      motADeviner = await response.json(); // json() returns a promise => we wait for the data
+                      mot = motADeviner.word;
+                      lgMot=mot.length;
+                      currentWord.innerHTML = `<h2> ${mot} </h2>`;
+                  } catch (error) {
+                      console.error("word::error: ", error);
+                  }
+                }
+                getWord();
+              }
+              else {
+                for(let k=0; k<lgMot; k++){
+                  currentWord.innerHTML += `<h2> - </h2>`;
+                }
+              }
+            });
+          }
+        }
 
-          <div class="col-lg-2">
-              <h3>Background color</h3>
-              <input type="color" value="#ffffff" id="bgcolorpicker" class="colorpicker">
-          </div>
-
-          <div class="col-lg-2">
-              <h3>Tools(outils)</h3>
-              <button id="eraser" class="btn btn-default">Gomme<span class="glyphicon glyphicon-erase" aria-hidden="true"></span></button>
-              <button id="clear" class="btn btn-danger">All clear <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button>
-          </div>
-
-          <div class="col-lg-2">
-              <h3>Size <span id="showSize">5</span></h3>
-              <input type="range" min="1" max="50" value="5" step="1" id="controlSize">
-          </div>
-          <div class="col-lg-2">
-          </div>`;
-
-          //lancement du canavas
-          canvas();
+        //lancement du canavas
+        canvas();
       }
-      
+
     });
   }
 }
+
+/*function setTurnMessage(classToRemove, classToAdd, html) {
+  turnMsg.classList.remove(classToRemove);
+  turnMsg.classList.add(classToAdd);
+  turnMsg.innerHTML = html;
+}*/
 
 async function setDataRoom(id) {
   try {
@@ -170,7 +213,7 @@ function outputMessage(msg) {
   let messageElement = document.createElement('div');
   let chatWrapper = document.querySelector('.message-container');
   let user = getSessionObject("user");
-        
+
   messageElement.className = "message";
   messageElement.innerHTML = `<p class="message-text" style="color:green">  ${msg} </p>`;
 
@@ -178,7 +221,7 @@ function outputMessage(msg) {
   chatWrapper.scrollTo(0, 1000000);
 }
 
-socket.on("message", msg =>{
+socket.on("message", msg => {
   //let chatWrapper = document.querySelector('.message-container');
   console.log("Message : ", msg);
   outputMessage(msg);
@@ -187,7 +230,7 @@ socket.on("message", msg =>{
 
 //gerer le canvas
 const canvas = () => {
-  
+
   //canvas
   let canvas = document.getElementById("Canva2D");
 
@@ -209,18 +252,18 @@ const canvas = () => {
   }); */
 
   document.getElementById('colorpicker').addEventListener('change', function () {
-      currentColor = this.value;
+    currentColor = this.value;
   });
 
   document.getElementById('bgcolorpicker').addEventListener('change', function () {
-      ctx.fillStyle = this.value;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      redraw();
-      currentBg = ctx.fillStyle;
+    ctx.fillStyle = this.value;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    redraw();
+    currentBg = ctx.fillStyle;
   });
   document.getElementById('controlSize').addEventListener('change', function () {
-      currentSize = this.value;
-      document.getElementById("showSize").innerHTML = this.value;
+    currentSize = this.value;
+    document.getElementById("showSize").innerHTML = this.value;
   });
 
   /*document.getElementById('saveToImage').addEventListener('click', function() {
@@ -240,15 +283,15 @@ const canvas = () => {
 
 
   function redraw() {
-      for (var i = 1; i < linesArray.length; i++) {
-          ctx.beginPath();
-          ctx.moveTo(linesArray[i - 1].x, linesArray[i - 1].y);
-          ctx.lineWidth = linesArray[i].size;
-          ctx.lineCap = "round";
-          ctx.strokeStyle = linesArray[i].color;
-          ctx.lineTo(linesArray[i].x, linesArray[i].y);
-          ctx.stroke();
-      }
+    for (var i = 1; i < linesArray.length; i++) {
+      ctx.beginPath();
+      ctx.moveTo(linesArray[i - 1].x, linesArray[i - 1].y);
+      ctx.lineWidth = linesArray[i].size;
+      ctx.lineCap = "round";
+      ctx.strokeStyle = linesArray[i].color;
+      ctx.lineTo(linesArray[i].x, linesArray[i].y);
+      ctx.stroke();
+    }
   }
 
   // DRAWING EVENT HANDLERS
@@ -261,82 +304,82 @@ const canvas = () => {
 
   function createCanvas() {
 
-      canvas.width = 1100;
-      canvas.height = 400;
-      canvas.style.zIndex = 8;
+    canvas.width = 1100;
+    canvas.height = 400;
+    canvas.style.zIndex = 8;
 
-      // canvas.style.position = "absolute";
-      canvas.style.border = "1px solid";
-      ctx.fillStyle = currentBg;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // canvas.style.position = "absolute";
+    canvas.style.border = "1px solid";
+    ctx.fillStyle = currentBg;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
 
   // fonction gomme (eraser=gomme)
   function eraser() {
-      currentSize = 50;
-      currentColor = ctx.fillStyle
+    currentSize = 50;
+    currentColor = ctx.fillStyle
   }
 
 
 
   function getMousePos(canvas, evt) {
-      var rect = canvas.getBoundingClientRect();
-      return {
-          x: evt.clientX - rect.left,
-          y: evt.clientY - rect.top
-      };
+    var rect = canvas.getBoundingClientRect();
+    return {
+      x: evt.clientX - rect.left,
+      y: evt.clientY - rect.top
+    };
   }
 
 
   function mousedown(canvas, evt) {
-      var mousePos = getMousePos(canvas, evt);
-      isMouseDown = true
-      var currentPosition = getMousePos(canvas, evt);
-      ctx.moveTo(currentPosition.x, currentPosition.y)
-      ctx.beginPath();
-      ctx.lineWidth = currentSize;
-      ctx.lineCap = "round";
-      ctx.strokeStyle = currentColor;
+    var mousePos = getMousePos(canvas, evt);
+    isMouseDown = true
+    var currentPosition = getMousePos(canvas, evt);
+    ctx.moveTo(currentPosition.x, currentPosition.y)
+    ctx.beginPath();
+    ctx.lineWidth = currentSize;
+    ctx.lineCap = "round";
+    ctx.strokeStyle = currentColor;
 
   }
 
 
   function mousemove(canvas, evt) {
 
-      if (isMouseDown) {
-          var currentPosition = getMousePos(canvas, evt);
-          ctx.lineTo(currentPosition.x, currentPosition.y)
-          ctx.stroke();
-          store(currentPosition.x, currentPosition.y, currentSize, currentColor);
-      }
+    if (isMouseDown) {
+      var currentPosition = getMousePos(canvas, evt);
+      ctx.lineTo(currentPosition.x, currentPosition.y)
+      ctx.stroke();
+      store(currentPosition.x, currentPosition.y, currentSize, currentColor);
+    }
   }
 
   // STORE DATA
 
   function store(x, y, s, c) {
-      var line = {
-          "x": x,
-          "y": y,
-          "size": s,
-          "color": c
-      }
-       linesArray.push(line);
-      
+    var line = {
+      "x": x,
+      "y": y,
+      "size": s,
+      "color": c
+    }
+    linesArray.push(line);
 
-      //tt le monde voit le dessin
-      socket.emit('canvas', line);
-      
-      socket.on('drawing', line =>{
-    console.log(line);
-    
-      })
+
+    //tt le monde voit le dessin
+    socket.emit('canvas', line);
+
+    socket.on('drawing', line => {
+      console.log(line);
+
+    })
   }
 
   // ON MOUSE UP
 
   function mouseup() {
-      isMouseDown = false
-      store()
+    isMouseDown = false
+    store()
   }
 }
 
