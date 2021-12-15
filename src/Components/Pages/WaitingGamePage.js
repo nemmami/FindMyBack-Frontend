@@ -2,7 +2,6 @@ import { Redirect } from "../Router/Router";
 import Navbar from "../NavBar/Navbar";
 import { io } from "socket.io-client";
 import { getSessionObject, setSessionObject } from "../../utils/session";
-import imgEnd from "../../img/End.png";
 /**
  * View the Login form :
  * render a login page into the #page div (formerly login function)
