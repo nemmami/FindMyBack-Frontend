@@ -2,14 +2,10 @@ import { Redirect } from "../Router/Router";
 import Navbar from "../NavBar/Navbar";
 import { io } from "socket.io-client";
 import { getSessionObject, setSessionObject } from "../../utils/session";
-/**
- * View the Login form :
- * render a login page into the #page div (formerly login function)
- */
 
 let waitingPage;
-let gamePage;
-let lancerGame = false;
+//let gamePage;
+//let lancerGame = false;
 let dataRoom;
 let actualRound;
 let wordToFind;
@@ -20,43 +16,38 @@ const socket = io("http://localhost:5000");
 
 waitingPage = `
 <div id="screenGame">
-        <div class="row" id="headerGame">
-            <div class="col-lg-3" id ="timer">xx sec</div>
-            <div class="col-lg-5 text-center" id="currentWord">mot a deviner</div>
-            <div class="col-lg-3" id ="round"></div>
-        </div>
+  <div class="row" id="headerGame">       
+    <div class="col-lg-3" id ="timer">xx sec</div>
+    <div class="col-lg-5 text-center" id="currentWord">mot a deviner</div>
+    <div class="col-lg-3" id ="round"></div>
+  </div>
 
-        <div class="row" id="bottomGame">
-            <div class="col-lg-2" id="settingGame">
-               <div class="col-lg-2" id="usersGame">
-               <h3>Players</h3>
-               <br>
-               <div id="usersGameList"></div>
-               </div>
-            </div>
-            <div class="col-lg-8" id="drawGame">
-
-            </div>
-            <div class="col-lg-2" id="chatGame">
-                <div class="message-container"></div> 
-                   <div class="wrapper"> 
-                   <form id="formMsg">
-                        <input id="msg" type="text" >
-                       <!-- <input type="submit" value="Envoyer"> -->
-                    </form>
-                  </div>
-                </div>
-            </div>
-            <div class="row" id="spec">
-           </div>
+  <div class="row" id="bottomGame">
+    <div class="col-lg-2" id="settingGame">
+      <div class="col-lg-2" id="usersGame">
+        <h3>Players</h3>
+        <br>
+        <div id="usersGameList"></div>
+      </div>
+    </div>
+    <div class="col-lg-8" id="drawGame"></div>
+    <div class="col-lg-2" id="chatGame">
+      <div class="message-container"></div> 
+      <div class="wrapper"> 
+        <form id="formMsg">
+          <input id="msg" type="text" >
+          <!-- <input type="submit" value="Envoyer"> -->
+        </form>
+      </div>
+    </div>
+  </div>
+  <div class="row" id="spec"></div>
 </div>
 `;
 
-gamePage = ` 
-`;
-
-
 const WaitingGamePage = () => {
+  if (!getSessionObject("user")) return Redirect("/login"); // si user pas connecté
+
   // reset #page div
   const pageDiv = document.querySelector("#page");
   pageDiv.innerHTML = waitingPage;
@@ -86,7 +77,6 @@ function getPlayer() {
       setDataRoom(getSessionObject("room").id);
 
       if (rooms.length == getSessionObject("room").nbPlayers) { // && rooms.host === getSessionObject("user").username : Pour le bouton appuyer
-
         socket.emit('start-game');
 
         //ajout du canevas
@@ -113,16 +103,13 @@ function getPlayer() {
           </div>
           <div class="col-lg-2">
           </div>`;
-
-
-          //lancement du canavas
           
+          //lancement du canavas
           canvas();
           //commencer au round 1
           actualRound = 1 - rooms.length;
-          onGameStarted();
+          onGameStarted(); // tester les ofr
       }
-      
     });
   }
 }
@@ -159,7 +146,6 @@ async function setDataRoom(id) {
 function inGame() {
   let chatForm = document.getElementById('formMsg');
   chatForm.addEventListener('submit', submitMess);
-
 }
 
 //gerer le chat
@@ -192,8 +178,6 @@ function outputRightMessage(msg) {
   messageElement.innerHTML = `<p class="message-text" style="color:green">  ${msg} </p>`;
   console.log(msg.user);
 
-
-
   chatWrapper.appendChild(messageElement);
   chatWrapper.scrollTo(0, 1000000);
 }
@@ -201,45 +185,34 @@ function outputRightMessage(msg) {
 const foundRightAnswer =  (msg) => {
   //insertion mot random
   const currentWord = document.querySelector("#currentWord");
-      currentWord.innerHTML = " ";
-      currentWord.innerHTML = `<h2> La reponse à été trouvé. ${msg} </h2>`;  
-       // userNameRightAnswer = 
+  currentWord.innerHTML = " ";
+  currentWord.innerHTML = `<h2> La reponse à été trouvé. ${msg} </h2>`;  
 }
-
 
 socket.on("message", msg =>{
   console.log(messageUser + " " + wordToFind.word);
   if(messageUser === wordToFind.word){
-
     outputRightMessage(msg);
     foundRightAnswer(msg);
 
     //attendre 3 sec avant de lancer un nvx round
-setTimeout(onGameStarted, 3000);
-  }else{
+    setTimeout(onGameStarted, 3000);
+  } else {
     outputMessage(msg);
   }
-  
-  
-
 })
 
 //gerer la recup d'un mot
 socket.on("get-word", ({word}) =>{
-console.log("mots a trouver:", word.word);
-wordToFind = word;
-showWord(word);
-
+  console.log("mots a trouver:", word.word);  
+  wordToFind = word;
+  showWord(word);
 })
 
 const showWord = (data) => {
   const currentWord = document.querySelector("#currentWord");
-
   currentWord.innerHTML = `<h2> ${data.word} </h2>`;
 }
-
-
-
 
 //gerer les round
 socket.on("get-round", () =>{
@@ -248,7 +221,7 @@ socket.on("get-round", () =>{
   actualRound++;
   round.innerHTML = `<h2> Round ${actualRound} of ${getSessionObject("room").nbRound} </h2>`
 
-  if(actualRound>getSessionObject("room").nbRound){
+  if(actualRound > getSessionObject("room").nbRound){
     console.log("jeu fini");
   }
 })
@@ -265,41 +238,31 @@ socket.on('reset-timer', () => {
       time--;
 
       if(time < 0){
-      clearInterval(intervalForTimer);
-      onGameStarted();
-  }
+        clearInterval(intervalForTimer);
+        onGameStarted();
+      }
   }
 
   clearInterval(intervalForTimer);
   intervalForTimer =  setInterval(diminuerTime, 1000);
-
 })
 
-
 const onGameStarted = () => {
- // document.getElementById("state").innerHTML = ``;//On remet l'état à "zéro"
-
+  // document.getElementById("state").innerHTML = ``;//On remet l'état à "zéro"
   socket.emit('start-timer');
 
   socket.emit('start-round');
 
   //recup un mot
   socket.emit('find-word');
-
 }
-
-
 
 //gerer le canvas
 const canvas = () => {
-  
   //canvas
   let canvas = document.getElementById("Canva2D");
  
-      
-
   var isMouseDown = false;
-  //var body = document.getElementsByTagName("body")[0];
   var ctx = canvas.getContext('2d');
   var linesArray = [];
   var currentSize = 5;
@@ -413,18 +376,12 @@ const canvas = () => {
       linesArray.push(line);
   }
 
-  
-
   // ON MOUSE UP
-
   function mouseup() {
       isMouseDown = false
       store()
       
   }
 }
-
-socket
-
 
 export default WaitingGamePage;
