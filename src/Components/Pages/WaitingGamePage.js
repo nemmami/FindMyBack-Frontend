@@ -115,9 +115,7 @@ function getPlayer() {
           </div>`;
 
 
-          //lancement du canavas
-          
-          canvas();
+         
           //commencer au round 1
           actualRound = 1 - rooms.length;
           onGameStarted();
@@ -208,8 +206,8 @@ const foundRightAnswer =  (msg) => {
 
 
 socket.on("message", msg =>{
-  console.log(messageUser + " " + wordToFind.word);
-  if(messageUser === wordToFind.word){
+  
+  if(messageUser === wordToFind){
 
     outputRightMessage(msg);
     foundRightAnswer(msg);
@@ -227,7 +225,7 @@ setTimeout(onGameStarted, 3000);
 //gerer la recup d'un mot
 socket.on("get-word", ({word}) =>{
 console.log("mots a trouver:", word.word);
-wordToFind = word;
+wordToFind = word.word;
 showWord(word);
 
 })
@@ -279,6 +277,8 @@ socket.on('reset-timer', () => {
 const onGameStarted = () => {
  // document.getElementById("state").innerHTML = ``;//On remet l'état à "zéro"
 
+ //lancer le canvas
+ canvas();
   socket.emit('start-timer');
 
   socket.emit('start-round');
