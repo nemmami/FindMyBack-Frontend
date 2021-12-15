@@ -2,6 +2,7 @@ import { Redirect } from "../Router/Router";
 import Navbar from "../NavBar/Navbar";
 import { io } from "socket.io-client";
 import { getSessionObject, setSessionObject } from "../../utils/session";
+//import imgEnd from "../../img/End.png";
 /**
  * View the Login form :
  * render a login page into the #page div (formerly login function)
@@ -9,7 +10,7 @@ import { getSessionObject, setSessionObject } from "../../utils/session";
 
 let waitingPage;
 let gamePage;
-let lancerGame = false;
+let reponseTrouvee = false;
 let dataRoom;
 let actualRound;
 let wordToFind;
@@ -22,7 +23,7 @@ waitingPage = `
 <div id="screenGame">
         <div class="row" id="headerGame">
             <div class="col-lg-3" id ="timer">xx sec</div>
-            <div class="col-lg-5 text-center" id="currentWord">mot a deviner</div>
+            <div class="col-lg-5 text-center" id="currentWord">MOT A DEVINER</div>
             <div class="col-lg-3" id ="round"></div>
         </div>
 
@@ -33,7 +34,7 @@ waitingPage = `
                <br>
                <div id="usersGameList"></div>
                </div>
-            </div>
+        </div>
             <div class="col-lg-8" id="drawGame">
 
             </div>
@@ -48,12 +49,33 @@ waitingPage = `
                 </div>
             </div>
             <div class="row" id="spec">
-           </div>
-</div>
-`;
-
-gamePage = ` 
-`;
+                    <div class="col-lg-2">
+                    </div>     
+                    <div class="col-lg-2">
+                        <h3>Color</h3>
+                        <input type="color" id="colorpicker" value="#000000" class="colorpicker">
+                    </div>
+   
+                    <div class="col-lg-2">
+                        <h3>Background color</h3>
+                        <input type="color" value="#ffffff" id="bgcolorpicker" class="colorpicker">
+                    </div>
+            
+                    <div class="col-lg-2">
+                        <h3>Tools(outils)</h3>
+                        <button id="eraser" class="btn btn-default">Gomme<span class="glyphicon glyphicon-erase" aria-hidden="true"></span></button>
+                        <button id="clear" class="btn btn-danger">All clear <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button>
+                    </div>
+            
+                    <div class="col-lg-2">
+                        <h3>Size <span id="showSize">5</span></h3>
+                        <input type="range" min="1" max="50" value="5" step="1" id="controlSize">
+                    </div>
+                    <div class="col-lg-2">
+                    </div>
+            </div>
+  </div>
+            `;
 
 
 const WaitingGamePage = () => {
@@ -77,7 +99,7 @@ function getPlayer() {
       rooms.forEach((e) => {
         console.log(e);
         document.getElementById("usersGameList").innerHTML +=
-        `<li class="list-group-item d-flex justify-content-between">
+          `<li class="list-group-item d-flex justify-content-between">
           <p class="p-0 m-0 flex-grow-1 fw-bold" id="room-dispo">Joueur - ${e}</p>
         </li>`;
       });
@@ -89,7 +111,7 @@ function getPlayer() {
 
         socket.emit('start-game');
 
-        //ajout du canevas
+        //ajout du canvas
         document.getElementById("drawGame").innerHTML = `<canvas id="Canva2D" class="border border border-dark"></canvas>`;
         document.getElementById("spec").innerHTML = 
           `<div class="col-lg-2">
@@ -120,7 +142,7 @@ function getPlayer() {
           actualRound = 1 - rooms.length;
           onGameStarted();
       }
-      
+
     });
   }
 }
@@ -200,14 +222,14 @@ const foundRightAnswer =  (msg) => {
   //insertion mot random
   const currentWord = document.querySelector("#currentWord");
       currentWord.innerHTML = " ";
-      currentWord.innerHTML = `<h2> La reponse à été trouvé. ${msg} </h2>`;  
+      currentWord.innerHTML = `<h2> La reponse à été trouvéé par ${msg}</h2>`;  
        // userNameRightAnswer = 
 }
 
 
 socket.on("message", msg =>{
   
-  if(messageUser === wordToFind){
+  if(messageUser === wordToFind.word){
 
     outputRightMessage(msg);
     foundRightAnswer(msg);
@@ -224,8 +246,8 @@ setTimeout(onGameStarted, 3000);
 
 //gerer la recup d'un mot
 socket.on("get-word", ({word}) =>{
-console.log("mots a trouver:", word.word);
-wordToFind = word.word;
+console.log("mot à trouver:", word.word);
+wordToFind = word;
 showWord(word);
 
 })
@@ -248,12 +270,18 @@ socket.on("get-round", () =>{
 
   if(actualRound>getSessionObject("room").nbRound){
     console.log("jeu fini");
+    //const fin = {"word":"JEU TERMINÉ"};
+    const frr = document.getElementById("drawGame");
+    frr.innerHTML = `<h2>JEU TERMINÉ!</h2>
+    <br><h2>LE VAINQUEUR EST : </h2>
+    <br><h1>${getSessionObject("room").winner}</h1>`;
+    //showWord(fin);
   }
 })
 
 //gerer le timer
 socket.on('reset-timer', () => {
-  let time = 15;
+  let time = 60;
   const timer = document.querySelector('#timer');
   timer.innerHTML = `<h2> ${time} secondes</h2>`;
   console.log("timer" , time);
@@ -292,7 +320,7 @@ const onGameStarted = () => {
 
 //gerer le canvas
 const canvas = () => {
-  
+
   //canvas
   let canvas = document.getElementById("Canva2D");
  
@@ -332,7 +360,7 @@ const canvas = () => {
   }
 
   document.getElementById('colorpicker').addEventListener('change', function () {
-      currentColor = this.value;
+    currentColor = this.value;
   });
 
   document.getElementById('bgcolorpicker').addEventListener('change', function () {
@@ -341,8 +369,8 @@ const canvas = () => {
       currentBg = ctx.fillStyle;
   });
   document.getElementById('controlSize').addEventListener('change', function () {
-      currentSize = this.value;
-      document.getElementById("showSize").innerHTML = this.value;
+    currentSize = this.value;
+    document.getElementById("showSize").innerHTML = this.value;
   });
   document.getElementById('eraser').addEventListener('click', eraser);
   document.getElementById('clear').addEventListener('click', createCanvas);
@@ -356,28 +384,28 @@ const canvas = () => {
 
   function createCanvas() {
 
-      canvas.width = 1100;
-      canvas.height = 400;
-      canvas.style.zIndex = 8;
+    canvas.width = 1100;
+    canvas.height = 400;
+    canvas.style.zIndex = 8;
 
-      // canvas.style.position = "absolute";
-      canvas.style.border = "1px solid";
-      ctx.fillStyle = currentBg;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
+    // canvas.style.position = "absolute";
+    canvas.style.border = "1px solid";
+    ctx.fillStyle = currentBg;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
   }
 
   // fonction gomme (eraser=gomme)
   function eraser() {
-      currentSize = 50;
-      currentColor = ctx.fillStyle
+    currentSize = 50;
+    currentColor = ctx.fillStyle
   }
 
   function getMousePos(canvas, evt) {
-      var rect = canvas.getBoundingClientRect();
-      return {
-          x: evt.clientX - rect.left,
-          y: evt.clientY - rect.top
-      };
+    var rect = canvas.getBoundingClientRect();
+    return {
+      x: evt.clientX - rect.left,
+      y: evt.clientY - rect.top
+    };
   }
 
   function mousedown(canvas, evt) {
@@ -419,12 +447,8 @@ const canvas = () => {
 
   function mouseup() {
       isMouseDown = false
-      store()
-      
+      store();      
   }
 }
-
-socket
-
 
 export default WaitingGamePage;

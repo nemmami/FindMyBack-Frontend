@@ -1,6 +1,7 @@
 import { Navbar as BootstrapNavbar } from "bootstrap";
 import { getSessionObject } from "../../utils/session";
 
+
 let gamePage;
 
 gamePage = ` 
@@ -10,7 +11,7 @@ gamePage = `
          <div class="row" id="headerGame">
              <div class="col-lg-3" id ="timer"></div>
              <div class="col-lg-5 text-center" id="currentWord"></div>
-             <div class="col-lg-3" id ="round">Round 1 of 3</div>
+             <div class="col-lg-3" id ="round"></div>
          </div>
  
          <div class="row" id="bottomGame">
@@ -43,20 +44,35 @@ gamePage = `
 let user = getSessionObject("user");
 let wordToFind;
 let intervalForTimer;
-let maxRound = 5;
+//let maxRound = 5;
 
 
 
 
 const GamePage = () => {
-    const page = document.querySelector("#page");
     page.innerHTML = gamePage;
 
-    chat();
-    startGame(0);
-
+    game();
 
 };
+
+function game() {
+    for (let i = 1; i < getSessionObject("room").nbRound; i++) {
+        console.log(joueurs.length);
+        for (let j = 0; j <getSessionObject("room").players.length; j++) {
+            joueurs.forEach((e) => {
+                console.log(joueurs[joueurDessinateur], e);
+                if (joueurs[joueurDessinateur] == e) {
+                    dessinateur();
+                }
+                else {
+                    devineur();
+                }
+            });
+            chat();
+        }
+    }
+}
 
 const chat = () => {
     //chat
@@ -85,7 +101,7 @@ const chat = () => {
             messageElement.innerHTML = `<p class="message-text" style="color:green">  ${user.username} : ${message} </p>`;
             foundRightAnswer();
             //attendre 3sec avant prochain mot
-            
+
             startGame(3000);
 
 
@@ -99,7 +115,7 @@ const chat = () => {
         chatWrapper.scrollTo(0, 1000000);
     }
 
-   
+
 
 }
 
@@ -297,56 +313,154 @@ const canvas = () => {
     }
 }
 
-const foundRightAnswer =  () => {
+const foundRightAnswer = () => {
     //insertion mot random
     const currentWord = document.querySelector("#currentWord");
-        currentWord.innerHTML = " ";
-        currentWord.innerHTML = `<h2> ${user.username} a trouvé le mot qui était ${wordToFind.word} </h2>`;    
+    currentWord.innerHTML = " ";
+    currentWord.innerHTML = `<h2> ${user.username} a trouvé le mot qui était ${wordToFind.word} </h2>`;
 }
 
-const timerFinish =  () => {
+const timerFinish = () => {
     //insertion mot random
     const currentWord = document.querySelector("#currentWord");
-        currentWord.innerHTML = " ";
-        currentWord.innerHTML = `<h2> Le temps est écoules, le mot a trouver était ${wordToFind.word} </h2>`;    
+    currentWord.innerHTML = " ";
+    currentWord.innerHTML = `<h2> Le temps est écoulé, le mot à trouver était ${wordToFind.word} </h2>`;
 }
 
-const timer = () =>{
-    let time = 120;
+const timer = () => {
+    let time = 45;
     const timer = document.querySelector('#timer');
     timer.innerHTML = `<h2> ${time} secondes</h2>`;
 
-    function diminuerTime(){
+    function diminuerTime() {
         timer.innerHTML = `<h2> ${time} secondes</h2>`;
         time--;
 
-        if(time < 0){
-        clearInterval(intervalForTimer);
-        timerFinish();
-        startGame(3000);
-    }
+        if (time < 0) {
+            clearInterval(intervalForTimer);
+            timerFinish();
+            startGame(3000);
+        }
     }
 
     clearInterval(intervalForTimer);
-    intervalForTimer =  setInterval(diminuerTime, 1000);
-
-    
-
+    intervalForTimer = setInterval(diminuerTime, 1000);
 }
 
-function startGame(timeWait){
+function startGame(timeWait) {
     setTimeout(clearChat, timeWait);
-    setTimeout(getWord,timeWait);
-    setTimeout(timer,timeWait);
-    setTimeout(canvas,timeWait);
+    setTimeout(getWord, timeWait);
+    setTimeout(timer, timeWait);
+    setTimeout(canvas, timeWait);
 }
 
-function clearChat(){
+
+function clearChat() {
     let chatWrapper = document.querySelector('.message-container');
     chatWrapper.innerHTML = " ";
 }
 
+const dessinateur = () => {
+    gamePage = ` 
+    <div id="screenGame">
+    
+        
+            <div class="row" id="headerGame">
+                <div class="col-lg-3" id ="timer"></div>
+                <div class="col-lg-5 text-center" id="currentWord"></div>
+                <div class="col-lg-3" id ="round"></div>
+            </div>
+    
+            <div class="row" id="bottomGame">
+    
+                <div class="col-lg-2" id="settingGame">
+                   <div class="col-lg-2" id="usersGame"><h3>Players</h3></div>
+                </div>
+    
+                <div class="col-lg-8" id="drawGame">
+                    <canvas id="Canva2D" class="border border border-dark"></canvas>
+                </div>
+    
+                <div class="col-lg-2" id="chatGame">
+                    <div class="message-container"></div> 
+                       <div class="wrapper"> 
+                       <form id="send-container">
+                            <input type="text" id="message-input">
+                            <input type="submit" value="Envoyer">
+                        </form>
+                      </div>
+                    </div>
+                </div>
+   
+               <div class="row" id="spec">
+                    <div class="col-lg-2">
+                    </div>     
+                    <div class="col-lg-2">
+                        <h3>Color</h3>
+                        <input type="color" id="colorpicker" value="#000000" class="colorpicker">
+                    </div>
+   
+                    <div class="col-lg-2">
+                        <h3>Background color</h3>
+                        <input type="color" value="#ffffff" id="bgcolorpicker" class="colorpicker">
+                    </div>
+            
+                    <div class="col-lg-2">
+                        <h3>Tools(outils)</h3>
+                        <button id="eraser" class="btn btn-default">Gomme<span class="glyphicon glyphicon-erase" aria-hidden="true"></span></button>
+                        <button id="clear" class="btn btn-danger">All clear <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button>
+                    </div>
+            
+                    <div class="col-lg-2">
+                        <h3>Size <span id="showSize">5</span></h3>
+                        <input type="range" min="1" max="50" value="5" step="1" id="controlSize">
+                    </div>
+                    <div class="col-lg-2">
+                    </div>
+             
+               </div>
+    </div>
+     `;
+    page.innerHTML = gamePage;
+}
+
+const devineur = () => {
+    gamePage = ` 
+<div id="screenGame">
 
 
+ <div class="row" id="headerGame">
+     <div class="col-lg-3" id ="timer"></div>
+     <div class="col-lg-5 text-center" id="currentWord"></div>
+     <div class="col-lg-3" id ="round"></div>
+ </div>
+
+ <div class="row" id="bottomGame">
+
+     <div class="col-lg-2" id="settingGame">
+        <div class="col-lg-2" id="usersGame"><h3>Players</h3></div>
+     </div>
+
+     <div class="col-lg-8" id="drawGame">
+         <canvas id="Canva2D" class="border border border-dark"></canvas>
+     </div>
+
+     <div class="col-lg-2" id="chatGame">
+         <div class="message-container"></div> 
+            <div class="wrapper"> 
+            <form id="send-container">
+                 <input type="text" id="message-input">
+                 <input type="submit" value="Envoyer">
+             </form>
+           </div>
+         </div>
+     </div>
+  
+    </div>
+</div>
+`;
+    page.innerHTML = gamePage;
+
+}
 
 export default GamePage;
