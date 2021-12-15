@@ -103,35 +103,36 @@ function getPlayer() {
         </li>`;
       });
 
+<<<<<<< HEAD
       document.getElementById("drawGame").innerHTML = `<h2> Bienvenue dans la liste d'attente attends qu'il y ait le nombre de joueurs nécessaires pour pouvoir lancer la partie ${rooms.length}/${getSessionObject("room").nbPlayers}  </h2>`;
 
+=======
+      document.getElementById("drawGame").innerHTML = `<h2>Bienvenue dans la liste d'attente. ${rooms.length}/${getSessionObject("room").nbPlayers}</h2>`;
+>>>>>>> 0827d2568e9ba1c7587200c29e413c2f5ffc0968
       setDataRoom(getSessionObject("room").id);
+
       if (rooms.length == getSessionObject("room").nbPlayers) { // && rooms.host === getSessionObject("user").username : Pour le bouton appuyer
 
         socket.emit('start-game');
 
         //ajout du canevas
         document.getElementById("drawGame").innerHTML = `<canvas id="Canva2D" class="border border border-dark"></canvas>`;
-        
-
-        document.getElementById("spec").innerHTML = `<div class="col-lg-2">
+        document.getElementById("spec").innerHTML = 
+          `<div class="col-lg-2">
           </div>     
           <div class="col-lg-2">
               <h3>Color</h3>
               <input type="color" id="colorpicker" value="#000000" class="colorpicker">
           </div>
-
           <div class="col-lg-2">
               <h3>Background color</h3>
               <input type="color" value="#ffffff" id="bgcolorpicker" class="colorpicker">
           </div>
-
           <div class="col-lg-2">
               <h3>Tools(outils)</h3>
               <button id="eraser" class="btn btn-default">Gomme<span class="glyphicon glyphicon-erase" aria-hidden="true"></span></button>
               <button id="clear" class="btn btn-danger">All clear <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button>
           </div>
-
           <div class="col-lg-2">
               <h3>Size <span id="showSize">5</span></h3>
               <input type="range" min="1" max="50" value="5" step="1" id="controlSize">
@@ -203,7 +204,6 @@ const submitMess = (e) => {
 
   e.target.elements.msg.value = '';
 }
-
 
 function outputMessage(msg) {
   let messageElement = document.createElement('div');
@@ -340,33 +340,52 @@ const canvas = () => {
 
   createCanvas();
 
+  socket.on('mouse', data => {
+    console.log("Got: " + data.x + " " + data.y + " " + data.size + " " + data.color);
+    ctx.beginPath();
+    ctx.lineWidth = data.size;
+    ctx.lineCap = "round";
+    ctx.strokeStyle = data.color;
+    ctx.moveTo(data.x, data.y);
+    ctx.lineTo(data.x, data.y);
+    ctx.stroke();
+  });
 
-  /* document.getElementById('canvasUpdate').addEventListener('click', function() {
-      createCanvas();
-      redraw();
-  }); */
+  function sendCanvas(xPos, yPos, sizePos, colorPos) {
+    console.log("Send: " + xPos + " " + yPos + " " + sizePos + " " + colorPos);
+    var data = {
+      x: xPos,
+      y: yPos,
+      size: sizePos,
+      color: colorPos
+    };
+
+    socket.emit('mouse', (data));
+  }
 
   document.getElementById('colorpicker').addEventListener('change', function () {
     currentColor = this.value;
   });
 
   document.getElementById('bgcolorpicker').addEventListener('change', function () {
+<<<<<<< HEAD
     ctx.fillStyle = this.value;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     redraw();
     currentBg = ctx.fillStyle;
+=======
+      ctx.fillStyle = this.value;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      currentBg = ctx.fillStyle;
+>>>>>>> 0827d2568e9ba1c7587200c29e413c2f5ffc0968
   });
   document.getElementById('controlSize').addEventListener('change', function () {
     currentSize = this.value;
     document.getElementById("showSize").innerHTML = this.value;
   });
-
-  /*document.getElementById('saveToImage').addEventListener('click', function() {
-      downloadCanvas(this, 'canvas', 'masterpiece.png');
-  }, false);
-  */
   document.getElementById('eraser').addEventListener('click', eraser);
   document.getElementById('clear').addEventListener('click', createCanvas);
+<<<<<<< HEAD
   //document.getElementById('save').addEventListener('click', save);
   //document.getElementById('load').addEventListener('click', load);
   /*document.getElementById('clearCache').addEventListener('click', function() {
@@ -389,11 +408,9 @@ const canvas = () => {
     }
   }
 
+=======
+>>>>>>> 0827d2568e9ba1c7587200c29e413c2f5ffc0968
   
-  //tt le monde voit le dessin
-
-      
-
   // DRAWING EVENT HANDLERS
   canvas.addEventListener('mousedown', function () { mousedown(canvas, event); });
   canvas.addEventListener('mousemove', function () { mousemove(canvas, event); });
@@ -419,8 +436,6 @@ const canvas = () => {
     currentColor = ctx.fillStyle
   }
 
-
-
   function getMousePos(canvas, evt) {
     var rect = canvas.getBoundingClientRect();
     return {
@@ -429,8 +444,8 @@ const canvas = () => {
     };
   }
 
-
   function mousedown(canvas, evt) {
+<<<<<<< HEAD
     var mousePos = getMousePos(canvas, evt);
     isMouseDown = true
     var currentPosition = getMousePos(canvas, evt);
@@ -442,10 +457,21 @@ const canvas = () => {
 
       
 
+=======
+      var mousePos = getMousePos(canvas, evt);
+      isMouseDown = true
+      var currentPosition = getMousePos(canvas, evt);
+      ctx.moveTo(currentPosition.x, currentPosition.y)
+      ctx.beginPath();
+      ctx.lineWidth = currentSize;
+      ctx.lineCap = "round";
+      ctx.strokeStyle = currentColor;
+      //sendCanvas(currentPosition.x, currentPosition.y, currentSize, currentColor);
+>>>>>>> 0827d2568e9ba1c7587200c29e413c2f5ffc0968
   }
 
-
   function mousemove(canvas, evt) {
+<<<<<<< HEAD
 
     if (isMouseDown) {
       var currentPosition = getMousePos(canvas, evt);
@@ -453,18 +479,26 @@ const canvas = () => {
       ctx.stroke();
       store(currentPosition.x, currentPosition.y, currentSize, currentColor);
     }
+=======
+      if (isMouseDown) {
+          var currentPosition = getMousePos(canvas, evt);
+          ctx.lineTo(currentPosition.x, currentPosition.y)
+          ctx.stroke();
+          store(currentPosition.x, currentPosition.y, currentSize, currentColor);
+          sendCanvas(currentPosition.x, currentPosition.y, currentSize, currentColor);
+      }
+>>>>>>> 0827d2568e9ba1c7587200c29e413c2f5ffc0968
   }
 
   // STORE DATA
-
   function store(x, y, s, c) {
       var line = {
-          "x": x,
-          "y": y,
-          "size": s,
-          "color": c
+          x: x,
+          y: y,
+          size: s,
+          color: c
       }
-       linesArray.push(line);
+      linesArray.push(line);
   }
 
   
@@ -477,6 +511,7 @@ const canvas = () => {
   }
 }
 
+socket
 
 
 export default WaitingGamePage;
