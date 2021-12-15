@@ -4,8 +4,6 @@ import { io } from "socket.io-client";
 import { getSessionObject, setSessionObject } from "../../utils/session";
 import { removeSessionObject } from "../../utils/session";
 
-//const socket = io("http://localhost:5000");
-
 let roomPage;
 // quand on crée/rejoins une room
 roomPage = `
@@ -25,6 +23,8 @@ roomPage = `
 
 
 function RoomPage() {
+  if (!getSessionObject("user")) return Redirect("/login"); // si user pas connecté
+
   // reset #page div
   const pageDiv = document.querySelector("#page");
   pageDiv.innerHTML = roomPage;
