@@ -2,6 +2,10 @@ import { Redirect } from "../Router/Router";
 import Navbar from "../NavBar/Navbar";
 import { io } from "socket.io-client";
 import { getSessionObject, setSessionObject } from "../../utils/session";
+<<<<<<< HEAD
+=======
+//import imgEnd from "../../img/End.png";
+>>>>>>> a5d01f1e38399ebac4da7e8adbc2b2ba36ca735e
 /**
  * View the Login form :
  * render a login page into the #page div (formerly login function)
@@ -136,9 +140,7 @@ function getPlayer() {
           </div>`;
 
 
-          //lancement du canavas
-          
-          canvas();
+         
           //commencer au round 1
           actualRound = 1 - rooms.length;
           onGameStarted();
@@ -229,7 +231,7 @@ const foundRightAnswer =  (msg) => {
 
 
 socket.on("message", msg =>{
-  console.log(messageUser + " " + wordToFind.word);
+  
   if(messageUser === wordToFind.word){
 
     outputRightMessage(msg);
@@ -306,6 +308,8 @@ socket.on('reset-timer', () => {
 const onGameStarted = () => {
  // document.getElementById("state").innerHTML = ``;//On remet l'état à "zéro"
 
+ //lancer le canvas
+ canvas();
   socket.emit('start-timer');
 
   socket.emit('start-round');
