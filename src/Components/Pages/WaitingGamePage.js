@@ -2,15 +2,15 @@ import { Redirect } from "../Router/Router";
 import Navbar from "../NavBar/Navbar";
 import { io } from "socket.io-client";
 import { getSessionObject, setSessionObject } from "../../utils/session";
+import imgEnd from "../../img/End.png";
+/**
+ * View the Login form :
+ * render a login page into the #page div (formerly login function)
+ */
 
 let waitingPage;
-<<<<<<< HEAD
 let gamePage;
 let reponseTrouvee = false;
-=======
-//let gamePage;
-//let lancerGame = false;
->>>>>>> 4d2e86767878c65d3af0387b4f5e28c769bc60e7
 let dataRoom;
 let actualRound;
 let wordToFind;
@@ -21,10 +21,9 @@ const socket = io("http://localhost:5000");
 
 waitingPage = `
 <div id="screenGame">
-<<<<<<< HEAD
         <div class="row" id="headerGame">
             <div class="col-lg-3" id ="timer">xx sec</div>
-            <div class="col-lg-5 text-center" id="currentWord">mot a deviner</div>
+            <div class="col-lg-5 text-center" id="currentWord">MOT A DEVINER</div>
             <div class="col-lg-3" id ="round"></div>
         </div>
 
@@ -78,40 +77,8 @@ waitingPage = `
   </div>
             `;
 
-=======
-  <div class="row" id="headerGame">       
-    <div class="col-lg-3" id ="timer">xx sec</div>
-    <div class="col-lg-5 text-center" id="currentWord">mot a deviner</div>
-    <div class="col-lg-3" id ="round"></div>
-  </div>
-
-  <div class="row" id="bottomGame">
-    <div class="col-lg-2" id="settingGame">
-      <div class="col-lg-2" id="usersGame">
-        <h3>Players</h3>
-        <br>
-        <div id="usersGameList"></div>
-      </div>
-    </div>
-    <div class="col-lg-8" id="drawGame"></div>
-    <div class="col-lg-2" id="chatGame">
-      <div class="message-container"></div> 
-      <div class="wrapper"> 
-        <form id="formMsg">
-          <input id="msg" type="text" >
-          <!-- <input type="submit" value="Envoyer"> -->
-        </form>
-      </div>
-    </div>
-  </div>
-  <div class="row" id="spec"></div>
-</div>
-`;
->>>>>>> 4d2e86767878c65d3af0387b4f5e28c769bc60e7
 
 const WaitingGamePage = () => {
-  if (!getSessionObject("user")) return Redirect("/login"); // si user pas connecté
-
   // reset #page div
   const pageDiv = document.querySelector("#page");
   pageDiv.innerHTML = waitingPage;
@@ -137,18 +104,14 @@ function getPlayer() {
         </li>`;
       });
 
-<<<<<<< HEAD
-      document.getElementById("drawGame").innerHTML = `<h2> Bienvenue dans la liste d'attente attends qu'il y ait le nombre de joueurs nécessaires pour pouvoir lancer la partie ${rooms.length}/${getSessionObject("room").nbPlayers}  </h2>`;
-
-=======
       document.getElementById("drawGame").innerHTML = `<h2>Bienvenue dans la liste d'attente. ${rooms.length}/${getSessionObject("room").nbPlayers}</h2>`;
->>>>>>> 0827d2568e9ba1c7587200c29e413c2f5ffc0968
       setDataRoom(getSessionObject("room").id);
 
       if (rooms.length == getSessionObject("room").nbPlayers) { // && rooms.host === getSessionObject("user").username : Pour le bouton appuyer
+
         socket.emit('start-game');
 
-        //ajout du canevas
+        //ajout du canvas
         document.getElementById("drawGame").innerHTML = `<canvas id="Canva2D" class="border border border-dark"></canvas>`;
         document.getElementById("spec").innerHTML = 
           `<div class="col-lg-2">
@@ -172,26 +135,19 @@ function getPlayer() {
           </div>
           <div class="col-lg-2">
           </div>`;
-          
+
+
           //lancement du canavas
+          
           canvas();
           //commencer au round 1
           actualRound = 1 - rooms.length;
-          onGameStarted(); // tester les ofr
+          onGameStarted();
       }
-<<<<<<< HEAD
 
-=======
->>>>>>> 4d2e86767878c65d3af0387b4f5e28c769bc60e7
     });
   }
 }
-
-/*function setTurnMessage(classToRemove, classToAdd, html) {
-  turnMsg.classList.remove(classToRemove);
-  turnMsg.classList.add(classToAdd);
-  turnMsg.innerHTML = html;
-}*/
 
 async function setDataRoom(id) {
   try {
@@ -225,6 +181,7 @@ async function setDataRoom(id) {
 function inGame() {
   let chatForm = document.getElementById('formMsg');
   chatForm.addEventListener('submit', submitMess);
+
 }
 
 //gerer le chat
@@ -257,6 +214,8 @@ function outputRightMessage(msg) {
   messageElement.innerHTML = `<p class="message-text" style="color:green">  ${msg} </p>`;
   console.log(msg.user);
 
+
+
   chatWrapper.appendChild(messageElement);
   chatWrapper.scrollTo(0, 1000000);
 }
@@ -264,34 +223,45 @@ function outputRightMessage(msg) {
 const foundRightAnswer =  (msg) => {
   //insertion mot random
   const currentWord = document.querySelector("#currentWord");
-  currentWord.innerHTML = " ";
-  currentWord.innerHTML = `<h2> La reponse à été trouvé. ${msg} </h2>`;  
+      currentWord.innerHTML = " ";
+      currentWord.innerHTML = `<h2> La reponse à été trouvéé par ${msg}</h2>`;  
+       // userNameRightAnswer = 
 }
+
 
 socket.on("message", msg =>{
   console.log(messageUser + " " + wordToFind.word);
   if(messageUser === wordToFind.word){
+
     outputRightMessage(msg);
     foundRightAnswer(msg);
 
     //attendre 3 sec avant de lancer un nvx round
-    setTimeout(onGameStarted, 3000);
-  } else {
+setTimeout(onGameStarted, 3000);
+  }else{
     outputMessage(msg);
   }
+  
+  
+
 })
 
 //gerer la recup d'un mot
 socket.on("get-word", ({word}) =>{
-  console.log("mots a trouver:", word.word);  
-  wordToFind = word;
-  showWord(word);
+console.log("mot à trouver:", word.word);
+wordToFind = word;
+showWord(word);
+
 })
 
 const showWord = (data) => {
   const currentWord = document.querySelector("#currentWord");
+
   currentWord.innerHTML = `<h2> ${data.word} </h2>`;
 }
+
+
+
 
 //gerer les round
 socket.on("get-round", () =>{
@@ -300,14 +270,20 @@ socket.on("get-round", () =>{
   actualRound++;
   round.innerHTML = `<h2> Round ${actualRound} of ${getSessionObject("room").nbRound} </h2>`
 
-  if(actualRound > getSessionObject("room").nbRound){
+  if(actualRound>getSessionObject("room").nbRound){
     console.log("jeu fini");
+    //const fin = {"word":"JEU TERMINÉ"};
+    const frr = document.getElementById("drawGame");
+    frr.innerHTML = `<h2>JEU TERMINÉ!</h2>
+    <br><h2>LE VAINQUEUR EST : </h2>
+    <br><h1>${getSessionObject("room").winner}</h1>`;
+    //showWord(fin);
   }
 })
 
 //gerer le timer
 socket.on('reset-timer', () => {
-  let time = 15;
+  let time = 60;
   const timer = document.querySelector('#timer');
   timer.innerHTML = `<h2> ${time} secondes</h2>`;
   console.log("timer" , time);
@@ -317,35 +293,41 @@ socket.on('reset-timer', () => {
       time--;
 
       if(time < 0){
-        clearInterval(intervalForTimer);
-        onGameStarted();
-      }
+      clearInterval(intervalForTimer);
+      onGameStarted();
+  }
   }
 
   clearInterval(intervalForTimer);
   intervalForTimer =  setInterval(diminuerTime, 1000);
+
 })
 
+
 const onGameStarted = () => {
-  // document.getElementById("state").innerHTML = ``;//On remet l'état à "zéro"
+ // document.getElementById("state").innerHTML = ``;//On remet l'état à "zéro"
+
   socket.emit('start-timer');
 
   socket.emit('start-round');
 
   //recup un mot
   socket.emit('find-word');
+
 }
+
+
 
 //gerer le canvas
 const canvas = () => {
-<<<<<<< HEAD
 
-=======
->>>>>>> 4d2e86767878c65d3af0387b4f5e28c769bc60e7
   //canvas
   let canvas = document.getElementById("Canva2D");
  
+      
+
   var isMouseDown = false;
+  //var body = document.getElementsByTagName("body")[0];
   var ctx = canvas.getContext('2d');
   var linesArray = [];
   var currentSize = 5;
@@ -382,16 +364,9 @@ const canvas = () => {
   });
 
   document.getElementById('bgcolorpicker').addEventListener('change', function () {
-<<<<<<< HEAD
-    ctx.fillStyle = this.value;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    redraw();
-    currentBg = ctx.fillStyle;
-=======
       ctx.fillStyle = this.value;
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       currentBg = ctx.fillStyle;
->>>>>>> 0827d2568e9ba1c7587200c29e413c2f5ffc0968
   });
   document.getElementById('controlSize').addEventListener('change', function () {
     currentSize = this.value;
@@ -399,31 +374,6 @@ const canvas = () => {
   });
   document.getElementById('eraser').addEventListener('click', eraser);
   document.getElementById('clear').addEventListener('click', createCanvas);
-<<<<<<< HEAD
-  //document.getElementById('save').addEventListener('click', save);
-  //document.getElementById('load').addEventListener('click', load);
-  /*document.getElementById('clearCache').addEventListener('click', function() {
-      //localStorage.removeItem("savedCanvas");
-      linesArray = [];
-      console.log("Cache cleared!");
-  });
-  */
-
-
-  function redraw() {
-    for (var i = 1; i < linesArray.length; i++) {
-      ctx.beginPath();
-      ctx.moveTo(linesArray[i - 1].x, linesArray[i - 1].y);
-      ctx.lineWidth = linesArray[i].size;
-      ctx.lineCap = "round";
-      ctx.strokeStyle = linesArray[i].color;
-      ctx.lineTo(linesArray[i].x, linesArray[i].y);
-      ctx.stroke();
-    }
-  }
-
-=======
->>>>>>> 0827d2568e9ba1c7587200c29e413c2f5ffc0968
   
   // DRAWING EVENT HANDLERS
   canvas.addEventListener('mousedown', function () { mousedown(canvas, event); });
@@ -459,19 +409,6 @@ const canvas = () => {
   }
 
   function mousedown(canvas, evt) {
-<<<<<<< HEAD
-    var mousePos = getMousePos(canvas, evt);
-    isMouseDown = true
-    var currentPosition = getMousePos(canvas, evt);
-    ctx.moveTo(currentPosition.x, currentPosition.y)
-    ctx.beginPath();
-    ctx.lineWidth = currentSize;
-    ctx.lineCap = "round";
-    ctx.strokeStyle = currentColor;
-
-      
-
-=======
       var mousePos = getMousePos(canvas, evt);
       isMouseDown = true
       var currentPosition = getMousePos(canvas, evt);
@@ -481,19 +418,9 @@ const canvas = () => {
       ctx.lineCap = "round";
       ctx.strokeStyle = currentColor;
       //sendCanvas(currentPosition.x, currentPosition.y, currentSize, currentColor);
->>>>>>> 0827d2568e9ba1c7587200c29e413c2f5ffc0968
   }
 
   function mousemove(canvas, evt) {
-<<<<<<< HEAD
-
-    if (isMouseDown) {
-      var currentPosition = getMousePos(canvas, evt);
-      ctx.lineTo(currentPosition.x, currentPosition.y)
-      ctx.stroke();
-      store(currentPosition.x, currentPosition.y, currentSize, currentColor);
-    }
-=======
       if (isMouseDown) {
           var currentPosition = getMousePos(canvas, evt);
           ctx.lineTo(currentPosition.x, currentPosition.y)
@@ -501,7 +428,6 @@ const canvas = () => {
           store(currentPosition.x, currentPosition.y, currentSize, currentColor);
           sendCanvas(currentPosition.x, currentPosition.y, currentSize, currentColor);
       }
->>>>>>> 0827d2568e9ba1c7587200c29e413c2f5ffc0968
   }
 
   // STORE DATA
@@ -515,7 +441,10 @@ const canvas = () => {
       linesArray.push(line);
   }
 
+  
+
   // ON MOUSE UP
+
   function mouseup() {
       isMouseDown = false
       store();      
