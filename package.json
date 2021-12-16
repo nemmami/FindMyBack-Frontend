@@ -2,6 +2,9 @@
   "name": "myjscourse-webpack-boilerplate",
   "version": "1.0.0",
   "description": "myJScourse's frontend boilerplate",
+  "engines": {
+    "node": "14.x"
+  },
   "scripts": {
     "dev": "webpack --mode development",
     "build": "webpack --mode production",
