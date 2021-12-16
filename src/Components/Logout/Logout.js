@@ -1,4 +1,4 @@
-import Navbar from "../Navbar/Navbar";
+import Navbar from "../NavBar/Navbar";
 import { Redirect } from "../Router/Router";
 import { removeSessionObject } from "../../utils/session";
 
