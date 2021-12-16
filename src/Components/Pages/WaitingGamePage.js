@@ -14,8 +14,15 @@ let reponseTrouvee = false;
 let dataRoom;
 let actualRound;
 let wordToFind;
-let messageUser;
 let intervalForTimer;
+let leDessineur;
+let gamerScore = [0, 0];
+let gamerRoundPassage = new Array();
+let ordrePassage = 0;
+let winnerGame;
+
+//jouer qui va commencer a jouer
+let messageBeginner;
 
 const socket = io("http://localhost:5000");
 
@@ -97,16 +104,23 @@ function getPlayer() {
       console.log(rooms);
       document.getElementById("usersGameList").innerHTML = '';
       rooms.forEach((e) => {
-        console.log(e);
+        console.log("ici le e", e);
+        console.log("ici avec le get", getSessionObject("user").username);
         document.getElementById("usersGameList").innerHTML +=
           `<li class="list-group-item d-flex justify-content-between">
           <p class="p-0 m-0 flex-grow-1 fw-bold" id="room-dispo">Joueur - ${e}</p>
         </li>`;
       });
 
-      document.getElementById("drawGame").innerHTML = `<h2>Bienvenue dans la liste d'attente. ${rooms.length}/${getSessionObject("room").nbPlayers}</h2>`;
-      setDataRoom(getSessionObject("room").id);
+      
 
+      document.getElementById("drawGame").innerHTML = `<h2>Bienvenue dans la liste d'attente. ${rooms.length}/${getSessionObject("room").nbPlayers}</h2>
+      <br>
+      <h3> Avant de commencer la partie veuillez introduire 'moi' pour savoir qui va commencer <h3>`;
+      setDataRoom(getSessionObject("room").id);
+      //console.log("dataROOM : ", dataRoom);
+
+//console.log("messageBe", messageBeginner);
       if (rooms.length == getSessionObject("room").nbPlayers) { // && rooms.host === getSessionObject("user").username : Pour le bouton appuyer
 
         socket.emit('start-game');
@@ -186,9 +200,9 @@ function inGame() {
 const submitMess = (e) => {
   e.preventDefault();
 
-  messageUser = e.target.elements.msg.value;
-  console.log(messageUser);
-  socket.emit('chat', messageUser);
+  const message = e.target.elements.msg.value;
+  console.log("message send",message);
+  socket.emit('chat', message);
 
   e.target.elements.msg.value = '';
 }
@@ -198,7 +212,12 @@ function outputMessage(msg) {
   let chatWrapper = document.querySelector('.message-container');
         
   messageElement.className = "message";
-  messageElement.innerHTML = `<p class="message-text">  ${msg} </p>`;
+  messageElement.innerHTML = `<p class="message-text">  ${msg.username} : ${msg.txt} </p>`;
+
+  if( msg.txt === "moi"){
+    messageBeginner = msg.username;
+  }
+  console.log(messageBeginner);
 
   chatWrapper.appendChild(messageElement);
   chatWrapper.scrollTo(0, 1000000);
@@ -209,8 +228,8 @@ function outputRightMessage(msg) {
   let chatWrapper = document.querySelector('.message-container');
         
   messageElement.className = "message";
-  messageElement.innerHTML = `<p class="message-text" style="color:green">  ${msg} </p>`;
-  console.log(msg.user);
+  messageElement.innerHTML = `<p class="message-text" style="color:green">  ${msg.username} : ${msg.txt} </p>`;
+  console.log(msg.username);
 
 
 
@@ -222,26 +241,38 @@ const foundRightAnswer =  (msg) => {
   //insertion mot random
   const currentWord = document.querySelector("#currentWord");
       currentWord.innerHTML = " ";
-      currentWord.innerHTML = `<h2> La reponse à été trouvéé par ${msg}</h2>`;  
+      currentWord.innerHTML = `<h2> La reponse à été trouvéé par ${msg.username}</h2>`;  
        // userNameRightAnswer = 
 }
 
 
 socket.on("message", msg =>{
   
-  if(messageUser === wordToFind.word){
+
+  if(wordToFind !== undefined && msg.txt === wordToFind.word ){
 
     outputRightMessage(msg);
     foundRightAnswer(msg);
 
-    //attendre 3 sec avant de lancer un nvx round
-setTimeout(onGameStarted, 3000);
-  }else{
-    outputMessage(msg);
-  }
-  
-  
+    //joueur 1 trouve le mot
+    if(getSessionObject("room").players[0] === msg.username){
+      gamerScore[0] += 1;
 
+    }
+
+    if(getSessionObject("room").players[1] === msg.username){
+      gamerScore[1] += 1;
+    }
+
+    //console.log(gamerScore);
+
+    //attendre 3 sec avant de lancer un nvx round
+    setTimeout(onGameStarted, 3000);
+  }else{
+    
+    outputMessage(msg);
+   
+  }
 })
 
 //gerer la recup d'un mot
@@ -252,11 +283,50 @@ showWord(word);
 
 })
 
+
 const showWord = (data) => {
-  const currentWord = document.querySelector("#currentWord");
+
+ leDessineur =   gamerRoundPassage[ordrePassage]; 
+  console.log("leDessineur", leDessineur);
+
+   
+  if( messageBeginner === getSessionObject("room").players[leDessineur-1] ){
+    const currentWord = document.querySelector("#currentWord");
 
   currentWord.innerHTML = `<h2> ${data.word} </h2>`;
+  }
+
+  if(messageBeginner !== getSessionObject("room").players[leDessineur-1]){
+
+    //mot en _
+    let motCacher = " ";
+    const currentWord = document.querySelector("#currentWord");
+    for (let index = 0; index < data.word.length; index++) {
+      motCacher += " _ ";
+    }
+    console.log("motCacher", motCacher);
+    currentWord.innerHTML = `<h2> ${motCacher}  </h2>`
+  }
+
+  ordrePassage++;
+
 }
+
+
+//gerer score pour endGame
+function endGameScore(data){
+let gagnant = 0;
+if(data[0] > data[1]){
+  gagnant = 0;
+}else{
+  gagnant = 1;
+}
+console.log("iciiiii", getSessionObject("room").players[gagnant]);
+winnerGame = getSessionObject("room").players[gagnant];
+  
+}
+
+
 
 
 
@@ -265,23 +335,34 @@ const showWord = (data) => {
 socket.on("get-round", () =>{
   const round = document.getElementById("round");
   console.log("round actuel : ", actualRound);
+<<<<<<< HEAD
   actualRound++;gi
+=======
+
+
+  
+  actualRound++;
+>>>>>>> a0d90d30d6269271eeef269f861e1081f473204a
   round.innerHTML = `<h2> Round ${actualRound} of ${getSessionObject("room").nbRound} </h2>`
 
   if(actualRound>getSessionObject("room").nbRound){
     console.log("jeu fini");
     //const fin = {"word":"JEU TERMINÉ"};
-    const frr = document.getElementById("drawGame");
-    frr.innerHTML = `<h2>JEU TERMINÉ!</h2>
-    <br><h2>LE VAINQUEUR EST : </h2>
-    <br><h1>${getSessionObject("room").winner}</h1>`;
+
+    //lancer methode, voir qui gagne
+    endGameScore(gamerScore);
+    console.log("enbas la", winnerGame);
+    const end = document.getElementById("screenGame");
+    end.innerHTML = `<h3>JEU TERMINÉ!</h3>
+    <br><h3>LE VAINQUEUR EST : </h3> <h3>${winnerGame}</h3>`;
     //showWord(fin);
   }
+
 })
 
 //gerer le timer
 socket.on('reset-timer', () => {
-  let time = 60;
+  let time = 20;
   const timer = document.querySelector('#timer');
   timer.innerHTML = `<h2> ${time} secondes</h2>`;
   console.log("timer" , time);
@@ -306,7 +387,28 @@ const onGameStarted = () => {
  // document.getElementById("state").innerHTML = ``;//On remet l'état à "zéro"
 
  //lancer le canvas
- canvas();
+  canvas();
+
+  //gerer le round de passage
+function roundPassage(passage){
+  let numPassage = 1;
+    for (let i = 0; i < getSessionObject("room").nbRound; i++) {
+      let num = getSessionObject("room").nbPlayers;
+      //console.log(num)
+      passage[i] = numPassage;
+
+  numPassage++;
+    
+  if(numPassage > num){
+        numPassage = 1;
+      }
+      
+    }
+  }
+  
+  //remplir la table pour les round
+  roundPassage(gamerRoundPassage);
+
   socket.emit('start-timer');
 
   socket.emit('start-round');

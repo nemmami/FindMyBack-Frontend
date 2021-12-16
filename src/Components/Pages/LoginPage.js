@@ -78,6 +78,7 @@ function LoginPage() {
         form.appendChild(errorAlert);
       console.error("LoginPage::error: ", error);
       
+      
     }
   }
 }
