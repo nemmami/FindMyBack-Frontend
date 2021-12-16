@@ -154,6 +154,27 @@ function getPlayer() {
          
           //commencer au round 1
           actualRound = 1 - rooms.length;
+
+          //gerer le round de passage
+          function roundPassage(passage){
+            let numPassage = 1;
+              for (let i = 0; i < getSessionObject("room").nbRound; i++) {
+                let num = getSessionObject("room").nbPlayers;
+                //console.log(num)
+                passage[i] = numPassage;
+          
+            numPassage++;
+              
+            if(numPassage > num){
+                  numPassage = 1;
+                }
+                
+              }
+            }
+            
+            //remplir la table pour les round
+            roundPassage(gamerRoundPassage);
+
           onGameStarted();
       }
 
@@ -257,17 +278,19 @@ socket.on("message", msg =>{
     //joueur 1 trouve le mot
     if(getSessionObject("room").players[0] === msg.username){
       gamerScore[0] += 1;
+      setTimeout(onGameStarted, 3000);
 
     }
 
     if(getSessionObject("room").players[1] === msg.username){
       gamerScore[1] += 1;
+      setTimeout(onGameStarted, 3000);
     }
 
     //console.log(gamerScore);
 
     //attendre 3 sec avant de lancer un nvx round
-    setTimeout(onGameStarted, 3000);
+    //setTimeout(onGameStarted, 3000);
   }else{
     
     outputMessage(msg);
@@ -372,10 +395,8 @@ socket.on('reset-timer', () => {
       onGameStarted();
   }
   }
-
   clearInterval(intervalForTimer);
   intervalForTimer =  setInterval(diminuerTime, 1000);
-
 })
 
 
@@ -385,25 +406,8 @@ const onGameStarted = () => {
  //lancer le canvas
   canvas();
 
-  //gerer le round de passage
-function roundPassage(passage){
-  let numPassage = 1;
-    for (let i = 0; i < getSessionObject("room").nbRound; i++) {
-      let num = getSessionObject("room").nbPlayers;
-      //console.log(num)
-      passage[i] = numPassage;
-
-  numPassage++;
-    
-  if(numPassage > num){
-        numPassage = 1;
-      }
-      
-    }
-  }
   
-  //remplir la table pour les round
-  roundPassage(gamerRoundPassage);
+
 
   socket.emit('start-timer');
 
