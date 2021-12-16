@@ -2,10 +2,7 @@ import { Redirect } from "../Router/Router";
 import Navbar from "../NavBar/Navbar";
 import { io } from "socket.io-client";
 import { getSessionObject, setSessionObject } from "../../utils/session";
-<<<<<<< HEAD
-=======
 //import imgEnd from "../../img/End.png";
->>>>>>> a5d01f1e38399ebac4da7e8adbc2b2ba36ca735e
 /**
  * View the Login form :
  * render a login page into the #page div (formerly login function)
@@ -268,7 +265,7 @@ const showWord = (data) => {
 socket.on("get-round", () =>{
   const round = document.getElementById("round");
   console.log("round actuel : ", actualRound);
-  actualRound++;
+  actualRound++;gi
   round.innerHTML = `<h2> Round ${actualRound} of ${getSessionObject("room").nbRound} </h2>`
 
   if(actualRound>getSessionObject("room").nbRound){
