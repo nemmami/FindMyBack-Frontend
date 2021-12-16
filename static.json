@@ -11,7 +11,7 @@
     },
     "proxies": {
     "/api/": {
-    "origin": "https://findmydraw.herokuapp.com/api/"
+    "origin": "https://findmydraw.herokuapp.com"
     }
     }
 }
