@@ -12,6 +12,7 @@ let waitingPage;
 let gamePage;
 let reponseTrouvee = false;
 let dataRoom;
+let tab = [];
 let actualRound;
 let wordToFind;
 let messageUser;
@@ -82,7 +83,8 @@ const WaitingGamePage = () => {
   // reset #page div
   const pageDiv = document.querySelector("#page");
   pageDiv.innerHTML = waitingPage;
-  getPlayer(); // waiting room
+  getPlayer(); // waiting room  
+  console.log(tab);
   inGame(); //game page
 }
 
@@ -96,8 +98,17 @@ function getPlayer() {
     socket.on("playersList", ({ rooms }) => {
       console.log(rooms);
       document.getElementById("usersGameList").innerHTML = '';
+      tab = [];
       rooms.forEach((e) => {
         console.log(e);
+
+        var pos = {
+          username: e,
+          turn: false,
+          point: 0
+        };
+        tab.push(pos); // on crée le classement ici.
+
         document.getElementById("usersGameList").innerHTML +=
           `<li class="list-group-item d-flex justify-content-between">
           <p class="p-0 m-0 flex-grow-1 fw-bold" id="room-dispo">Joueur - ${e}</p>
@@ -135,14 +146,11 @@ function getPlayer() {
           </div>
           <div class="col-lg-2">
           </div>`;
-
-
-         
-          //commencer au round 1
-          actualRound = 1 - rooms.length;
-          onGameStarted();
+        
+        //commencer au round 1
+        actualRound = 1 - rooms.length;
+        onGameStarted();
       }
-
     });
   }
 }
@@ -179,7 +187,6 @@ async function setDataRoom(id) {
 function inGame() {
   let chatForm = document.getElementById('formMsg');
   chatForm.addEventListener('submit', submitMess);
-
 }
 
 //gerer le chat
@@ -211,9 +218,6 @@ function outputRightMessage(msg) {
   messageElement.className = "message";
   messageElement.innerHTML = `<p class="message-text" style="color:green">  ${msg} </p>`;
   console.log(msg.user);
-
-
-
   chatWrapper.appendChild(messageElement);
   chatWrapper.scrollTo(0, 1000000);
 }
@@ -221,27 +225,19 @@ function outputRightMessage(msg) {
 const foundRightAnswer =  (msg) => {
   //insertion mot random
   const currentWord = document.querySelector("#currentWord");
-      currentWord.innerHTML = " ";
-      currentWord.innerHTML = `<h2> La reponse à été trouvéé par ${msg}</h2>`;  
-       // userNameRightAnswer = 
+  currentWord.innerHTML = " ";
+  currentWord.innerHTML = `<h2> La reponse à été trouvéé par ${msg}</h2>`;   
 }
 
-
 socket.on("message", msg =>{
-  
   if(messageUser === wordToFind.word){
-
     outputRightMessage(msg);
     foundRightAnswer(msg);
-
     //attendre 3 sec avant de lancer un nvx round
-setTimeout(onGameStarted, 3000);
-  }else{
+    setTimeout(onGameStarted, 3000);
+  } else {
     outputMessage(msg);
   }
-  
-  
-
 })
 
 //gerer la recup d'un mot
@@ -249,20 +245,15 @@ socket.on("get-word", ({word}) =>{
 console.log("mot à trouver:", word.word);
 wordToFind = word;
 showWord(word);
-
-})
+});
 
 const showWord = (data) => {
   const currentWord = document.querySelector("#currentWord");
-
   currentWord.innerHTML = `<h2> ${data.word} </h2>`;
 }
 
-
-
-
 //gerer les round
-socket.on("get-round", () =>{
+socket.on("get-round", () => {
   const round = document.getElementById("round");
   console.log("round actuel : ", actualRound);
   actualRound++;
@@ -275,9 +266,10 @@ socket.on("get-round", () =>{
     frr.innerHTML = `<h2>JEU TERMINÉ!</h2>
     <br><h2>LE VAINQUEUR EST : </h2>
     <br><h1>${getSessionObject("room").winner}</h1>`;
-    //showWord(fin);
+    console.log(tab);
+    setTimeout(() => Redirect("/"), 5000);
   }
-})
+});
 
 //gerer le timer
 socket.on('reset-timer', () => {
@@ -286,27 +278,22 @@ socket.on('reset-timer', () => {
   timer.innerHTML = `<h2> ${time} secondes</h2>`;
   console.log("timer" , time);
 
-  function diminuerTime(){
+  function diminuerTime() {
       timer.innerHTML = `<h2> ${time} secondes</h2>`;
       time--;
 
-      if(time < 0){
-      clearInterval(intervalForTimer);
-      onGameStarted();
+      if(time < 0) {
+        clearInterval(intervalForTimer);
+        onGameStarted();
+      }
   }
-  }
-
   clearInterval(intervalForTimer);
   intervalForTimer =  setInterval(diminuerTime, 1000);
-
-})
-
+});
 
 const onGameStarted = () => {
- // document.getElementById("state").innerHTML = ``;//On remet l'état à "zéro"
-
- //lancer le canvas
- canvas();
+  //lancer le canvas
+  canvas();
   socket.emit('start-timer');
 
   socket.emit('start-round');
@@ -316,15 +303,10 @@ const onGameStarted = () => {
 
 }
 
-
-
 //gerer le canvas
 const canvas = () => {
-
   //canvas
   let canvas = document.getElementById("Canva2D");
- 
-      
 
   var isMouseDown = false;
   //var body = document.getElementsByTagName("body")[0];
@@ -355,7 +337,6 @@ const canvas = () => {
       size: sizePos,
       color: colorPos
     };
-
     socket.emit('mouse', (data));
   }
 
@@ -368,10 +349,12 @@ const canvas = () => {
       ctx.fillRect(0, 0, canvas.width, canvas.height);
       currentBg = ctx.fillStyle;
   });
+
   document.getElementById('controlSize').addEventListener('change', function () {
     currentSize = this.value;
     document.getElementById("showSize").innerHTML = this.value;
   });
+
   document.getElementById('eraser').addEventListener('click', eraser);
   document.getElementById('clear').addEventListener('click', createCanvas);
   
@@ -381,9 +364,7 @@ const canvas = () => {
   canvas.addEventListener('mouseup', mouseup);
 
   // CREATE CANVAS
-
   function createCanvas() {
-
     canvas.width = 1100;
     canvas.height = 400;
     canvas.style.zIndex = 8;
@@ -441,10 +422,7 @@ const canvas = () => {
       linesArray.push(line);
   }
 
-  
-
   // ON MOUSE UP
-
   function mouseup() {
       isMouseDown = false
       store();      
