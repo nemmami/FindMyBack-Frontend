@@ -1,7 +1,6 @@
-import { Redirect } from "../Router/Router";
-import Navbar from "../NavBar/Navbar";
 import { io } from "socket.io-client";
 import { getSessionObject, setSessionObject } from "../../utils/session";
+import { Redirect } from "../Router/Router";
 //import imgEnd from "../../img/End.png";
 /**
  * View the Login form :
@@ -9,10 +8,7 @@ import { getSessionObject, setSessionObject } from "../../utils/session";
  */
 
 let waitingPage;
-let gamePage;
-let reponseTrouvee = false;
 let dataRoom;
-let tab = [];
 let actualRound;
 let wordToFind;
 let intervalForTimer;
@@ -29,82 +25,78 @@ const socket = io("http://localhost:5000");
 
 waitingPage = `
 <div id="screenGame">
-        <div class="row" id="headerGame">
-            <div class="col-lg-3" id ="timer">xx sec</div>
-            <div class="col-lg-5 text-center" id="currentWord">MOT A DEVINER</div>
-            <div class="col-lg-3" id ="round"></div>
-        </div>
-
-        <div class="row" id="bottomGame">
-            <div class="col-lg-2" id="settingGame">
-               <div class="col-lg-2" id="usersGame">
-               <h3>Players</h3>
-               <br>
-               <div id="usersGameList"></div>
-               </div>
-        </div>
-            <div class="col-lg-8" id="drawGame">
-
-            </div>
-            <div class="col-lg-2" id="chatGame">
-                <div class="message-container"></div> 
-                   <div class="wrapper"> 
-                   <form id="formMsg">
-                        <input id="msg" type="text" >
-                       <!-- <input type="submit" value="Envoyer"> -->
-                    </form>
-                  </div>
-                </div>
-            </div>
-            <div class="row" id="spec">
-                    <div class="col-lg-2">
-                    </div>     
-                    <div class="col-lg-2">
-                        <h3>Color</h3>
-                        <input type="color" id="colorpicker" value="#000000" class="colorpicker">
-                    </div>
-   
-                    <div class="col-lg-2">
-                        <h3>Background color</h3>
-                        <input type="color" value="#ffffff" id="bgcolorpicker" class="colorpicker">
-                    </div>
-            
-                    <div class="col-lg-2">
-                        <h3>Tools(outils)</h3>
-                        <button id="eraser" class="btn btn-default">Gomme<span class="glyphicon glyphicon-erase" aria-hidden="true"></span></button>
-                        <button id="clear" class="btn btn-danger">All clear <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button>
-                    </div>
-            
-                    <div class="col-lg-2">
-                        <h3>Size <span id="showSize">5</span></h3>
-                        <input type="range" min="1" max="50" value="5" step="1" id="controlSize">
-                    </div>
-                    <div class="col-lg-2">
-                    </div>
-            </div>
+  <div class="row" id="headerGame">
+    <div class="col-lg-3" id ="timer"></div>
+    <div class="col-lg-5 text-center" id="currentWord"></div>
+    <div class="col-lg-3" id ="round"></div>
   </div>
-            `;
+
+  <div class="row" id="bottomGame">
+    <div class="col-lg-2" id="settingGame">
+    <div class="col-lg-2" id="usersGame">
+      <h3>Players</h3>
+      <br>
+      <div id="usersGameList"></div>
+      </div>
+    </div>
+    <div class="col-lg-8" id="drawGame"></div>
+      <div class="col-lg-2" id="chatGame">
+        <div class="message-container"></div> 
+        <div class="wrapper"> 
+          <form id="formMsg">
+            <input id="msg" type="text" >
+            <!-- <input type="submit" value="Envoyer"> -->
+          </form>
+        </div>
+      </div>
+  </div>
+
+  <div class="row" id="spec">
+    <div class="col-lg-2"></div>     
+    <div class="col-lg-2">
+      <h3>Color</h3>
+      <input type="color" id="colorpicker" value="#000000" class="colorpicker">
+    </div>
+
+    <div class="col-lg-2">
+      <h3>Background color</h3>
+      <input type="color" value="#ffffff" id="bgcolorpicker" class="colorpicker">
+    </div>
+            
+    <div class="col-lg-2">
+      <h3>Tools(outils)</h3>
+      <button id="eraser" class="btn btn-default">Gomme<span class="glyphicon glyphicon-erase" aria-hidden="true"></span></button>
+      <button id="clear" class="btn btn-danger">All clear <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button>
+    </div>
+            
+    <div class="col-lg-2">
+      <h3>Size <span id="showSize">5</span></h3>
+      <input type="range" min="1" max="50" value="5" step="1" id="controlSize">
+    </div>
+    <div class="col-lg-2"></div>
+  </div>
+</div>`;
 
 const WaitingGamePage = () => {
   // reset #page div
   const pageDiv = document.querySelector("#page");
   pageDiv.innerHTML = waitingPage;
   getPlayer(); // waiting room
-  console.log(tab);
   inGame(); //game page
 };
 
 function getPlayer() {
   if (getSessionObject("room") !== undefined) {
-    socket.emit("joinRoom", {
+
+    socket.emit("joinRoom", { // le joueur rejoins la room
       id: getSessionObject("room").id,
       username: getSessionObject("user").username,
     });
 
-    socket.on("playersList", ({ rooms }) => {
+    socket.on("playersList", ({ rooms }) => { // on affiche les joueurs present dans la room
       console.log(rooms);
       document.getElementById("usersGameList").innerHTML = "";
-      tab = [];
+
       rooms.forEach((e) => {
         console.log("ici le e", e);
         console.log("ici avec le get", getSessionObject("user").username);
@@ -115,47 +107,38 @@ function getPlayer() {
         </li>`;
       });
 
-      document.getElementById(
-        "drawGame"
-      ).innerHTML = `<h2>Bienvenue dans la liste d'attente. ${rooms.length}/${
-        getSessionObject("room").nbPlayers
-      }</h2>
+      document.getElementById("drawGame").innerHTML = 
+      `<h2>Bienvenue dans la liste d'attente. ${rooms.length}/${getSessionObject("room").nbPlayers}</h2>
       <br>
       <h3> Avant de commencer la partie veuillez introduire 'moi' pour savoir qui va commencer <h3>`;
-      setDataRoom(getSessionObject("room").id);
-      //console.log("dataROOM : ", dataRoom);
 
-      //console.log("messageBe", messageBeginner);
-      if (rooms.length == getSessionObject("room").nbPlayers) {
-        // && rooms.host === getSessionObject("user").username : Pour le bouton appuyer
-
+      setDataRoom(getSessionObject("room").id); // on met a jour la room en memoire
+      
+      if (rooms.length == getSessionObject("room").nbPlayers) { // on lance la partie
         socket.emit("start-game");
 
-        //ajout du canvas
-        document.getElementById(
-          "drawGame"
-        ).innerHTML = `<canvas id="Canva2D" class="border border border-dark"></canvas>`;
-        document.getElementById("spec").innerHTML = `<div class="col-lg-2">
-          </div>     
-          <div class="col-lg-2">
-              <h3>Color</h3>
-              <input type="color" id="colorpicker" value="#000000" class="colorpicker">
-          </div>
-          <div class="col-lg-2">
-              <h3>Background color</h3>
-              <input type="color" value="#ffffff" id="bgcolorpicker" class="colorpicker">
-          </div>
-          <div class="col-lg-2">
-              <h3>Tools(outils)</h3>
-              <button id="eraser" class="btn btn-default">Gomme<span class="glyphicon glyphicon-erase" aria-hidden="true"></span></button>
-              <button id="clear" class="btn btn-danger">All clear <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button>
-          </div>
-          <div class="col-lg-2">
-              <h3>Size <span id="showSize">5</span></h3>
-              <input type="range" min="1" max="50" value="5" step="1" id="controlSize">
-          </div>
-          <div class="col-lg-2">
-          </div>`;
+        // on ajoute le canvas
+        document.getElementById("drawGame").innerHTML = `<canvas id="Canva2D" class="border border border-dark"></canvas>`;
+        document.getElementById("spec").innerHTML = 
+        `<div class="col-lg-2"></div>     
+        <div class="col-lg-2">
+          <h3>Color</h3>
+          <input type="color" id="colorpicker" value="#000000" class="colorpicker">
+        </div>
+        <div class="col-lg-2">
+          <h3>Background color</h3>
+          <input type="color" value="#ffffff" id="bgcolorpicker" class="colorpicker">
+        </div>
+        <div class="col-lg-2">
+          <h3>Tools(outils)</h3>
+          <button id="eraser" class="btn btn-default">Gomme<span class="glyphicon glyphicon-erase" aria-hidden="true"></span></button>
+          <button id="clear" class="btn btn-danger">All clear <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button>
+        </div>
+        <div class="col-lg-2">
+          <h3>Size <span id="showSize">5</span></h3>
+          <input type="range" min="1" max="50" value="5" step="1" id="controlSize">
+        </div>
+        <div class="col-lg-2"></div>`;
 
         //commencer au round 1
         actualRound = 1 - rooms.length;
@@ -165,21 +148,19 @@ function getPlayer() {
           let numPassage = 1;
           for (let i = 0; i < getSessionObject("room").nbRound; i++) {
             let num = getSessionObject("room").nbPlayers;
-            //console.log(num)
             passage[i] = numPassage;
 
             numPassage++;
-
             if (numPassage > num) {
               numPassage = 1;
             }
           }
         }
 
-        //remplir la table pour les round
+        // remplir la table pour les round
         roundPassage(gamerRoundPassage);
 
-        onGameStarted();
+        onGameStarted(); // on lance la partie
       }
     });
   }
@@ -258,12 +239,11 @@ function outputRightMessage(msg) {
   chatWrapper.scrollTo(0, 1000000);
 }
 
-const foundRightAnswer = (msg) => {
+const foundRightAnswer = (msg) => { // quand un joueur devine le bon mot
   //insertion mot random
   const currentWord = document.querySelector("#currentWord");
   currentWord.innerHTML = " ";
   currentWord.innerHTML = `<h2> La reponse à été trouvéé par ${msg.username}</h2>`;
-  // userNameRightAnswer =
 };
 
 socket.on("message", (msg) => {
@@ -282,16 +262,12 @@ socket.on("message", (msg) => {
       setTimeout(onGameStarted, 3000);
     }
 
-    //console.log(gamerScore);
-
-    //attendre 3 sec avant de lancer un nvx round
-    //setTimeout(onGameStarted, 3000);
   } else {
     outputMessage(msg);
   }
 });
 
-//gerer la recup d'un mot
+//gerer la recuperation d'un mot
 socket.on("get-word", ({ word }) => {
   console.log("mot à trouver:", word.word);
   wordToFind = word;
@@ -339,27 +315,30 @@ socket.on("get-round", () => {
   const round = document.getElementById("round");
   console.log("round actuel : ", actualRound);
   actualRound++;
-  round.innerHTML = `<h2> Round ${actualRound} of ${
-    getSessionObject("room").nbRound
-  } </h2>`;
+  round.innerHTML = `<h2> Round ${actualRound} of ${getSessionObject("room").nbRound} </h2>`;
 
   if (actualRound > getSessionObject("room").nbRound) {
     console.log("jeu fini");
-    //const fin = {"word":"JEU TERMINÉ"};
 
     //lancer methode, voir qui gagne
     endGameScore(gamerScore);
     console.log("enbas la", winnerGame);
     const end = document.getElementById("screenGame");
-    end.innerHTML = ` <div class="container">
-    <div class="row">
+    end.innerHTML = 
+    `<div class="container">
+      <div class="row">
         <div class="col-lg-2"></div>
-        <div class="col-lg-8 text-center" id="endGamePage"><h1> JEU TERMINÉ! </h1> <br><h3></h3> LE VAINQUEUR EST ${winnerGame} </h3></div>
+        <div class="col-lg-8 text-center" id="endGamePage">
+          <h1>Jeu terminé!</h1>
+          <br>
+          <h3>Le vainqueur est ${winnerGame}</h3>
+        </div>
         <div class="col-lg-2"></div>
-    </div>
+      </div>
     </div>`;
-    //showWord(fin);
+    setTimeout(Redirect("/"), 5000);
   }
+
 });
 
 //gerer le timer
@@ -378,6 +357,7 @@ socket.on("reset-timer", () => {
       onGameStarted();
     }
   }
+
   clearInterval(intervalForTimer);
   intervalForTimer = setInterval(diminuerTime, 1000);
 });
@@ -411,10 +391,12 @@ const canvas = () => {
 
   createCanvas();
 
-  socket.on("mouse", (data) => {
+  socket.on("mouse", (data) => { // on recupere ce que l'autre joueur dessine sur le canvas
     console.log(
       "Got: " + data.x + " " + data.y + " " + data.size + " " + data.color
     );
+    
+    // on affcihe ici le dessin de l'autre joueur
     ctx.beginPath();
     ctx.lineWidth = data.size;
     ctx.lineCap = "round";
@@ -424,7 +406,7 @@ const canvas = () => {
     ctx.stroke();
   });
 
-  function sendCanvas(xPos, yPos, sizePos, colorPos) {
+  function sendCanvas(xPos, yPos, sizePos, colorPos) { // on envoie son dessin à l'autre joueur
     console.log("Send: " + xPos + " " + yPos + " " + sizePos + " " + colorPos);
     var data = {
       x: xPos,
@@ -435,26 +417,20 @@ const canvas = () => {
     socket.emit("mouse", data);
   }
 
-  document
-    .getElementById("colorpicker")
-    .addEventListener("change", function () {
-      currentColor = this.value;
-    });
+  document.getElementById("colorpicker").addEventListener("change", function () {
+    currentColor = this.value;
+  });
 
-  document
-    .getElementById("bgcolorpicker")
-    .addEventListener("change", function () {
-      ctx.fillStyle = this.value;
-      ctx.fillRect(0, 0, canvas.width, canvas.height);
-      currentBg = ctx.fillStyle;
-    });
+  document.getElementById("bgcolorpicker").addEventListener("change", function () {
+    ctx.fillStyle = this.value;
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+    currentBg = ctx.fillStyle;
+  });
 
-  document
-    .getElementById("controlSize")
-    .addEventListener("change", function () {
-      currentSize = this.value;
-      document.getElementById("showSize").innerHTML = this.value;
-    });
+  document.getElementById("controlSize").addEventListener("change", function () {
+    currentSize = this.value;
+    document.getElementById("showSize").innerHTML = this.value;
+  });
 
   document.getElementById("eraser").addEventListener("click", eraser);
   document.getElementById("clear").addEventListener("click", createCanvas);
@@ -463,9 +439,11 @@ const canvas = () => {
   canvas.addEventListener("mousedown", function () {
     mousedown(canvas, event);
   });
+
   canvas.addEventListener("mousemove", function () {
     mousemove(canvas, event);
   });
+
   canvas.addEventListener("mouseup", mouseup);
 
   // CREATE CANVAS
@@ -473,8 +451,6 @@ const canvas = () => {
     canvas.width = 1100;
     canvas.height = 400;
     canvas.style.zIndex = 8;
-
-    // canvas.style.position = "absolute";
     canvas.style.border = "1px solid";
     ctx.fillStyle = currentBg;
     ctx.fillRect(0, 0, canvas.width, canvas.height);
@@ -503,7 +479,6 @@ const canvas = () => {
     ctx.lineWidth = currentSize;
     ctx.lineCap = "round";
     ctx.strokeStyle = currentColor;
-    //sendCanvas(currentPosition.x, currentPosition.y, currentSize, currentColor);
   }
 
   function mousemove(canvas, evt) {
@@ -512,12 +487,7 @@ const canvas = () => {
       ctx.lineTo(currentPosition.x, currentPosition.y);
       ctx.stroke();
       store(currentPosition.x, currentPosition.y, currentSize, currentColor);
-      sendCanvas(
-        currentPosition.x,
-        currentPosition.y,
-        currentSize,
-        currentColor
-      );
+      sendCanvas(currentPosition.x,currentPosition.y,currentSize,currentColor);
     }
   }
 

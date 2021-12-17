@@ -8,20 +8,18 @@ import Navbar from "../NavBar/Navbar";
  let registerPage;
 
  registerPage = `
- <div class="row" id="homePage">
- <div class="col"></div>
- <div class="col text-center">
- <form class="box">
-   <h1> Register</h1>
-   <input type="text" id="username" placeholder="Username" required = true>
-   <input type="password" id="password" placeholder="Password">
-   <input type="submit" value="Login">
- </form>
- 
- </div>
- <div class="col"></div>
- </div>
- `;
+<div class="row" id="homePage">
+  <div class="col"></div>
+  <div class="col text-center">
+    <form class="box">
+      <h1> Register</h1>
+      <input type="text" id="username" placeholder="Username" required = true>
+      <input type="password" id="password" placeholder="Password">
+      <input type="submit" value="Login">
+    </form>
+  </div>
+  <div class="col"></div>
+</div>`;
 
 function RegisterPage() {
   // reset #page div
@@ -56,6 +54,7 @@ function RegisterPage() {
       }
       const user = await response.json(); // json() returns a promise => we wait for the data
       console.log("user authenticated", user);
+      
       // save the user into the localStorage
       setSessionObject("user", user);
 

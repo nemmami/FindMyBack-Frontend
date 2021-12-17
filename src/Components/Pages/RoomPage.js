@@ -1,24 +1,21 @@
 import { Redirect } from "../Router/Router";
-import Navbar from "../NavBar/Navbar";
-import { io } from "socket.io-client";
 import { getSessionObject, setSessionObject } from "../../utils/session";
-import { removeSessionObject } from "../../utils/session";
 
 let roomPage;
 // quand on crée/rejoins une room
 roomPage = `
 <div class="row" id="homePage">
-<div class="col"></div>
-<div></div>
-<div class="col text-center">
+  <div class="col"></div>
+  <div></div>
+  <div class="col text-center">
     <form class="box" id="create">
-        <h1>Creer une partie</h1>
-        <input type="number" id="round" placeholder="Round : 2-10" required = true min="2" max="10">
-        <input type="number" id="players" require=true value="2" min="2" max="2">
-        <input type="submit" value="Créer">
+      <h1>Creer une partie</h1>
+      <input type="number" id="round" placeholder="Round : 2-10" required = true min="2" max="10">
+      <input type="number" id="players" require=true value="2" min="2" max="2">
+      <input type="submit" value="Créer">
     </form>
- </div>
- <div class="col"></div>
+  </div>
+  <div class="col"></div>
 </div>`;
 
 
@@ -83,7 +80,5 @@ function RoomPage() {
     }
   }
 }
-
-
 
 export default RoomPage;

@@ -1,17 +1,11 @@
 import { Redirect } from "../Router/Router";
-import Navbar from "../NavBar/Navbar";
-import { io } from "socket.io-client";
 import { getSessionObject, setSessionObject } from "../../utils/session";
-import { removeSessionObject } from "../../utils/session";
-
 
 let joinRoomPage;
 // quand on crée/rejoins une room
 function JoinRoomPage() {
   if (!getSessionObject("user")) return Redirect("/login"); // si user pas connecté
 
-  // reset #page div
-  //removeSessionObject("allRoom");
   getAllRooms();
   if (getSessionObject("allRoom") !== undefined && getSessionObject("user") !== undefined) {
     const rooms = getSessionObject("allRoom");
@@ -24,7 +18,7 @@ function JoinRoomPage() {
                               <p class="p-0 m-0 flex-grow-1 fw-bold" id="room-dispo">Salon crée par ${room.host} - ${room.id}</p>
                               <input type="submit" class="btn btn-sm btn-success join-room" id="inputJoin" data="${room.id}" value="${room.id}">
                             </li>
-                      </form>`;
+                           </form>`;
         }
       });
     }

@@ -1,6 +1,6 @@
 import { Redirect } from "../Router/Router";
 import Navbar from "../NavBar/Navbar";
-import { getSessionObject, setSessionObject } from "../../utils/session";
+import { setSessionObject } from "../../utils/session";
 /**
  * View the Login form :
  * render a login page into the #page div (formerly login function)
@@ -9,19 +9,17 @@ let loginPage;
 
 loginPage = `
 <div class="row" id="homePage">
-<div class="col"></div>
-<div class="col text-center">
-<form class="box">
-  <h1> Login</h1>
-  <input type="text" id="username" placeholder="Username" required = true>
-  <input type="password" id="password" placeholder="Password">
-  <input type="submit" value="Login">
-</form>
-
-</div>
-<div class="col"></div>
-</div>
-`;
+  <div class="col"></div>
+  <div class="col text-center">
+    <form class="box">
+      <h1> Login</h1>
+      <input type="text" id="username" placeholder="Username" required = true>
+      <input type="password" id="password" placeholder="Password">
+      <input type="submit" value="Login">
+    </form>
+  </div>
+  <div class="col"></div>
+</div>`;
 
 function LoginPage() {
   // reset #page div
@@ -65,20 +63,18 @@ function LoginPage() {
       // call the HomePage via the Router
       Redirect("/");
     } catch (error) {
-        const errorAlert = document.createElement("div");
-        errorAlert.className = "alert alert-danger";
-        errorAlert.role = "alert";
-        const message = document.createElement("a");
+      const errorAlert = document.createElement("div");
+      errorAlert.className = "alert alert-danger";
+      errorAlert.role = "alert";
+      const message = document.createElement("a");
          
-        if(error.status = 401){
-          message.innerHTML = "username or password is incorect";
-        }
+      if(error.status = 401){
+        message.innerHTML = "username or password is incorect";
+      }
         
-        errorAlert.appendChild(message);
-        form.appendChild(errorAlert);
+      errorAlert.appendChild(message);
+      form.appendChild(errorAlert);
       console.error("LoginPage::error: ", error);
-      
-      
     }
   }
 }
