@@ -10,9 +10,12 @@ import './stylesheets/main.css';
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./stylesheets/main.css"
 import NavBar from "./Components/NavBar/NavBar";
+import Footer from "./Components/Footer/Footer"
 import { Router } from "./Components/Router/Router";
 
 
 NavBar();
+
+Footer();
 
 Router();

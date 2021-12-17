@@ -163,17 +163,17 @@ function getPlayer() {
                 //console.log(num)
                 passage[i] = numPassage;
           
-            numPassage++;
+                numPassage++;
               
-            if(numPassage > num){
+                if(numPassage > num){
                   numPassage = 1;
                 }
                 
               }
-            }
+          }
             
-            //remplir la table pour les round
-            roundPassage(gamerRoundPassage);
+          //remplir la table pour les round
+          roundPassage(gamerRoundPassage);
 
           onGameStarted();
       }
@@ -372,9 +372,16 @@ socket.on("get-round", () =>{
     endGameScore(gamerScore);
     console.log("enbas la", winnerGame);
     const end = document.getElementById("screenGame");
-    end.innerHTML = `<h3>JEU TERMINÉ!</h3>
-    <br><h3>LE VAINQUEUR EST : </h3> <h3>${winnerGame}</h3>`;
+    end.innerHTML = ` <div class="container">
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8 text-center" id="endGamePage"><h1> JEU TERMINÉ! </h1> <br><h3></h3> LE VAINQUEUR EST ${winnerGame} </h3></div>
+        <div class="col-lg-2"></div>
+    </div>
+  </div>`;
     //showWord(fin);
+
+   
   }
 
 })
@@ -391,22 +398,20 @@ socket.on('reset-timer', () => {
       time--;
 
       if(time < 0){
-      clearInterval(intervalForTimer);
-      onGameStarted();
-  }
+        clearInterval(intervalForTimer);
+        onGameStarted();
+      }
   }
   clearInterval(intervalForTimer);
   intervalForTimer =  setInterval(diminuerTime, 1000);
 })
 
 
-const onGameStarted = () => {
+function onGameStarted(){
  // document.getElementById("state").innerHTML = ``;//On remet l'état à "zéro"
 
  //lancer le canvas
   canvas();
-
-  
 
 
   socket.emit('start-timer');

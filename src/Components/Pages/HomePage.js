@@ -1,4 +1,4 @@
-import { Navbar as BootstrapNavbar } from "bootstrap";
+import { Redirect } from "../Router/Router"
 import logoNavbar from "../../img/FindMyDraw.png";
 import { getSessionObject } from "../../utils/session";
 
@@ -12,11 +12,11 @@ const HomePage = () => {
     homePage = `
     <div class="row" id="homePage">
       <div class="col"></div>
-      <div class="col text-center">
-        <img id="logo" class="rounded mx-auto d-block" src="${logoNavbar}" alt="logo">
-        <h1 id="titleHomePage" class="display-2 mb-2 mb-md-5 text-center">Let's Find The Drawings</h1>
-        <button type="button" id="playButton" class="btn btn-primary homepage_play_button mt-5" href="#" data-uri="/" onclick="document.location.href='/login'">Jouer</button>
-      </div>
+        <div class="col text-center">
+          <img id="logo" class="rounded mx-auto d-block" src="${logoNavbar}" alt="logo">
+          <h1 id="titleHomePage" class="display-2 mb-2 mb-md-5 text-center">Let's Find The Drawings</h1>
+          <button type="button" id="playButton" class="btn btn-primary homepage_play_button mt-5" href="#" data-uri="/login" ">Jouer</button>
+        </div>
       <div class="col"></div>
     </div>`;
   } else {
@@ -26,12 +26,20 @@ const HomePage = () => {
       <div class="col text-center">
         <img id="logo" class="rounded mx-auto d-block" src="${logoNavbar}" alt="logo">
         <h1 id="titleHomePage" class="display-2 mb-2 mb-md-5 text-center">Let's Find The Drawings</h1>
-        <button type="button" class="btn btn-primary homepage_play_button mt-5" href="#" data-uri="/room" onclick="document.location.href='/room'">Jouer</button>
+        <button type="button" class="btn btn-primary homepage_play_button mt-5" href="#" data-uri="/room"">Créer une partie</button>
+        <button type="button" class="btn btn-primary homepage_play_button mt-5" href="#" data-uri="/joinRoom"">Rejoindre une partie</button>
       </div>
       <div class="col"></div>
     </div>`;
   }
   page.innerHTML=homePage;
+
+  //faire fonctionner le redirect
+  page.querySelectorAll("button").forEach(button=>{
+    button.addEventListener("click",(e)=>{
+        Redirect(e.target.dataset.uri);
+    })
+  })
 }
 
 const colors = [

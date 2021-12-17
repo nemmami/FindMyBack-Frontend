@@ -30,7 +30,17 @@ function JoinRoomPage() {
     }
   }
   const pageDiv = document.querySelector("#page");
-  pageDiv.innerHTML = joinRoomPage;
+
+  let pageJoin = `
+  <div class="container">
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8 text-center" id="formJoin"><h1> Rejoignez une partie</h1> <br> ${joinRoomPage}</div>
+        <div class="col-lg-2"></div>
+    </div>
+  </div> `;
+  pageDiv.innerHTML = pageJoin;
+
 
   let formJoin = document.getElementById("join");
   formJoin.addEventListener("submit", onSubmitFormJoin);
