@@ -14,7 +14,7 @@ roomPage = `
     <form class="box" id="create">
         <h1>Creer une partie</h1>
         <input type="number" id="round" placeholder="Round : 2-10" required = true min="2" max="10">
-        <input type="number" id="players" placeholder="Players : 2-5" required = true min="2" max="5">
+        <input type="number" id="players" require=true value="2" min="2" max="2">
         <input type="submit" value="Créer">
     </form>
  </div>
