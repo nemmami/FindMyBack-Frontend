@@ -37,14 +37,11 @@ const Navbar = () => {
     <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
 		  <ul class="navbar-nav">
 			<li class="nav-item">
-      <a class="nav-link" href="#" data-uri="/login">Login</a>
+      <a class="nav-link" href="#" data-uri="/login">Se connecter</a>
 			</li>
 			<li class="nav-item">
-      <a class="nav-link" href="#" data-uri="/register">Register</a>
-			</li>		
-      <li class="nav-item">
-      <a class="nav-link" href="#" data-uri="/contact">Contact</a>
-			</li>		
+      <a class="nav-link" href="#" data-uri="/register">S'inscrire</a>
+			</li>			
 		  </ul>		  
 		</div>
   </div>
@@ -86,11 +83,8 @@ const Navbar = () => {
               <a class="nav-item nav-link disabled" href="#">${user.username}</a>
               </li>
       <li class="nav-item">
-          <a class="nav-link" href="#" data-uri="/logout">Logout</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" href="#" data-uri="/contact">Contact</a>
-      </li>	        
+          <a class="nav-link" href="#" data-uri="/logout">Se deconnecter</a>
+      </li>      
 		  </ul>		  
 		</div>
   </div>
