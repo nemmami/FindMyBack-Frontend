@@ -358,14 +358,7 @@ winnerGame = getSessionObject("room").players[gagnant];
 socket.on("get-round", () =>{
   const round = document.getElementById("round");
   console.log("round actuel : ", actualRound);
-<<<<<<< HEAD
-  actualRound++;gi
-=======
-
-
-  
   actualRound++;
->>>>>>> a0d90d30d6269271eeef269f861e1081f473204a
   round.innerHTML = `<h2> Round ${actualRound} of ${getSessionObject("room").nbRound} </h2>`
 
   if(actualRound>getSessionObject("room").nbRound){
