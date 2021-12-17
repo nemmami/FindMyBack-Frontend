@@ -52,6 +52,7 @@ function RoomPage() {
         }), // body data type must match "Content-Type" header
         headers: {
           "Content-Type": "application/json",
+          Authorization: getSessionObject("user").token,
         },
       };
 
