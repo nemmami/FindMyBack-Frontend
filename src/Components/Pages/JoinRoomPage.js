@@ -1,16 +1,15 @@
 import { Redirect } from "../Router/Router";
+<<<<<<< HEAD
 import { io } from "socket.io-client";
+=======
+>>>>>>> c6f29b673bb430436bb04564e2d7bd1401fba12d
 import { getSessionObject, setSessionObject } from "../../utils/session";
-import { removeSessionObject } from "../../utils/session";
-
 
 let joinRoomPage;
 // quand on crée/rejoins une room
 function JoinRoomPage() {
   if (!getSessionObject("user")) return Redirect("/login"); // si user pas connecté
 
-  // reset #page div
-  //removeSessionObject("allRoom");
   getAllRooms();
   if (getSessionObject("allRoom") !== undefined && getSessionObject("user") !== undefined) {
     const rooms = getSessionObject("allRoom");
@@ -23,13 +22,23 @@ function JoinRoomPage() {
                               <p class="p-0 m-0 flex-grow-1 fw-bold" id="room-dispo">Salon crée par ${room.host} - ${room.id}</p>
                               <input type="submit" class="btn btn-sm btn-success join-room" id="inputJoin" data="${room.id}" value="${room.id}">
                             </li>
-                      </form>`;
+                           </form>`;
         }
       });
     }
   }
   const pageDiv = document.querySelector("#page");
-  pageDiv.innerHTML = joinRoomPage;
+
+  let pageJoin = `
+  <div class="container">
+    <div class="row">
+        <div class="col-lg-2"></div>
+        <div class="col-lg-8 text-center" id="formJoin"><h1> Rejoignez une partie</h1> <br> ${joinRoomPage}</div>
+        <div class="col-lg-2"></div>
+    </div>
+  </div> `;
+  pageDiv.innerHTML = pageJoin;
+
 
   let formJoin = document.getElementById("join");
   formJoin.addEventListener("submit", onSubmitFormJoin);

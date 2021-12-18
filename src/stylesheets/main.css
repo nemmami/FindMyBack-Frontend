@@ -69,10 +69,7 @@ h1{
   color:white;
 }
 
-/** roompage **/
-#room-dispo{
-  color: black;
-}
+
 
 
 /** homepage **/
@@ -87,7 +84,10 @@ h1{
 }
 
 #homePage button{
-  height: 3em;
+  height: 6em;
+  width: 10em;
+  font-size: large;
+  margin: 2%;
 }
 
 #logo{
@@ -192,6 +192,15 @@ transition: 0.15s;
     background:#2ecc71;
   }
 
+  /** roompage **/
+#room-dispo{
+  color: black;
+}
+
+/** joinRoompgage**/
+#formJoin{
+  margin: 60px;
+}
   
   /***** ScreenGame *****/
 
@@ -304,7 +313,27 @@ transition: 0.15s;
     color: black;
   }
 
+  /** endGame**/ 
+  #endGamePage h1{
+    font-size: xx-large;
+    color: black;
+  }
 
+  #endGamePage h3{
+    font-size: x-large;
+    color: black;
+  }
+
+
+
+  /** footer **/ 
+footer{
+  
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  text-align: center !important;
+}
 
 
 
