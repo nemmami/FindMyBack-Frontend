@@ -1,8 +1,4 @@
 import { Redirect } from "../Router/Router";
-<<<<<<< HEAD
-import { io } from "socket.io-client";
-=======
->>>>>>> c6f29b673bb430436bb04564e2d7bd1401fba12d
 import { getSessionObject, setSessionObject } from "../../utils/session";
 
 let joinRoomPage;

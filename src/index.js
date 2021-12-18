@@ -9,12 +9,8 @@ import './stylesheets/main.css';
 
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./stylesheets/main.css"
-<<<<<<< HEAD
 import NavBar from "./Components/NavBar/Navbar";
-=======
-import NavBar from "./Components/NavBar/NavBar";
 import Footer from "./Components/Footer/Footer"
->>>>>>> c6f29b673bb430436bb04564e2d7bd1401fba12d
 import { Router } from "./Components/Router/Router";
 
 
