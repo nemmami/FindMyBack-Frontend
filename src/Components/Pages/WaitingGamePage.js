@@ -143,7 +143,7 @@ function getPlayer() {
         //gerer le round de passage
         function roundPassage(passage) {
           let numPassage = 1;
-          for (let i = 0; i < getSessionObject("room").nbRound; i++) {
+          for (let i = 0; i < getSessionObject("room").nbRound + 1; i++) {
             let num = getSessionObject("room").nbPlayers;
             passage[i] = numPassage;
 
