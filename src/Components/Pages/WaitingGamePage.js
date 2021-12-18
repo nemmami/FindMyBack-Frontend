@@ -1,12 +1,8 @@
-<<<<<<< HEAD
-import { Redirect } from "../Router/Router";
-=======
->>>>>>> c6f29b673bb430436bb04564e2d7bd1401fba12d
 import { io } from "socket.io-client";
 import { getSessionObject, setSessionObject } from "../../utils/session";
 import { Redirect } from "../Router/Router";
 //import imgEnd from "../../img/End.png";
-/*
+/**
  * View the Login form :
  * render a login page into the #page div (formerly login function)
  */
@@ -34,7 +30,6 @@ waitingPage = `
     <div class="col-lg-5 text-center" id="currentWord"></div>
     <div class="col-lg-3" id ="round"></div>
   </div>
-
   <div class="row" id="bottomGame">
     <div class="col-lg-2" id="settingGame">
     <div class="col-lg-2" id="usersGame">
@@ -54,14 +49,12 @@ waitingPage = `
         </div>
       </div>
   </div>
-
   <div class="row" id="spec">
     <div class="col-lg-2"></div>     
     <div class="col-lg-2">
       <h3>Color</h3>
       <input type="color" id="colorpicker" value="#000000" class="colorpicker">
     </div>
-
     <div class="col-lg-2">
       <h3>Background color</h3>
       <input type="color" value="#ffffff" id="bgcolorpicker" class="colorpicker">
@@ -124,36 +117,6 @@ function getPlayer() {
         // on ajoute le canvas
         document.getElementById("drawGame").innerHTML = `<canvas id="Canva2D" class="border border border-dark"></canvas>`;
         document.getElementById("spec").innerHTML = 
-<<<<<<< HEAD
-          `<div class="col-lg-2">
-          </div>     
-          <div class="col-lg-2">
-              <h3>Color</h3>
-              <input type="color" id="colorpicker" value="#000000" class="colorpicker">
-          </div>
-          <div class="col-lg-2">
-              <h3>Background color</h3>
-              <input type="color" value="#ffffff" id="bgcolorpicker" class="colorpicker">
-          </div>
-          <div class="col-lg-2">
-              <h3>Tools(outils)</h3>
-              <button id="eraser" class="btn btn-default">Gomme<span class="glyphicon glyphicon-erase" aria-hidden="true"></span></button>
-              <button id="clear" class="btn btn-danger">All clear <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button>
-          </div>
-          <div class="col-lg-2">
-              <h3>Size <span id="showSize">5</span></h3>
-              <input type="range" min="1" max="50" value="5" step="1" id="controlSize">
-          </div>
-          <div class="col-lg-2">
-          </div>`;
-
-
-         
-          //commencer au round 1
-          actualRound = 1 - rooms.length;
-          onGameStarted();
-      }
-=======
         `<div class="col-lg-2"></div>     
         <div class="col-lg-2">
           <h3>Color</h3>
@@ -193,7 +156,6 @@ function getPlayer() {
 
         // remplir la table pour les round
         roundPassage(gamerRoundPassage);
->>>>>>> c6f29b673bb430436bb04564e2d7bd1401fba12d
 
         onGameStarted(); // on lance la partie
       }
@@ -207,7 +169,7 @@ async function setDataRoom(id) {
 
     if (!response.ok) {
       throw new Error(
-        "fetch error : " + response.status + " : " + response.statusText
+        "fetch error : " + response.status + " : " + response.statusText
       );
     }
     dataRoom = await response.json(); // json() returns a promise => we wait for the data
@@ -289,27 +251,15 @@ socket.on("message", (msg) => {
     //joueur 1 trouve le mot
     if (getSessionObject("room").players[0] === msg.username) {
       gamerScore[0] += 1;
-<<<<<<< HEAD
-
-=======
       setTimeout(onGameStarted, 3000);
->>>>>>> c6f29b673bb430436bb04564e2d7bd1401fba12d
     }
 
     if (getSessionObject("room").players[1] === msg.username) {
       gamerScore[1] += 1;
+      setTimeout(onGameStarted, 3000);
     }
 
-<<<<<<< HEAD
-    //console.log(gamerScore);
-
-    //attendre 3 sec avant de lancer un nvx round
-    setTimeout(onGameStarted, 3000);
-  }else{
-    
-=======
   } else {
->>>>>>> c6f29b673bb430436bb04564e2d7bd1401fba12d
     outputMessage(msg);
   }
 });
@@ -361,16 +311,8 @@ function endGameScore(data) {
 socket.on("get-round", () => {
   const round = document.getElementById("round");
   console.log("round actuel : ", actualRound);
-<<<<<<< HEAD
-
-
-  
-  actualRound++;
-  round.innerHTML = `<h2> Round ${actualRound} of ${getSessionObject("room").nbRound} </h2>`
-=======
   actualRound++;
   round.innerHTML = `<h2> Round ${actualRound} of ${getSessionObject("room").nbRound} </h2>`;
->>>>>>> c6f29b673bb430436bb04564e2d7bd1401fba12d
 
   if (actualRound > getSessionObject("room").nbRound) {
     console.log("jeu fini");
@@ -391,7 +333,7 @@ socket.on("get-round", () => {
         <div class="col-lg-2"></div>
       </div>
     </div>`;
-    setTimeout(Redirect("/"), 5000);
+    setTimeout(() => Redirect('/'), 10000);
   }
 
 });
@@ -412,15 +354,6 @@ socket.on("reset-timer", () => {
       onGameStarted();
     }
   }
-<<<<<<< HEAD
-  }
-
-  clearInterval(intervalForTimer);
-  intervalForTimer =  setInterval(diminuerTime, 1000);
-
-})
-=======
->>>>>>> c6f29b673bb430436bb04564e2d7bd1401fba12d
 
   clearInterval(intervalForTimer);
   intervalForTimer = setInterval(diminuerTime, 1000);
@@ -432,29 +365,7 @@ function onGameStarted() {
   //lancer le canvas
   canvas();
 
-<<<<<<< HEAD
-  //gerer le round de passage
-function roundPassage(passage){
-  let numPassage = 1;
-    for (let i = 0; i < getSessionObject("room").nbRound; i++) {
-      let num = getSessionObject("room").nbPlayers;
-      //console.log(num)
-      passage[i] = numPassage;
-
-  numPassage++;
-    
-  if(numPassage > num){
-        numPassage = 1;
-      }
-      
-    }
-  }
-  
-  //remplir la table pour les round
-  roundPassage(gamerRoundPassage);
-=======
   socket.emit("start-timer");
->>>>>>> c6f29b673bb430436bb04564e2d7bd1401fba12d
 
   socket.emit("start-round");
 

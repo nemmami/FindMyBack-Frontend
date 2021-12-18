@@ -1,8 +1,4 @@
 import { Redirect } from "../Router/Router";
-<<<<<<< HEAD
-import { io } from "socket.io-client";
-=======
->>>>>>> c6f29b673bb430436bb04564e2d7bd1401fba12d
 import { getSessionObject, setSessionObject } from "../../utils/session";
 
 let roomPage;
@@ -13,9 +9,9 @@ roomPage = `
   <div></div>
   <div class="col text-center">
     <form class="box" id="create">
-      <h1>Creer une partie</h1>
+      <h1>Creer une partie de 2 joueur max. </h1>
       <input type="number" id="round" placeholder="Round : 2-10" required = true min="2" max="10">
-      <input type="number" id="players" require=true value="2" min="2" max="2">
+      <input type="number" id="players" require=true placeholder="Joueur : 2" min="2" max="2">
       <input type="submit" value="Créer">
     </form>
   </div>
@@ -61,7 +57,7 @@ function RoomPage() {
 
       if (!response.ok) {
         throw new Error(
-          "fetch error : " + response.status + " : " + response.statusText
+          "fetch error : " + response.status + " : " + response.statusText
         );
       }
       const room = await response.json(); // json() returns a promise => we wait for the data

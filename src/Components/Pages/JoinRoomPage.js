@@ -53,7 +53,7 @@ function JoinRoomPage() {
 
       if (!response.ok) {
         throw new Error(
-          "fetch error : " + response.status + " : " + response.statusText
+          "fetch error : " + response.status + " : " + response.statusText
         );
       }
       const room = await response.json(); // json() returns a promise => we wait for the data
@@ -94,7 +94,7 @@ async function getAllRooms() {
 
     if (!reponse.ok) {
       throw new Error(
-        "fetch error : " + reponse.status + " : " + reponse.statusText
+        "fetch error : " + reponse.status + " : " + reponse.statusText
       );
     }
     const tab = await reponse.json();
