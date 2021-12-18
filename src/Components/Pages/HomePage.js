@@ -41,6 +41,14 @@ const HomePage = () => {
   });
 };
 
+/***************************************************************************************
+ *    Title: Animated Background For Website Header Using CSS & Vanilla Javascript | CSS Animation Effects
+ *    Author: Online Tutorials
+ *    Date: 4/12/2021
+ *    Availability: https://www.youtube.com/watch?v=LTMNdqsFh9M
+ *
+ ***************************************************************************************/
+
 const colors = ["#2196f3", "#e91e63", "#ffeb3b", "#74ff1d"];
 
 function createSquare() {

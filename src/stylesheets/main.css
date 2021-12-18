@@ -90,6 +90,14 @@ p {
   color: white !important;
 }
 
+/***************************************************************************************
+ *    Title: Animated Background For Website Header Using CSS & Vanilla Javascript | CSS Animation Effects
+ *    Author: Online Tutorials
+ *    Date: 4/12/2021
+ *    Availability: https://www.youtube.com/watch?v=LTMNdqsFh9M
+ *
+ ***************************************************************************************/
+
 .animation-background {
   z-index: -1;
   position: absolute;
@@ -115,9 +123,17 @@ p {
     transform: scale(1) translateY(500%) rotate(360deg);
     opacity: 0;
   }
-}
+} /**fin citation**/
 
 /** LoginPage**/
+
+/***************************************************************************************
+ *    Title: Animated Login Form Using Only HTML & CSS
+ *    Author: DarkCode
+ *    Date: 6/12/2021
+ *    Availability: https://www.youtube.com/watch?v=HV7DtH3J2PU 
+ *
+ ***************************************************************************************/
 
 .box {
   width: 400px;
