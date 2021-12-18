@@ -56,7 +56,7 @@ waitingPage = `
       <input type="color" id="colorpicker" value="#000000" class="colorpicker">
     </div>
     <div class="col-lg-2">
-      <h3>Couleur de fond</h3>
+      <h3>Couleur de fond </h3>
       <input type="color" value="#ffffff" id="bgcolorpicker" class="colorpicker">
     </div>
             
@@ -123,27 +123,6 @@ function getPlayer() {
         document.getElementById(
           "drawGame"
         ).innerHTML = `<canvas id="Canva2D" class="border border border-dark"></canvas>`;
-        document.getElementById(
-          "spec"
-        ).innerHTML = `<div class="col-lg-2"></div>     
-        <div class="col-lg-2">
-          <h3>Color</h3>
-          <input type="color" id="colorpicker" value="#000000" class="colorpicker">
-        </div>
-        <div class="col-lg-2">
-          <h3>Background color</h3>
-          <input type="color" value="#ffffff" id="bgcolorpicker" class="colorpicker">
-        </div>
-        <div class="col-lg-2">
-          <h3>Tools(outils)</h3>
-          <button id="eraser" class="btn btn-default">Gomme<span class="glyphicon glyphicon-erase" aria-hidden="true"></span></button>
-          <button id="clear" class="btn btn-danger">All clear <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button>
-        </div>
-        <div class="col-lg-2">
-          <h3>Size <span id="showSize">5</span></h3>
-          <input type="range" min="1" max="50" value="5" step="1" id="controlSize">
-        </div>
-        <div class="col-lg-2"></div>`;
 
         //commencer au round 1
         actualRound = 1 - rooms.length;
@@ -151,7 +130,7 @@ function getPlayer() {
         //gerer le round de passage
         function roundPassage(passage) {
           let numPassage = 1;
-          for (let i = 0; i < getSessionObject("room").nbRound + 1; i++) {
+          for (let i = 0; i < getSessionObject("room").nbRound; i++) {
             let num = getSessionObject("room").nbPlayers;
             passage[i] = numPassage;
 
@@ -348,7 +327,7 @@ socket.on("get-round", () => {
 
 //gerer le timer
 socket.on("reset-timer", () => {
-  let time = 20;
+  let time = 120;
   const timer = document.querySelector("#timer");
   timer.innerHTML = `<h2> ${time} secondes</h2>`;
   console.log("timer", time);
