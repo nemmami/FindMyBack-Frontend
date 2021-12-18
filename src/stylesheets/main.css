@@ -1,340 +1,320 @@
 /*********************************General*********************************/
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
-body{ 
+body {
   overflow: hidden;
   height: 100vh;
   background: #34495e;
 }
 
-
-
 /** navbar**/
 
-.navbar li{
+.navbar li {
   margin-left: 1em;
   margin-right: 1em;
 }
 
-.navbar li a{
+.navbar li a {
   color: white !important;
 }
 
-.navbar{
+.navbar {
   background: #2b3341 !important;
 }
 
-#homeLogo{
+#homeLogo {
   width: 3em;
   cursor: pointer;
 }
 
 /**ContactPage**/
 
-h1{
-  color :white;
+h1 {
+  color: white;
 }
 
- h5{
+h5 {
   color: white;
- }
- h6{
-  color :white;
+}
+h6 {
+  color: white;
+}
+p {
+  color: white;
+}
 
- }
- p{
-   color :white;
- }
-
-
-.boxContactPage{
+.boxContactPage {
   width: 950px;
   padding-top: 70px;
   position: absolute;
   top: 260px;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   background: #191919;
   text-align: center;
   border-radius: 25px;
-
-  
 }
-#linkContact{
-
-  color:white;
+#linkContact {
+  color: white;
 }
-
-
-
 
 /** homepage **/
 
-#page{
-  position: relative;  
+#page {
+  position: relative;
 }
 
-#homePage{
-  position: relative; 
+#homePage {
+  position: relative;
   top: 150px;
 }
 
-#homePage button{
+#homePage button {
   height: 6em;
   width: 10em;
   font-size: large;
   margin: 2%;
 }
 
-#logo{
+#logo {
   width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
 
-#titleHomePage{
-  color : white !important;
+#titleHomePage {
+  color: white !important;
 }
 
-
-
-.animation-background{
- z-index: -1;
+.animation-background {
+  z-index: -1;
   position: absolute;
-  
+
   pointer-events: none;
   background: #ffff;
   animation: animate 5s linear infinite;
 }
 
 @keyframes animate {
-  0%{
+  0% {
     transform: scale(0) translateY(0) rotate(0deg);
     opacity: 0;
   }
 
-  10%{
+  10% {
     opacity: 1;
   }
-  90%{
+  90% {
     opacity: 1;
   }
-  100%{
+  100% {
     transform: scale(1) translateY(500%) rotate(360deg);
     opacity: 0;
   }
-  
 }
-
 
 /** LoginPage**/
 
-
-.box{
+.box {
   width: 400px;
   padding: 40px;
   position: absolute;
   top: 150px;
   left: 50%;
-  transform: translate(-50%,-50%);
+  transform: translate(-50%, -50%);
   background: #191919;
   text-align: center;
 }
 
-
-.box h1{ 
-  color: white; 
-  text-transform: uppercase; 
-  font-weight: 500; 
-}
-  
-.box input[type = "text"], .box input[type = "password"], .box input[type = "number"] { border:0; 
-background: none; 
-display: block; 
-margin: 20px auto;
-text-align: center;
-border: 2px solid #3498db;
-padding: 14px 10px; 
-width: 200px; 
-outline: none; 
-color: white; 
-border-radius: 24px; 
-transition: 0.15s;
+.box h1 {
+  color: white;
+  text-transform: uppercase;
+  font-weight: 500;
 }
 
-.box input[type = "text"]:focus, .box input[type = "password"]:focus, .box input[type = "number"]:focus { 
+.box input[type="text"],
+.box input[type="password"],
+.box input[type="number"] {
+  border: 0;
+  background: none;
+  display: block;
+  margin: 20px auto;
+  text-align: center;
+  border: 2px solid #3498db;
+  padding: 14px 10px;
+  width: 200px;
+  outline: none;
+  color: white;
+  border-radius: 24px;
+  transition: 0.15s;
+}
+
+.box input[type="text"]:focus,
+.box input[type="password"]:focus,
+.box input[type="number"]:focus {
   width: 280px;
   border-color: #2ecc71;
-
 }
 
-.box input[type = "submit"]
- { border:0; 
-  background: none; 
-  display: block; 
+.box input[type="submit"] {
+  border: 0;
+  background: none;
+  display: block;
   margin: 20px auto;
   text-align: center;
   border: 2px solid #2ecc71;
-  padding: 14px 40px; 
-  width: 200px; 
-  outline: none; 
-  color: white; 
-  border-radius: 24px; 
+  padding: 14px 40px;
+  width: 200px;
+  outline: none;
+  color: white;
+  border-radius: 24px;
   transition: 0.25s;
   cursor: pointer;
-  }
+}
 
-  .box input[type = "submit"]:hover{
-    background:#2ecc71;
-  }
+.box input[type="submit"]:hover {
+  background: #2ecc71;
+}
 
-  /** roompage **/
-#room-dispo{
+/** roompage **/
+#room-dispo {
   color: black;
 }
 
 /** joinRoompgage**/
-#formJoin{
+#formJoin {
   margin: 60px;
 }
-  
-  /***** ScreenGame *****/
 
-  #screenGame{
-    border-radius: 25px;
+/***** ScreenGame *****/
+
+#screenGame {
+  border-radius: 25px;
   margin-top: 3%;
-	margin-left: 2%;
+  margin-left: 2%;
   margin-right: 2%;
   margin-bottom: 3%;
-	position: relative;
+  position: relative;
   background-color: white;
   padding-top: 10px;
   padding-bottom: 50px;
-  }
+}
 
-  #headerGame{
-    margin-left: 100px;
-    margin-bottom: 100px;
-    font-size: 25px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-  }
+#headerGame {
+  margin-left: 100px;
+  margin-bottom: 100px;
+  font-size: 25px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
 
-  #timer{
-    border-radius: 25px;
-    padding: 10px;
-    height: 100px;
-    text-align: left;
-  }
+#timer {
+  border-radius: 25px;
+  padding: 10px;
+  height: 100px;
+  text-align: left;
+}
 
-  #currentWord{
-    margin-right: 15px;
-    border-radius: 25px;
-    background: cornflowerblue;
-    padding-top: 30px;
-    height: 100px;
-    text-align: center;
-  }
+#currentWord {
+  margin-right: 15px;
+  border-radius: 25px;
+  background: cornflowerblue;
+  padding-top: 30px;
+  height: 100px;
+  text-align: center;
+}
 
-  #headerGame #round{
-    border-radius: 25px;
-    padding: 10px;
-    height: 100px;
-    text-align: right;
-  }
-  
-  #usersGame{
-    padding-top: 15px;
-    border-radius: 25px;
-    background: rgb(76, 98, 138);
-    text-align: center;
-    height: 380px;
-    width: 300px;
-    font-size: 25px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-  }
-  
-  #bottomGame{
-    margin-left: 10px;
-    margin-right: 10px;
-    
-  }
+#headerGame #round {
+  border-radius: 25px;
+  padding: 10px;
+  height: 100px;
+  text-align: right;
+}
 
-  #settingGame{
-    border-radius: 25px;
-    padding: 10px;
-    text-align: center;
-    background-color: white;
-  }
+#usersGame {
+  padding-top: 15px;
+  border-radius: 25px;
+  background: rgb(76, 98, 138);
+  text-align: center;
+  height: 380px;
+  width: 300px;
+  font-size: 25px;
+  font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
 
-  #drawGame{
-    text-align: center;
-  }
+#bottomGame {
+  margin-left: 10px;
+  margin-right: 10px;
+}
 
-  #chatGame{
-    border-radius: 25px;
-    text-align: left;
-    background-color: rgb(231, 231, 231);
-  }
+#settingGame {
+  border-radius: 25px;
+  padding: 10px;
+  text-align: center;
+  background-color: white;
+}
 
-  #Canva2D{
-    margin-bottom: 10px;
-    border-radius: 25px;
-  }
+#drawGame {
+  text-align: center;
+}
 
-  #spec{
-    text-align: center;
-    width: auto;
-  }
+#chatGame {
+  border-radius: 25px;
+  text-align: left;
+  background-color: rgb(231, 231, 231);
+}
 
-  /** chat **/
+#Canva2D {
+  margin-bottom: 10px;
+  border-radius: 25px;
+}
 
-  .wrapper{
-    text-align: center;
-    margin-top: 370px;
-  }
+#spec {
+  text-align: center;
+  width: auto;
+}
 
-  .message-container{
-    margin-top: 20px;
-    padding-left: 10px;
-    width: 275px;
-	  height: 355px;
-    max-width: 275px;
-    max-height: 355px;
-	  overflow-y: auto;
-    display: block;
-    position: absolute;
-  }
+/** chat **/
 
-  .message-text{
-    color: black;
-  }
+.wrapper {
+  text-align: center;
+  margin-top: 370px;
+}
 
-  /** endGame**/ 
-  #endGamePage h1{
-    font-size: xx-large;
-    color: black;
-  }
+.message-container {
+  margin-top: 20px;
+  padding-left: 10px;
+  width: 275px;
+  height: 355px;
+  max-width: 275px;
+  max-height: 355px;
+  overflow-y: auto;
+  display: block;
+  position: absolute;
+}
 
-  #endGamePage h3{
-    font-size: x-large;
-    color: black;
-  }
+.message-text {
+  color: black;
+}
 
+/** endGame**/
+#endGamePage h1 {
+  font-size: xx-large;
+  color: black;
+}
 
+#endGamePage h3 {
+  font-size: x-large;
+  color: black;
+}
 
-  /** footer **/ 
-footer{
-  
+/** footer **/
+footer {
   position: absolute;
   bottom: 0;
   width: 100%;
   text-align: center !important;
 }
-
-
-
-

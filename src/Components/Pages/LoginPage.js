@@ -67,11 +67,11 @@ function LoginPage() {
       errorAlert.className = "alert alert-danger";
       errorAlert.role = "alert";
       const message = document.createElement("a");
-         
-      if(error.status = 401){
+
+      if ((error.status = 401)) {
         message.innerHTML = "username or password is incorect";
       }
-        
+
       errorAlert.appendChild(message);
       form.appendChild(errorAlert);
       console.error("LoginPage::error: ", error);

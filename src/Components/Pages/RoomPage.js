@@ -18,7 +18,6 @@ roomPage = `
   <div class="col"></div>
 </div>`;
 
-
 function RoomPage() {
   if (!getSessionObject("user")) return Redirect("/login"); // si user pas connecté
 

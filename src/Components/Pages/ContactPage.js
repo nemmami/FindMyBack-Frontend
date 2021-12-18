@@ -50,9 +50,8 @@ contactPage = `
 `;
 
 const ContactPage = () => {
-    const page = document.querySelector("#page");
-    page.innerHTML = contactPage;
-}
-  
+  const page = document.querySelector("#page");
+  page.innerHTML = contactPage;
+};
 
 export default ContactPage;

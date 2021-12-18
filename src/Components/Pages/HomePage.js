@@ -1,7 +1,6 @@
-import { Redirect } from "../Router/Router"
+import { Redirect } from "../Router/Router";
 import logoNavbar from "../../img/FindMyDraw.png";
 import { getSessionObject } from "../../utils/session";
-
 
 const HomePage = () => {
   const page = document.querySelector("#page");
@@ -32,26 +31,21 @@ const HomePage = () => {
       <div class="col"></div>
     </div>`;
   }
-  page.innerHTML=homePage;
+  page.innerHTML = homePage;
 
   //faire fonctionner le redirect
-  page.querySelectorAll("button").forEach(button=>{
-    button.addEventListener("click",(e)=>{
-        Redirect(e.target.dataset.uri);
-    })
-  })
-}
+  page.querySelectorAll("button").forEach((button) => {
+    button.addEventListener("click", (e) => {
+      Redirect(e.target.dataset.uri);
+    });
+  });
+};
 
-const colors = [
-  '#2196f3',
-  '#e91e63',
-  '#ffeb3b',
-  '#74ff1d'
-]
+const colors = ["#2196f3", "#e91e63", "#ffeb3b", "#74ff1d"];
 
-function createSquare(){
-  const page = document.querySelector('#page');
-  const square = document.createElement('span');
+function createSquare() {
+  const page = document.querySelector("#page");
+  const square = document.createElement("span");
   square.className = "animation-background";
 
   let pageWidth = page.clientWidth;
@@ -59,11 +53,11 @@ function createSquare(){
 
   var size = Math.random() * 20;
 
-  square.style.width = 20 + size + 'px';
-  square.style.height = 20 + size + 'px';
+  square.style.width = 20 + size + "px";
+  square.style.height = 20 + size + "px";
 
-  square.style.top = Math.random() * pageHeight + 'px';
-  square.style.left = Math.random() * pageWidth + 'px';
+  square.style.top = Math.random() * pageHeight + "px";
+  square.style.left = Math.random() * pageWidth + "px";
 
   const bg = colors[Math.floor(Math.random() * colors.length)];
 
@@ -71,9 +65,9 @@ function createSquare(){
 
   page.appendChild(square);
 
-  setTimeout(() =>{
-    square.remove()
-  },50000)
+  setTimeout(() => {
+    square.remove();
+  }, 50000);
 }
 
 setInterval(createSquare, 50);

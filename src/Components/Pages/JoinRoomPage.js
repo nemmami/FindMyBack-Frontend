@@ -7,7 +7,10 @@ function JoinRoomPage() {
   if (!getSessionObject("user")) return Redirect("/login"); // si user pas connecté
 
   getAllRooms();
-  if (getSessionObject("allRoom") !== undefined && getSessionObject("user") !== undefined) {
+  if (
+    getSessionObject("allRoom") !== undefined &&
+    getSessionObject("user") !== undefined
+  ) {
     const rooms = getSessionObject("allRoom");
     if (rooms.length > 0) {
       joinRoomPage = ``;
@@ -35,11 +38,9 @@ function JoinRoomPage() {
   </div> `;
   pageDiv.innerHTML = pageJoin;
 
-
   let formJoin = document.getElementById("join");
   formJoin.addEventListener("submit", onSubmitFormJoin);
 
-  
   // si on rejoins une room
   async function onSubmitFormJoin(e) {
     e.preventDefault();

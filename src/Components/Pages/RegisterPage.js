@@ -5,9 +5,9 @@ import Navbar from "../NavBar/Navbar";
  * View the Register form :
  * render a register page into the #page div (formerly render function)
  */
- let registerPage;
+let registerPage;
 
- registerPage = `
+registerPage = `
 <div class="row" id="homePage">
   <div class="col"></div>
   <div class="col text-center">
@@ -54,7 +54,7 @@ function RegisterPage() {
       }
       const user = await response.json(); // json() returns a promise => we wait for the data
       console.log("user authenticated", user);
-      
+
       // save the user into the localStorage
       setSessionObject("user", user);
 
@@ -64,17 +64,15 @@ function RegisterPage() {
       // call the HomePage via the Router
       Redirect("/");
     } catch (error) {
-
       const errorAlert = document.createElement("div");
       errorAlert.className = "alert alert-danger";
       errorAlert.role = "alert";
       const message = document.createElement("a");
-     
-       
-      if(error.status = 409){
+
+      if ((error.status = 409)) {
         message.innerHTML = "username already used";
       }
-      
+
       errorAlert.appendChild(message);
       form.appendChild(errorAlert);
       console.error("RegisterPage::error: ", error);

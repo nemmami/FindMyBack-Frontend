@@ -84,13 +84,14 @@ const WaitingGamePage = () => {
 
 function getPlayer() {
   if (getSessionObject("room") !== undefined) {
-
-    socket.emit("joinRoom", { // le joueur rejoins la room
+    socket.emit("joinRoom", {
+      // le joueur rejoins la room
       id: getSessionObject("room").id,
       username: getSessionObject("user").username,
     });
 
-    socket.on("playersList", ({ rooms }) => { // on affiche les joueurs present dans la room
+    socket.on("playersList", ({ rooms }) => {
+      // on affiche les joueurs present dans la room
       console.log(rooms);
       document.getElementById("usersGameList").innerHTML = "";
 
@@ -104,20 +105,27 @@ function getPlayer() {
         </li>`;
       });
 
-      document.getElementById("drawGame").innerHTML = 
-      `<h2>Bienvenue dans la liste d'attente. ${rooms.length}/${getSessionObject("room").nbPlayers}</h2>
+      document.getElementById(
+        "drawGame"
+      ).innerHTML = `<h2>Bienvenue dans la liste d'attente. ${rooms.length}/${
+        getSessionObject("room").nbPlayers
+      }</h2>
       <br>
       <h3> Avant de commencer la partie veuillez introduire 'moi' pour savoir qui va commencer <h3>`;
 
       setDataRoom(getSessionObject("room").id); // on met a jour la room en memoire
-      
-      if (rooms.length == getSessionObject("room").nbPlayers) { // on lance la partie
+
+      if (rooms.length == getSessionObject("room").nbPlayers) {
+        // on lance la partie
         socket.emit("start-game");
 
         // on ajoute le canvas
-        document.getElementById("drawGame").innerHTML = `<canvas id="Canva2D" class="border border border-dark"></canvas>`;
-        document.getElementById("spec").innerHTML = 
-        `<div class="col-lg-2"></div>     
+        document.getElementById(
+          "drawGame"
+        ).innerHTML = `<canvas id="Canva2D" class="border border border-dark"></canvas>`;
+        document.getElementById(
+          "spec"
+        ).innerHTML = `<div class="col-lg-2"></div>     
         <div class="col-lg-2">
           <h3>Color</h3>
           <input type="color" id="colorpicker" value="#000000" class="colorpicker">
@@ -236,7 +244,8 @@ function outputRightMessage(msg) {
   chatWrapper.scrollTo(0, 1000000);
 }
 
-const foundRightAnswer = (msg) => { // quand un joueur devine le bon mot
+const foundRightAnswer = (msg) => {
+  // quand un joueur devine le bon mot
   //insertion mot random
   const currentWord = document.querySelector("#currentWord");
   currentWord.innerHTML = " ";
@@ -258,7 +267,6 @@ socket.on("message", (msg) => {
       gamerScore[1] += 1;
       setTimeout(onGameStarted, 3000);
     }
-
   } else {
     outputMessage(msg);
   }
@@ -312,7 +320,9 @@ socket.on("get-round", () => {
   const round = document.getElementById("round");
   console.log("round actuel : ", actualRound);
   actualRound++;
-  round.innerHTML = `<h2> Round ${actualRound} of ${getSessionObject("room").nbRound} </h2>`;
+  round.innerHTML = `<h2> Round ${actualRound} of ${
+    getSessionObject("room").nbRound
+  } </h2>`;
 
   if (actualRound > getSessionObject("room").nbRound) {
     console.log("jeu fini");
@@ -321,8 +331,7 @@ socket.on("get-round", () => {
     endGameScore(gamerScore);
     console.log("enbas la", winnerGame);
     const end = document.getElementById("screenGame");
-    end.innerHTML = 
-    `<div class="container">
+    end.innerHTML = `<div class="container">
       <div class="row">
         <div class="col-lg-2"></div>
         <div class="col-lg-8 text-center" id="endGamePage">
@@ -333,9 +342,8 @@ socket.on("get-round", () => {
         <div class="col-lg-2"></div>
       </div>
     </div>`;
-    setTimeout(() => Redirect('/'), 10000);
+    setTimeout(() => Redirect("/"), 10000);
   }
-
 });
 
 //gerer le timer
@@ -388,11 +396,12 @@ const canvas = () => {
 
   createCanvas();
 
-  socket.on("mouse", (data) => { // on recupere ce que l'autre joueur dessine sur le canvas
+  socket.on("mouse", (data) => {
+    // on recupere ce que l'autre joueur dessine sur le canvas
     console.log(
       "Got: " + data.x + " " + data.y + " " + data.size + " " + data.color
     );
-    
+
     // on affcihe ici le dessin de l'autre joueur
     ctx.beginPath();
     ctx.lineWidth = data.size;
@@ -403,7 +412,8 @@ const canvas = () => {
     ctx.stroke();
   });
 
-  function sendCanvas(xPos, yPos, sizePos, colorPos) { // on envoie son dessin à l'autre joueur
+  function sendCanvas(xPos, yPos, sizePos, colorPos) {
+    // on envoie son dessin à l'autre joueur
     console.log("Send: " + xPos + " " + yPos + " " + sizePos + " " + colorPos);
     var data = {
       x: xPos,
@@ -414,20 +424,26 @@ const canvas = () => {
     socket.emit("mouse", data);
   }
 
-  document.getElementById("colorpicker").addEventListener("change", function () {
-    currentColor = this.value;
-  });
+  document
+    .getElementById("colorpicker")
+    .addEventListener("change", function () {
+      currentColor = this.value;
+    });
 
-  document.getElementById("bgcolorpicker").addEventListener("change", function () {
-    ctx.fillStyle = this.value;
-    ctx.fillRect(0, 0, canvas.width, canvas.height);
-    currentBg = ctx.fillStyle;
-  });
+  document
+    .getElementById("bgcolorpicker")
+    .addEventListener("change", function () {
+      ctx.fillStyle = this.value;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
+      currentBg = ctx.fillStyle;
+    });
 
-  document.getElementById("controlSize").addEventListener("change", function () {
-    currentSize = this.value;
-    document.getElementById("showSize").innerHTML = this.value;
-  });
+  document
+    .getElementById("controlSize")
+    .addEventListener("change", function () {
+      currentSize = this.value;
+      document.getElementById("showSize").innerHTML = this.value;
+    });
 
   document.getElementById("eraser").addEventListener("click", eraser);
   document.getElementById("clear").addEventListener("click", createCanvas);
@@ -484,7 +500,12 @@ const canvas = () => {
       ctx.lineTo(currentPosition.x, currentPosition.y);
       ctx.stroke();
       store(currentPosition.x, currentPosition.y, currentSize, currentColor);
-      sendCanvas(currentPosition.x,currentPosition.y,currentSize,currentColor);
+      sendCanvas(
+        currentPosition.x,
+        currentPosition.y,
+        currentSize,
+        currentColor
+      );
     }
   }
 
