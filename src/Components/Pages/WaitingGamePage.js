@@ -52,22 +52,22 @@ waitingPage = `
   <div class="row" id="spec">
     <div class="col-lg-2"></div>     
     <div class="col-lg-2">
-      <h3>Color</h3>
+      <h3>Couleur</h3>
       <input type="color" id="colorpicker" value="#000000" class="colorpicker">
     </div>
     <div class="col-lg-2">
-      <h3>Background color</h3>
+      <h3>Couleur de fond</h3>
       <input type="color" value="#ffffff" id="bgcolorpicker" class="colorpicker">
     </div>
             
     <div class="col-lg-2">
-      <h3>Tools(outils)</h3>
+      <h3>Outils</h3>
       <button id="eraser" class="btn btn-default">Gomme<span class="glyphicon glyphicon-erase" aria-hidden="true"></span></button>
-      <button id="clear" class="btn btn-danger">All clear <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button>
+      <button id="clear" class="btn btn-danger">Effacer tout <span class="glyphicon glyphicon-repeat" aria-hidden="true"></span></button>
     </div>
             
     <div class="col-lg-2">
-      <h3>Size <span id="showSize">5</span></h3>
+      <h3>Taille crayon <span id="showSize">5</span></h3>
       <input type="range" min="1" max="50" value="5" step="1" id="controlSize">
     </div>
     <div class="col-lg-2"></div>

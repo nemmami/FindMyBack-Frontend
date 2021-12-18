@@ -13,9 +13,9 @@ import Navbar from "../NavBar/Navbar";
   <div class="col text-center">
     <form class="box">
       <h1> Register</h1>
-      <input type="text" id="username" placeholder="Username" required = true>
-      <input type="password" id="password" placeholder="Password">
-      <input type="submit" value="Login">
+      <input type="text" id="username" placeholder="Pseudo" required = true>
+      <input type="password" id="password" placeholder="Mot de passe">
+      <input type="submit" value="S'inscire">
     </form>
   </div>
   <div class="col"></div>

@@ -13,9 +13,9 @@ loginPage = `
   <div class="col text-center">
     <form class="box">
       <h1> Login</h1>
-      <input type="text" id="username" placeholder="Username" required = true>
-      <input type="password" id="password" placeholder="Password">
-      <input type="submit" value="Login">
+      <input type="text" id="username" placeholder="Pseudo" required = true>
+      <input type="password" id="password" placeholder="Mot de passe">
+      <input type="submit" value="Se connecter">
     </form>
   </div>
   <div class="col"></div>
