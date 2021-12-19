@@ -80,4 +80,5 @@ function createSquare() {
 
 setInterval(createSquare, 50);
 
+
 export default HomePage;
