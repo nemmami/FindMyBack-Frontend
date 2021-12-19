@@ -78,6 +78,6 @@ function createSquare() {
   }, 50000);
 }
 
-//setInterval(createSquare, 50);
+setInterval(createSquare, 50);
 
 export default HomePage;
