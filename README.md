@@ -1,5 +1,6 @@
-# PROJECT JS FRONTEND
-## FRINDMYDRAW
+# FindMyDraw - an online Pictionnary
+
+Frontend made in VanillaJS, using web sockets
 
 ## Available Commands
 | Command | Description |
